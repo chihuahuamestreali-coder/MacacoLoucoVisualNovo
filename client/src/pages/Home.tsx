@@ -224,7 +224,7 @@ const generators: Generator[] = [
     desc: 'Spoofing avançado para sessões e prompts Claude',
     path: '/claude',
     icon: Sparkles,
-    logo: 'claude-official.svg',
+    logo: 'claude-reference.png',
     badge: 'CLAUDE API',
   },
   {
