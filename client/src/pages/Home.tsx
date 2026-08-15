@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation } from 'wouter';
 import {
   ArrowRight,
@@ -63,7 +64,7 @@ const generators: Generator[] = [
     desc: 'Bypass anti-bot + Injeção 16+ ferramentas anti-detecção',
     path: '/aliexpress',
     icon: ShoppingCart,
-    logo: 'aliexpress.svg',
+    logo: 'aliexpress-official.png',
     badge: 'BLINDAGEM 16+',
   },
   {
@@ -79,7 +80,7 @@ const generators: Generator[] = [
     desc: 'Tokens de device Amazon blindados + Injeção 16+ anti-detecção',
     path: '/amazon',
     icon: Package,
-    logo: 'amazon.svg',
+    logo: 'amazon-blue.svg',
     badge: 'ANTI-FRAUD PRO',
   },
   {
@@ -87,7 +88,7 @@ const generators: Generator[] = [
     desc: 'Bypass SACS anti-cheating + Device ID & SPSID blindados 16+',
     path: '/shopee',
     icon: ShoppingBag,
-    logo: 'shopee.svg',
+    logo: 'shopee-official.png',
     badge: 'SACS BYPASS',
   },
   {
@@ -97,14 +98,6 @@ const generators: Generator[] = [
     icon: Shirt,
     logo: 'shein.png',
     badge: 'ANTI-BOT 16+',
-  },
-  {
-    title: 'Cider Master',
-    desc: 'Nova identidade MAC/IMEI + cookies de sessão, blindagem anti-fraude e app nativo',
-    path: '/cider',
-    icon: Box,
-    logo: 'cider.png',
-    badge: 'ANTI-FRAUD PRO',
   },
   {
     title: 'Temu Master',
@@ -119,7 +112,7 @@ const generators: Generator[] = [
     desc: 'Gerador de dispositivo mobile & injeção direta de conta',
     path: '/instagram',
     icon: Instagram,
-    logo: 'instagram.svg',
+    logo: 'instagram-official.svg',
     badge: 'MOBILE SPDF',
   },
   {
@@ -127,7 +120,7 @@ const generators: Generator[] = [
     desc: 'Spoofing de fingerprint, hardware e criação de perfis FB',
     path: '/facebook',
     icon: Facebook,
-    logo: 'facebook.svg',
+    logo: 'facebook-official.svg',
     badge: 'ADS BYPASS',
   },
   {
@@ -135,7 +128,7 @@ const generators: Generator[] = [
     desc: 'Criação e isolamento de hardware para automação TikTok',
     path: '/tiktok',
     icon: Video,
-    logo: 'tiktok.svg',
+    logo: 'tiktok-official.svg',
     badge: 'TIKTOK PRO',
   },
   {
@@ -143,7 +136,7 @@ const generators: Generator[] = [
     desc: 'Registro direto (discord.com/register) com injeção 16+, shield anti-bot e superprops sintéticas',
     path: '/discord-site',
     icon: MessageCircle,
-    logo: 'discord.svg',
+    logo: 'discord-official.svg',
     badge: 'REGISTER 16+',
   },
   {
@@ -183,7 +176,7 @@ const generators: Generator[] = [
     desc: 'Nova identidade MAC/IMEI + device ID e tokens anti-bot da plataforma de coding AI, blindagem 16+ e app nativo',
     path: '/monkeycode',
     icon: Code2,
-    logo: 'monkeycode.png',
+    logo: 'monkeycode-official.png',
     badge: 'CODING AI PRO',
   },
   {
@@ -207,7 +200,7 @@ const generators: Generator[] = [
     desc: 'Nova identidade MAC/IMEI + device ID, sessão e UTM da URL oficial de criação, blindagem 16+ e app nativo',
     path: '/emergente',
     icon: Flame,
-    logo: 'emergente.png',
+    logo: 'emergent-official.png',
     badge: 'SIGNUP BLINDADO',
   },
   {
@@ -223,7 +216,7 @@ const generators: Generator[] = [
     desc: 'Injeção de perfil e sessão agente Manus autônoma',
     path: '/manus',
     icon: Bot,
-    logo: 'manus.png',
+    logo: 'manus-official.svg',
     badge: 'AGENT CORE',
   },
   {
@@ -231,7 +224,7 @@ const generators: Generator[] = [
     desc: 'Spoofing avançado para sessões e prompts Claude',
     path: '/claude',
     icon: Sparkles,
-    logo: 'claude.svg',
+    logo: 'claude-official.svg',
     badge: 'CLAUDE API',
   },
   {
@@ -248,7 +241,7 @@ const generators: Generator[] = [
     desc: 'Gerador automatizado de contas e dados pessoais fake',
     path: '/gmail',
     icon: Mail,
-    logo: 'gmail.svg',
+    logo: 'gmail-official.png',
     badge: 'GMAIL API',
   },
   {
@@ -315,7 +308,7 @@ const categories: Category[] = [
     description: 'e-commerce global · LATAM · fast fashion',
     icon: ShoppingCart,
     tone: 'from-amber-400/15 via-amber-400/5 to-transparent border-amber-400/30 text-amber-200',
-    items: generators.filter((item) => ['/aliexpress', '/mercado-livre', '/amazon', '/shopee', '/shein', '/cider', '/temu'].includes(item.path)),
+    items: generators.filter((item) => ['/aliexpress', '/mercado-livre', '/amazon', '/shopee', '/shein', '/temu'].includes(item.path)),
   },
   {
     id: 'social',
@@ -347,7 +340,7 @@ const categories: Category[] = [
     description: 'assistentes · agentes · serviços externos',
     icon: Bot,
     tone: 'from-violet-500/15 via-violet-500/5 to-transparent border-violet-500/30 text-violet-200',
-    items: generators.filter((item) => ['/manus', '/claude', '/ursa'].includes(item.path)),
+    items: generators.filter((item) => ['/manus', '/claude'].includes(item.path)),
   },
   {
     id: 'email',
@@ -355,7 +348,7 @@ const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/ursa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -383,6 +376,16 @@ function getLogoUrl(fileName?: string) {
 
 export default function Home() {
   const [, setLocation] = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
+  const visibleCategories = categories
+    .map((category) => ({
+      ...category,
+      items: category.items.filter((item) =>
+        `${item.title} ${item.desc} ${item.badge}`.toLocaleLowerCase().includes(normalizedQuery),
+      ),
+    }))
+    .filter((category) => category.items.length > 0);
 
   const openGenerator = (item: Generator) => {
     if (item.externalUrl) {
@@ -420,8 +423,19 @@ export default function Home() {
             <LayoutGrid className="h-3.5 w-3.5" />
             Categorias
           </div>
+          <div className="mt-3 flex items-center gap-2 rounded-xl border border-border/60 bg-slate-950/70 px-3 py-2.5 focus-within:border-primary/60 focus-within:ring-1 focus-within:ring-primary/30">
+            <Search className="h-4 w-4 shrink-0 text-primary" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Pesquisar menu..."
+              aria-label="Pesquisar menu"
+              className="min-w-0 flex-1 bg-transparent text-xs text-slate-100 outline-none placeholder:text-slate-600"
+            />
+          </div>
           <nav className="mt-3 grid gap-1.5" aria-label="Categorias do catálogo">
-            {categories.map((category) => {
+            {visibleCategories.map((category) => {
               const Icon = category.icon;
               return (
                 <a
@@ -449,28 +463,10 @@ export default function Home() {
         </aside>
 
         <main className="min-w-0 flex-1 p-5 md:p-8 lg:p-10">
-          <div className="mb-5 flex flex-wrap justify-end gap-2">
-            {miniMenus.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.title}
-                  onClick={() => window.open(item.externalUrl, '_blank')}
-                  className="group flex items-center gap-1.5 rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-blue-300 transition-all hover:bg-blue-500/30 hover:text-blue-200 hover:shadow-[0_0_10px_rgba(59,130,246,0.4)]"
-                  title={`Abrir ${item.title} em nova guia`}
-                >
-                  <Icon className="h-3 w-3" />
-                  {item.title}
-                  <ExternalLink className="h-3 w-3 opacity-50" />
-                </button>
-              );
-            })}
-          </div>
-
           <header className="border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 31 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 30 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -486,19 +482,36 @@ export default function Home() {
             </p>
           </header>
 
-          <div className="my-6 flex flex-col gap-3 border-b border-border/30 pb-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-              <p className="mt-1 text-[11px] text-slate-500">31 módulos reorganizados visualmente · nenhuma rota alterada</p>
+          <div className="my-6 border-b border-border/30 pb-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
+                <p className="mt-1 text-[11px] text-slate-500">30 módulos reorganizados visualmente · nenhuma rota alterada</p>
+              </div>
+              <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-slate-950/60 px-3 py-2 text-xs text-slate-500">
-              <Search className="h-3.5 w-3.5" />
-              <span>Use a busca do navegador para localizar uma ferramenta</span>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-pink-300">Mini menu</span>
+              {miniMenus.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.title}
+                    onClick={() => window.open(item.externalUrl, '_blank')}
+                    className="group flex items-center gap-1.5 rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-blue-300 transition-all hover:bg-blue-500/30 hover:text-blue-200 hover:shadow-[0_0_10px_rgba(59,130,246,0.4)]"
+                    title={`Abrir ${item.title} em nova guia`}
+                  >
+                    <Icon className="h-3 w-3" />
+                    {item.title}
+                    <ExternalLink className="h-3 w-3 opacity-50" />
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           <div className="space-y-12">
-            {categories.map((category) => {
+            {visibleCategories.map((category) => {
               const CategoryIcon = category.icon;
               return (
                 <section key={category.id} id={category.id} className="scroll-mt-6">
@@ -557,6 +570,11 @@ export default function Home() {
                 </section>
               );
             })}
+            {visibleCategories.length === 0 && (
+              <div className="rounded-2xl border border-border/50 bg-slate-950/60 px-6 py-12 text-center text-sm text-slate-500">
+                Nenhum menu encontrado para “{searchQuery}”.
+              </div>
+            )}
           </div>
 
           <div className="mt-14 space-y-5">
