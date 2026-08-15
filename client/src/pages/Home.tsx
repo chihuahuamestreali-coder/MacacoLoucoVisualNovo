@@ -112,7 +112,7 @@ const generators: Generator[] = [
     desc: 'Gerador de dispositivo mobile & injeção direta de conta',
     path: '/instagram',
     icon: Instagram,
-    logo: 'instagram-official.svg',
+    logo: 'instagram-color-official.png',
     badge: 'MOBILE SPDF',
   },
   {
@@ -128,7 +128,7 @@ const generators: Generator[] = [
     desc: 'Criação e isolamento de hardware para automação TikTok',
     path: '/tiktok',
     icon: Video,
-    logo: 'tiktok-official.svg',
+    logo: 'tiktok-reference.jpg',
     badge: 'TIKTOK PRO',
   },
   {
@@ -136,7 +136,7 @@ const generators: Generator[] = [
     desc: 'Registro direto (discord.com/register) com injeção 16+, shield anti-bot e superprops sintéticas',
     path: '/discord-site',
     icon: MessageCircle,
-    logo: 'discord-official.svg',
+    logo: 'discord-icon-blue.svg',
     badge: 'REGISTER 16+',
   },
   {
