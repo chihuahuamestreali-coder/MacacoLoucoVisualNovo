@@ -112,6 +112,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'CPF, endereço, MAC e IMEI podem não aparecer porque a finalidade principal é sessão e contexto, não persona civil ou hardware completo.',
     limitations: 'Credenciais são sensíveis e não devem ser compartilhadas. A aplicação não garante autenticação ou permanência de uma sessão externa.',
   },
+  chatgpt: {
+    key: 'chatgpt', title: 'ChatGPT Master', family: 'Hardware + persona',
+    mission: 'Combinar um perfil de dispositivo com dados de persona para o fluxo do ChatGPT (chatgpt.com), com device ID, sessão e modelo GPT sintéticos.',
+    scope: 'Este módulo segue o padrão in-site do Manus: gera device fingerprint, sessão e identificadores GPT antes de abrir o portal oficial de login.',
+    fields: [
+      { label: 'Hardware', meaning: 'Modelo, MAC, IMEI, Android ID, resolução e fingerprint do dispositivo.' },
+      { label: 'GPT Device ID', meaning: 'Identificador sintético persistente no padrão GPT_DEVICE_ID da plataforma.' },
+      { label: 'Sessão & Anon', meaning: 'Cookies de sessão sintéticos (GPT_SESSION, GPT_ANON_ID, GPT_UID) injetados no ambiente local.' },
+      { label: 'Persona', meaning: 'Dados sintéticos locais (nome, email, telefone) para fins de teste de cadastro.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico com a nova identidade MAC.', 'Mantenha a simulação de app nativo e a blindagem ativos.', 'Inicie a injeção — o portal oficial abre em nova guia com a blindagem ativa.'],
+    whyDifferent: 'Injeta device ID, sessão e identificadores do ChatGPT no domínio real via console, sem aba intermediária.',
+    limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
+  },
   gmail: {
     key: 'gmail', title: 'Gmail Master', family: 'Conta e recuperação',
     mission: 'Gerenciar um perfil de conta Google com credenciais, recuperação e contexto de sessão.',

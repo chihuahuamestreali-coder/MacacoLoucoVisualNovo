@@ -382,5 +382,31 @@ comportamento humano e simulação de app nativo.
   conflito com a guia existente do submenu Van Gogh "leonardo".
 
 ================================================================
+11. NOVO MÓDULO CHATGPT (ESTILO MANUS / INJEÇÃO IN-SITE)
+================================================================
+
+11.1 CHATGPT DEVICE MASTER (/chatgpt) - cor verde (brand #10a37f)
+- Segue o padrão Manus/in-site usado pelos módulos cloud e IA de
+  imagem: perfil universal (MAC/IMEI/Android ID), device ID e
+  sessão GPT específicos, cookies no domínio real via console,
+  blindagem anti-bot 16+, comportamento humano e app nativo.
+- Fields GPT: GPT_DEVICE_ID, GPT_SESSION, GPT_ANON_ID, GPT_UID,
+  GPT_MODEL (gpt-4o / gpt-4o-mini / gpt-5 / o3), GPT_LOCALE pt-BR.
+- URL alvo: https://chatgpt.com/auth/login (portal oficial).
+
+11.2 ARQUIVOS NOVOS CRIADOS NESTA ETAPA
+- client/src/lib/chatgptDeviceGenerator.ts      (gerador ChatGPT)
+- client/src/pages/ChatGptManager.tsx           (menu ChatGPT)
+- client/public/brand-icons/chatgpt.svg         (logo no card)
+
+11.3 ALTERAÇÕES EM ARQUIVOS EXISTENTES
+- App.tsx: rota /chatgpt.
+- Home.tsx: card "ChatGPT Master" na categoria de assistentes
+  (ao lado de /manus e /claude) e contador para
+  "31 MÓDULOS + 3 HUBS".
+- moduleGuides.ts: guia "chatgpt" (título "ChatGPT Master",
+  família "Hardware + persona", padrão in-site do Manus).
+
+================================================================
 FIM DO DOCUMENTO
 ================================================================

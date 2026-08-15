@@ -13,6 +13,7 @@ import ManusManager from "./pages/ManusManager";
 import TikTokManager from "./pages/TikTokManager";
 import GmailManager from "./pages/GmailManager";
 import ClaudeManager from "./pages/ClaudeManager";
+import ChatGptManager from "./pages/ChatGptManager";
 import TemuManager from "./pages/TemuManager";
 import MercadoLibreManager from "./pages/MercadoLibreManager";
 import GitHubManager from "./pages/GitHubManager";
@@ -53,6 +54,7 @@ function AppRouter() {
       <Route path={"/tiktok"} component={TikTokManager} />
       <Route path={"/gmail"} component={GmailManager} />
       <Route path={"/claude"} component={ClaudeManager} />
+      <Route path={"/chatgpt"} component={ChatGptManager} />
       <Route path={"/temu"} component={TemuManager} />
       <Route path={"/mercado-livre"} component={MercadoLibreManager} />
       <Route path={"/amazon"} component={AmazonManager} />

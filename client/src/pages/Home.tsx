@@ -228,6 +228,14 @@ const generators: Generator[] = [
     badge: 'CLAUDE API',
   },
   {
+    title: 'ChatGPT Master',
+    desc: 'Nova identidade MAC/IMEI + device ID, sessão e modelo GPT do portal oficial, blindagem 16+ e app nativo',
+    path: '/chatgpt',
+    icon: Bot,
+    logo: 'chatgpt.svg',
+    badge: 'GPT PT-BR',
+  },
+  {
     title: 'Ursa',
     desc: 'Abertura de link externo e serviços associados',
     path: '/ursa',
@@ -340,7 +348,7 @@ const categories: Category[] = [
     description: 'assistentes · agentes · serviços externos',
     icon: Bot,
     tone: 'from-violet-500/15 via-violet-500/5 to-transparent border-violet-500/30 text-violet-200',
-    items: generators.filter((item) => ['/manus', '/claude'].includes(item.path)),
+    items: generators.filter((item) => ['/manus', '/claude', '/chatgpt'].includes(item.path)),
   },
   {
     id: 'email',
@@ -466,7 +474,7 @@ export default function Home() {
           <header className="border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 30 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 31 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -486,7 +494,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-                <p className="mt-1 text-[11px] text-slate-500">30 módulos reorganizados visualmente · nenhuma rota alterada</p>
+                <p className="mt-1 text-[11px] text-slate-500">31 módulos reorganizados visualmente · nenhuma rota alterada</p>
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>
