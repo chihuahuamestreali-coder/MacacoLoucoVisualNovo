@@ -43,7 +43,7 @@ import IpDisplay from "@/components/IpDisplay";
 
 function AppRouter() {
   return (
-    <Router base="/MacacoLouco">
+    <Router base="/MacacoLoucoVisualNovo">
       <Switch>
       {/* Rotas específicas primeiro */}
       <Route path={"/emails"} component={EmailManager} />
