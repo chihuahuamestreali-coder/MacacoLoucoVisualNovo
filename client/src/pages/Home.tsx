@@ -378,6 +378,20 @@ const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
+const favoritePaths = ['/emails', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
+const favoriteLabels: Record<string, string> = {
+  '/emails': 'Email',
+  '/ursa': 'Ursa',
+  '/monkeycode': 'Monkey',
+  '/manus': 'Manus',
+  '/aliexpress': 'AliExpress',
+  '/facebook': 'Facebook',
+  '/tiktok': 'TikTok',
+};
+const favoriteGenerators = favoritePaths
+  .map((path) => generators.find((item) => item.path === path))
+  .filter((item): item is Generator => Boolean(item));
+
 function getLogoUrl(fileName?: string) {
   return fileName ? `${import.meta.env.BASE_URL}brand-icons/${fileName}` : undefined;
 }
@@ -385,6 +399,7 @@ function getLogoUrl(fileName?: string) {
 export default function Home() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
+  const [favoritesExpanded, setFavoritesExpanded] = useState(false);
   const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
   const visibleCategories = categories
     .map((category) => ({
@@ -405,7 +420,7 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen bg-background text-foreground font-mono"
+      className="fm-home-shell min-h-screen bg-background text-foreground font-mono"
       style={{
         backgroundImage: "linear-gradient(rgba(7,12,31,0.96), rgba(7,12,31,0.99)), url('/manus-storage/field-manual-hero_13e2d1fa.png')",
         backgroundSize: 'cover',
@@ -413,8 +428,8 @@ export default function Home() {
         backgroundAttachment: 'fixed',
       }}
     >
-      <div className="mx-auto flex max-w-[1720px] flex-col gap-0 lg:flex-row">
-        <aside className="border-b border-border/60 bg-background/85 p-5 backdrop-blur-xl lg:sticky lg:top-0 lg:h-screen lg:w-[270px] lg:shrink-0 lg:border-b-0 lg:border-r lg:p-6">
+      <div className="fm-home-layout mx-auto flex max-w-[1720px] flex-col gap-0 lg:flex-row">
+        <aside className="fm-home-sidebar border-b border-border/60 bg-background/85 p-5 backdrop-blur-xl lg:sticky lg:top-0 lg:h-screen lg:w-[270px] lg:shrink-0 lg:border-b-0 lg:border-r lg:p-6">
           <div className="flex items-center gap-3 border-b border-border/60 pb-5">
             <img
               src="/manus-storage/device-master-mark_0b9ede57.png"
@@ -426,6 +441,33 @@ export default function Home() {
               <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">painel organizado</p>
             </div>
           </div>
+
+          <section className={`fm-sidebar-favorites fm-mobile-favorites ${favoritesExpanded ? 'is-expanded' : 'is-archived'}`} aria-labelledby="sidebar-favorites-heading">
+            <button
+              type="button"
+              className="fm-favorites-toggle fm-sidebar-favorites__toggle"
+              onClick={() => setFavoritesExpanded((expanded) => !expanded)}
+              aria-expanded={favoritesExpanded}
+              aria-controls="sidebar-favorites-content"
+            >
+              <span className="fm-sidebar-section-label" id="sidebar-favorites-heading"><Sparkles className="h-3.5 w-3.5" /> Favoritos</span>
+              <ChevronRight className={`fm-favorites-toggle__chevron ${favoritesExpanded ? 'is-expanded' : ''}`} />
+            </button>
+            <div id="sidebar-favorites-content" className="fm-sidebar-favorite-list">
+              {favoriteGenerators.map((item) => {
+                const Icon = item.icon;
+                const logoUrl = getLogoUrl(item.logo);
+                return (
+                  <a key={`sidebar-${item.path}`} href={`#favorite-${item.path.slice(1)}`} className="fm-sidebar-favorite-link">
+                    <span className="fm-sidebar-favorite-icon">
+                      {logoUrl ? <img src={logoUrl} alt="" /> : <Icon className="h-3.5 w-3.5" />}
+                    </span>
+                    <span>{favoriteLabels[item.path] ?? item.title}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
 
           <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-teal-300">
             <LayoutGrid className="h-3.5 w-3.5" />
@@ -470,8 +512,55 @@ export default function Home() {
           </nav>
         </aside>
 
-        <main className="min-w-0 flex-1 p-5 md:p-8 lg:p-10">
-          <header className="border-b border-border/50 pb-8 text-center">
+        <main className="fm-home-main min-w-0 flex-1 p-5 md:p-8 lg:p-10">
+          <section className={`fm-favorites-panel fm-desktop-favorites ${favoritesExpanded ? 'is-expanded' : 'is-archived'}`} aria-labelledby="favorites-heading">
+            <button
+              type="button"
+              className="fm-favorites-toggle fm-favorites-panel__header"
+              onClick={() => setFavoritesExpanded((expanded) => !expanded)}
+              aria-expanded={favoritesExpanded}
+              aria-controls="favorites-panel-content"
+            >
+              <span>
+                <span className="fm-kicker"><Sparkles className="h-3.5 w-3.5" /> Favoritos</span>
+                <span id="favorites-heading" className="fm-favorites-panel__title">Acesso rápido aos seus módulos principais</span>
+              </span>
+              <span className="fm-favorites-panel__header-actions">
+                <span className="fm-favorites-panel__count">{favoriteGenerators.length} atalhos</span>
+                <ChevronRight className={`fm-favorites-toggle__chevron ${favoritesExpanded ? 'is-expanded' : ''}`} />
+              </span>
+            </button>
+            <div id="favorites-panel-content" className="fm-favorites-grid">
+              {favoriteGenerators.map((item) => {
+                const Icon = item.icon;
+                const logoUrl = getLogoUrl(item.logo);
+                return (
+                  <div
+                    key={`favorite-card-${item.path}`}
+                    id={`favorite-${item.path.slice(1)}`}
+                    onClick={() => openGenerator(item)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') openGenerator(item);
+                    }}
+                    className="fm-favorite-card"
+                  >
+                    <span className="fm-favorite-card__logo">
+                      {logoUrl ? <img src={logoUrl} alt={`${item.title} logo`} /> : <Icon className="h-5 w-5" />}
+                    </span>
+                    <span className="fm-favorite-card__content">
+                      <span className="fm-favorite-card__label">{favoriteLabels[item.path] ?? item.title}</span>
+                      <span className="fm-favorite-card__title">{item.title}</span>
+                    </span>
+                    <ArrowRight className="fm-favorite-card__arrow" />
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 31 MÓDULOS + 3 HUBS</p>
@@ -490,7 +579,7 @@ export default function Home() {
             </p>
           </header>
 
-          <div className="my-6 border-b border-border/30 pb-5">
+          <div className="fm-catalog-header my-6 border-b border-border/30 pb-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
@@ -594,6 +683,18 @@ export default function Home() {
           <footer className="mt-16 border-t border-border/30 pt-6 text-center text-xs text-muted-foreground">
             <p>AliDevMan Pro Security Suite • Gerenciamento Multi-Plataforma com Anti-Detecção Avançada • 2026</p>
           </footer>
+
+          <nav className="fm-mobile-nav" aria-label="Acesso rápido às categorias">
+            {categories.slice(0, 5).map((category) => {
+              const Icon = category.icon;
+              return (
+                <a key={`mobile-${category.id}`} href={`#${category.id}`} className="fm-mobile-nav__item">
+                  <Icon className="h-4 w-4" />
+                  <span>{category.title.split(' ')[0]}</span>
+                </a>
+              );
+            })}
+          </nav>
         </main>
       </div>
     </div>

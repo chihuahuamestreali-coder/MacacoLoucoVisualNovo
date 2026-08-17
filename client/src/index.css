@@ -228,3 +228,911 @@
     }
   }
 }
+
+/* --------------------------------------------------------------------------
+   Preview visual — Field Manual / Control Room
+   Camada exclusivamente estética: rotas, handlers, textos e fluxos permanecem
+   intocados no clone de preview.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --fm-ink: #070b1c;
+  --fm-line: rgba(120, 151, 201, 0.18);
+  --fm-cyan: #5ee7ff;
+  --fm-teal: #35d0ba;
+  --fm-ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Aplica a profundidade técnica apenas à composição principal; /dark mantém
+   sua exceção de fundo preto absoluto. */
+#root > div.min-h-screen > div > main {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(180deg, rgba(7, 11, 28, 0.24), rgba(7, 11, 28, 0.56));
+}
+
+#root > div.min-h-screen > div > main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(rgba(77, 126, 169, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 126, 169, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 75% 4%, rgba(0, 217, 255, 0.16), transparent 32rem),
+    radial-gradient(circle at 10% 76%, rgba(255, 0, 110, 0.11), transparent 28rem);
+  background-size: 32px 32px, 32px 32px, auto, auto;
+  background-position: center, center, top right, bottom left;
+}
+
+#root > div.min-h-screen > div > aside {
+  background: rgba(7, 12, 31, 0.88) !important;
+  border-color: var(--fm-line) !important;
+  box-shadow: 18px 0 42px rgba(0, 0, 0, 0.16);
+}
+
+#root > div.min-h-screen > div > aside > div:first-child {
+  border-color: var(--fm-line) !important;
+}
+
+#root > div.min-h-screen > div > aside a {
+  border-color: transparent;
+  transition: background-color 180ms var(--fm-ease), border-color 180ms var(--fm-ease), color 180ms var(--fm-ease), transform 180ms var(--fm-ease);
+}
+
+#root > div.min-h-screen > div > aside a:hover {
+  transform: translateX(3px);
+  border-color: rgba(94, 231, 255, 0.2) !important;
+  background: rgba(94, 231, 255, 0.08) !important;
+}
+
+#root > div.min-h-screen > div > aside input[type='search'] {
+  caret-color: var(--fm-cyan);
+}
+
+#root > div.min-h-screen > div > aside input[type='search']::placeholder {
+  color: #647494;
+}
+
+#root > div.min-h-screen > div > main > header {
+  position: relative;
+  padding-top: 2rem;
+  border-color: var(--fm-line) !important;
+}
+
+#root > div.min-h-screen > div > main > header::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: min(28rem, 72%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(53, 208, 186, 0.65), rgba(255, 107, 168, 0.55), transparent);
+  box-shadow: 0 0 18px rgba(53, 208, 186, 0.34);
+}
+
+#root > div.min-h-screen > div > main > header h1 {
+  letter-spacing: -0.045em;
+  text-shadow: 0 0 26px rgba(0, 217, 255, 0.16);
+}
+
+#root > div.min-h-screen > div > main > header p {
+  color: #9eacc4 !important;
+}
+
+#root > div.min-h-screen > div > main > header > div:nth-child(2) {
+  border-color: rgba(53, 208, 186, 0.25) !important;
+  background: rgba(53, 208, 186, 0.07) !important;
+  color: var(--fm-teal) !important;
+  box-shadow: inset 0 0 18px rgba(53, 208, 186, 0.04), 0 0 22px rgba(53, 208, 186, 0.08);
+}
+
+#root > div.min-h-screen > div > main > div.my-6 {
+  border-color: var(--fm-line) !important;
+  background: linear-gradient(90deg, rgba(12, 19, 42, 0.4), rgba(12, 19, 42, 0.08), rgba(12, 19, 42, 0.4));
+}
+
+#root > div.min-h-screen > div > main > div.my-6 .text-slate-500,
+#root > div.min-h-screen > div > main > div.my-6 .text-slate-600 {
+  color: #71809c !important;
+}
+
+#root > div.min-h-screen > div > main section > div.mb-4 {
+  border-color: var(--fm-line) !important;
+}
+
+#root > div.min-h-screen > div > main section > div.mb-4 > div:first-child > div:first-child {
+  box-shadow: 0 0 24px rgba(0, 217, 255, 0.08);
+}
+
+#root > div.min-h-screen > div > main section [role='button'] {
+  border-color: rgba(117, 149, 196, 0.22) !important;
+  background-color: rgba(11, 18, 39, 0.78) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 12px 26px rgba(0, 0, 0, 0.16);
+  transition: transform 180ms var(--fm-ease), border-color 180ms var(--fm-ease), box-shadow 180ms var(--fm-ease), background-color 180ms var(--fm-ease);
+}
+
+#root > div.min-h-screen > div > main section [role='button']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 38%);
+  transition: opacity 180ms var(--fm-ease);
+}
+
+#root > div.min-h-screen > div > main section [role='button']:hover {
+  border-color: rgba(94, 231, 255, 0.52) !important;
+  background-color: rgba(15, 28, 56, 0.9) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 32px rgba(0, 0, 0, 0.28), 0 0 24px rgba(0, 217, 255, 0.08);
+}
+
+#root > div.min-h-screen > div > main section [role='button']:hover::after {
+  opacity: 1;
+}
+
+#root > div.min-h-screen > div > main section [role='button']:focus-visible,
+#root > div.min-h-screen > div > main a:focus-visible,
+#root > div.min-h-screen > div > main button:focus-visible,
+#root > div.min-h-screen > div > aside a:focus-visible,
+#root > div.min-h-screen > div > aside input:focus-visible {
+  outline: 2px solid var(--fm-cyan);
+  outline-offset: 3px;
+}
+
+#root > div.min-h-screen > div > main section [role='button'] h3 {
+  letter-spacing: -0.015em;
+}
+
+#root > div.min-h-screen > div > main section [role='button'] p {
+  color: #9aa8bf !important;
+}
+
+#root > div.min-h-screen > div > main section [role='button'] > div:last-child {
+  border-color: var(--fm-line) !important;
+  color: #8c9ab5 !important;
+}
+
+#root > div.min-h-screen > div > main section [role='button'] > div:last-child > span:last-child {
+  border-color: rgba(94, 231, 255, 0.34) !important;
+  background: rgba(94, 231, 255, 0.08) !important;
+  box-shadow: 0 0 14px rgba(94, 231, 255, 0.08);
+}
+
+#root > div.min-h-screen > div > main section [role='button']:hover > div:last-child > span:last-child {
+  background: var(--fm-cyan) !important;
+  color: var(--fm-ink) !important;
+  box-shadow: 0 0 18px rgba(94, 231, 255, 0.34);
+}
+
+#root > div.min-h-screen > div > main footer {
+  border-color: var(--fm-line) !important;
+  color: #71809c !important;
+}
+
+@media (max-width: 1023px) {
+  #root > div.min-h-screen > div > aside {
+    position: relative;
+    top: auto;
+    height: auto;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.16);
+  }
+
+  #root > div.min-h-screen > div > main > header {
+    padding-top: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #root > div.min-h-screen > div > aside a,
+  #root > div.min-h-screen > div > main section [role='button'] {
+    transition: none;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Preview v2 — Favoritos + adaptação desktop / tablet / mobile
+   Somente apresentação, hierarquia e responsividade. Nenhum fluxo funcional
+   existente é substituído.
+   -------------------------------------------------------------------------- */
+
+.fm-home-shell {
+  --fm-favorite-surface: rgba(16, 25, 53, 0.82);
+  --fm-favorite-line: rgba(94, 231, 255, 0.22);
+}
+
+.fm-sidebar-favorites {
+  margin-top: 1.15rem;
+  padding: 0 0 1.15rem;
+  border-bottom: 1px solid var(--fm-line);
+}
+
+.fm-sidebar-section-label,
+.fm-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--fm-teal);
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.fm-sidebar-favorite-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.fm-sidebar-favorite-link {
+  display: flex !important;
+  min-width: 0;
+  min-height: 4.2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.45rem;
+  overflow: hidden;
+  border: 1px solid rgba(120, 151, 201, 0.16) !important;
+  border-radius: 0.8rem;
+  background: rgba(11, 18, 39, 0.74) !important;
+  padding: 0.55rem;
+  color: #aab7ca !important;
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fm-sidebar-favorite-link:hover {
+  border-color: var(--fm-favorite-line) !important;
+  background: rgba(24, 38, 70, 0.92) !important;
+  color: #effaff !important;
+}
+
+.fm-sidebar-favorite-icon {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0b1733;
+}
+
+.fm-sidebar-favorite-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fm-favorites-panel {
+  margin-top: 1.45rem;
+  border: 1px solid rgba(94, 231, 255, 0.18);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(135deg, rgba(27, 40, 78, 0.46), rgba(9, 15, 35, 0.72)),
+    radial-gradient(circle at 95% 0%, rgba(255, 107, 168, 0.12), transparent 24rem);
+  padding: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 44px rgba(0, 0, 0, 0.18);
+}
+
+.fm-favorites-panel__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.fm-favorites-panel__title {
+  margin-top: 0.35rem;
+  color: #d8e6f7;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.fm-favorites-panel__count {
+  color: #7f91b2;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fm-favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.fm-favorite-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 7.25rem;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  overflow: hidden;
+  border: 1px solid rgba(122, 155, 205, 0.22);
+  border-radius: 0.95rem;
+  background: linear-gradient(145deg, rgba(28, 42, 79, 0.78), rgba(9, 16, 37, 0.92));
+  padding: 0.7rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 22px rgba(0, 0, 0, 0.14);
+  transition: transform 180ms var(--fm-ease), border-color 180ms var(--fm-ease), box-shadow 180ms var(--fm-ease), background 180ms var(--fm-ease);
+}
+
+.fm-favorite-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), transparent 38%);
+  opacity: 0;
+  transition: opacity 180ms var(--fm-ease);
+}
+
+.fm-favorite-card:hover,
+.fm-favorite-card:focus-visible {
+  border-color: rgba(94, 231, 255, 0.58);
+  background: linear-gradient(145deg, rgba(30, 58, 91, 0.9), rgba(12, 25, 53, 0.96));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 28px rgba(0, 0, 0, 0.3), 0 0 24px rgba(94, 231, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.fm-favorite-card:hover::after,
+.fm-favorite-card:focus-visible::after {
+  opacity: 1;
+}
+
+.fm-favorite-card:focus-visible {
+  outline: 2px solid var(--fm-cyan);
+  outline-offset: 3px;
+}
+
+.fm-favorite-card__logo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0b1733;
+  padding: 0.34rem;
+}
+
+.fm-favorite-card__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fm-favorite-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.fm-favorite-card__label {
+  overflow: hidden;
+  color: var(--fm-teal);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fm-favorite-card__title {
+  overflow: hidden;
+  color: #f1f6ff;
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fm-favorite-card__arrow {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.72rem;
+  z-index: 1;
+  width: 0.85rem;
+  height: 0.85rem;
+  color: rgba(94, 231, 255, 0.82);
+  transition: transform 180ms var(--fm-ease), color 180ms var(--fm-ease);
+}
+
+.fm-favorite-card:hover .fm-favorite-card__arrow,
+.fm-favorite-card:focus-visible .fm-favorite-card__arrow {
+  color: #e9fdff;
+  transform: translateX(3px);
+}
+
+.fm-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 1399px) {
+  .fm-favorites-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1023px) {
+  .fm-home-sidebar {
+    width: 100%;
+    border-right: 0 !important;
+    padding: 1rem !important;
+  }
+
+  .fm-home-main {
+    padding: 1.1rem !important;
+    padding-bottom: 6rem !important;
+  }
+
+  .fm-home-hero {
+    padding-top: 1rem !important;
+  }
+
+  .fm-favorites-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .fm-home-shell {
+    background-attachment: scroll !important;
+  }
+
+  .fm-home-sidebar > div:first-child {
+    padding-bottom: 0.8rem;
+  }
+
+  .fm-sidebar-favorites {
+    margin-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
+  .fm-sidebar-favorite-list {
+    display: flex;
+    gap: 0.5rem;
+    margin-right: -0.2rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+    scrollbar-width: thin;
+  }
+
+  .fm-sidebar-favorite-link {
+    flex: 0 0 6.8rem;
+  }
+
+  .fm-home-sidebar nav[aria-label='Categorias do catálogo'] {
+    display: flex;
+    gap: 0.45rem;
+    margin-right: -0.2rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+
+  .fm-home-sidebar nav[aria-label='Categorias do catálogo'] a {
+    flex: 0 0 auto;
+    min-height: 2.45rem;
+    white-space: nowrap;
+  }
+
+  .fm-home-sidebar nav[aria-label='Categorias do catálogo'] a span:nth-child(2) {
+    max-width: 10rem;
+  }
+
+  .fm-home-hero h1 {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+    line-height: 1.03;
+  }
+
+  .fm-home-hero > div:nth-child(2) {
+    max-width: 100%;
+    border-radius: 0.8rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.58rem;
+    line-height: 1.35;
+  }
+
+  .fm-home-hero p {
+    font-size: 0.78rem !important;
+  }
+
+  .fm-favorites-panel {
+    margin-top: 1rem;
+    border-radius: 1rem;
+    padding: 0.8rem;
+  }
+
+  .fm-favorites-panel__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .fm-favorites-panel__title {
+    font-size: 0.72rem;
+  }
+
+  .fm-favorites-grid {
+    display: flex;
+    gap: 0.55rem;
+    margin-right: -0.25rem;
+    overflow-x: auto;
+    padding: 0.15rem 0.25rem 0.4rem 0.05rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .fm-favorite-card {
+    min-height: 7rem;
+    flex: 0 0 8.25rem;
+    scroll-snap-align: start;
+  }
+
+  .fm-home-main section[id] [role='button'] {
+    min-height: 11rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  .fm-home-main section[id] [role='button'] h3 {
+    font-size: 0.92rem;
+  }
+
+  .fm-home-main section[id] [role='button'] p {
+    font-size: 0.7rem;
+  }
+
+  .fm-mobile-nav {
+    position: fixed;
+    right: 0.65rem;
+    bottom: calc(0.65rem + env(safe-area-inset-bottom));
+    left: 0.65rem;
+    z-index: 80;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.25rem;
+    border: 1px solid rgba(94, 231, 255, 0.22);
+    border-radius: 1.1rem;
+    background: rgba(7, 12, 31, 0.92);
+    padding: 0.35rem;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.42), 0 0 22px rgba(0, 217, 255, 0.08);
+    backdrop-filter: blur(18px);
+  }
+
+  .fm-mobile-nav__item {
+    display: flex;
+    min-width: 0;
+    min-height: 2.9rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.22rem;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    color: #8192ad;
+    font-size: 0.5rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background-color 180ms var(--fm-ease), color 180ms var(--fm-ease), transform 180ms var(--fm-ease);
+  }
+
+  .fm-mobile-nav__item:hover,
+  .fm-mobile-nav__item:focus-visible {
+    background: rgba(94, 231, 255, 0.12);
+    color: #e9fdff;
+    transform: translateY(-1px);
+  }
+
+  .fm-mobile-nav__item:focus-visible {
+    outline: 2px solid var(--fm-cyan);
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 420px) {
+  .fm-home-main {
+    padding-right: 0.8rem !important;
+    padding-left: 0.8rem !important;
+  }
+
+  .fm-favorite-card {
+    flex-basis: 7.5rem;
+  }
+
+  .fm-sidebar-favorite-link {
+    flex-basis: 6.2rem;
+  }
+
+  .fm-mobile-nav {
+    right: 0.45rem;
+    left: 0.45rem;
+  }
+
+  .fm-mobile-nav__item {
+    font-size: 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fm-favorite-card,
+  .fm-favorite-card__arrow,
+  .fm-mobile-nav__item {
+    transition: none;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Preview v3 — Favoritos arquivados por padrão
+   Interação visual local: clicar em Favoritos alterna entre arquivado e aberto.
+   -------------------------------------------------------------------------- */
+
+.fm-favorites-toggle {
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.fm-favorites-toggle:hover,
+.fm-favorites-toggle:focus-visible {
+  border-color: transparent !important;
+  background: transparent !important;
+}
+
+.fm-favorites-toggle:focus-visible {
+  outline: 2px solid var(--fm-cyan);
+  outline-offset: 3px;
+}
+
+.fm-favorites-toggle__chevron {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  color: var(--fm-cyan);
+  transition: transform 180ms var(--fm-ease), color 180ms var(--fm-ease);
+}
+
+.fm-favorites-toggle__chevron.is-expanded {
+  transform: rotate(90deg);
+  color: #f0fcff;
+}
+
+.fm-sidebar-favorites__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0;
+}
+
+.fm-sidebar-favorites__toggle .fm-sidebar-section-label {
+  margin: 0;
+}
+
+.fm-sidebar-favorites.is-archived {
+  padding-bottom: 0.85rem;
+}
+
+.fm-sidebar-favorites.is-archived .fm-sidebar-favorites__toggle {
+  min-height: 1.35rem;
+}
+
+.fm-sidebar-favorites.is-expanded .fm-sidebar-favorite-list {
+  margin-top: 0.75rem;
+}
+
+.fm-favorites-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+}
+
+.fm-favorites-panel__header > span:first-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fm-favorites-panel__header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.fm-favorites-panel__header .fm-favorites-panel__count {
+  text-align: right;
+}
+
+.fm-favorites-panel.is-archived {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+}
+
+.fm-favorites-panel.is-archived .fm-favorites-panel__header {
+  margin-bottom: 0;
+}
+
+.fm-favorites-panel.is-expanded .fm-favorites-panel__header {
+  margin-bottom: 0.9rem;
+}
+
+.fm-favorites-panel.is-archived .fm-favorites-panel__title {
+  color: #b4c3d8;
+}
+
+@media (max-width: 767px) {
+  .fm-sidebar-favorites.is-archived {
+    padding-bottom: 0.7rem;
+  }
+
+  .fm-favorites-panel.is-archived {
+    padding: 0.75rem 0.8rem;
+  }
+
+  .fm-favorites-panel.is-archived .fm-favorites-panel__header,
+  .fm-favorites-panel.is-expanded .fm-favorites-panel__header {
+    align-items: center;
+    flex-direction: row;
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .fm-favorites-panel__header-actions {
+    gap: 0.3rem;
+  }
+
+  .fm-favorites-panel__header .fm-favorites-panel__count {
+    max-width: 8.5rem;
+    overflow: hidden;
+    font-size: 0.52rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Preview v4 — um mostrador por dispositivo
+   Desktop: somente o painel principal de Favoritos.
+   Mobile: somente o mostrador de Favoritos da área superior/sidebar.
+   -------------------------------------------------------------------------- */
+
+.fm-mobile-favorites {
+  display: none;
+}
+
+.fm-desktop-favorites {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .fm-mobile-favorites {
+    display: block;
+  }
+
+  .fm-desktop-favorites {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .fm-mobile-favorites {
+    display: none !important;
+  }
+
+  .fm-desktop-favorites {
+    display: block;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Preview v5 — favoritos fixos + bloco vermelho arquivável
+   O bloco verde permanece desarquivado. O bloco vermelho alterna por clique.
+   Os cards originais dentro das categorias continuam preservados.
+   -------------------------------------------------------------------------- */
+
+/* A v5 não remove nenhum mostrador: a mídia decide qual é fixo e qual é
+   arquivável. O bloco verde sempre recebe conteúdo; o vermelho inicia fechado. */
+.fm-mobile-favorites,
+.fm-desktop-favorites {
+  display: block !important;
+}
+
+@media (min-width: 768px) {
+  /* Desktop: verde = painel principal fixo; vermelho = sidebar arquivável. */
+  .fm-desktop-favorites .fm-favorites-grid {
+    display: grid !important;
+  }
+
+  .fm-desktop-favorites .fm-favorites-toggle {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .fm-mobile-favorites .fm-sidebar-favorite-list {
+    display: none !important;
+  }
+
+  .fm-mobile-favorites.is-expanded .fm-sidebar-favorite-list {
+    display: grid !important;
+  }
+
+  .fm-mobile-favorites .fm-favorites-toggle {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Mobile: verde = sidebar/topo fixo; vermelho = painel principal arquivável. */
+  .fm-mobile-favorites .fm-sidebar-favorite-list {
+    display: flex !important;
+  }
+
+  .fm-mobile-favorites .fm-favorites-toggle {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .fm-desktop-favorites .fm-favorites-grid {
+    display: none !important;
+  }
+
+  .fm-desktop-favorites.is-expanded .fm-favorites-grid {
+    display: flex !important;
+  }
+
+  .fm-desktop-favorites .fm-favorites-toggle {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+}
+
+/* O estado do bloco vermelho controla a seta, mas nunca remove o mostrador
+   verde nem os cards que continuam dentro das categorias. */
+.fm-mobile-favorites.is-archived .fm-sidebar-favorite-list,
+.fm-desktop-favorites.is-archived .fm-favorites-grid {
+  /* A regra final por breakpoint acima define display:none. */
+}
