@@ -408,5 +408,33 @@ comportamento humano e simulação de app nativo.
   família "Hardware + persona", padrão in-site do Manus).
 
 ================================================================
+12. NOVO MÓDULO APPLE CONTAS (ESTILO MANUS / INJEÇÃO IN-SITE)
+========================================================
+
+12.1 APPLE CONTAS DEVICE MASTER (/apple-contas) - cor prata (brand #a2aaad)
+- Segue o padrão Manus/in-site usado pelos módulos cloud e IA: perfil
+  universal (MAC/IMEI/Android ID), device ID e sessão ACL específicos,
+  cookies no domínio real via console, blindagem anti-bot 16+,
+  comportamento humano e app nativo.
+- Fields ACL: ACL_DEVICE_ID, ACL_SESSION, ACL_ANON_ID, ACL_DSID,
+  ACL_LOCALE (pt-BR), ACL_COUNTRY (BR), ACL_STOREFRONT (143,34).
+- URL alvo: https://account.apple.com/account (painel de conta oficial).
+
+12.2 ARQUIVOS NOVOS CRIADOS NESTA ETAPA
+- client/src/lib/appleContasDeviceGenerator.ts      (gerador Apple Contas)
+- client/src/pages/AppleContasManager.tsx           (menu Apple Contas)
+- client/public/brand-icons/apple.svg               (logo no card)
+
+12.3 ALTERAÇÕES EM ARQUIVOS EXISTENTES
+- App.tsx: rota /apple-contas.
+- Home.tsx: card "AppleContas Master" na categoria de email/recuperação
+  (ao lado de /gmail, /emails e /ursa) e contador atualizado para
+  "32 MÓDULOS + 3 HUBS".
+- moduleGuides.ts: guia "apple-contas" (título "Apple Contas Master",
+  família "Hardware + persona", padrão in-site do Manus).
+- nativeAppSimulator.ts: plataforma "apple" adicionada (AppleBridge,
+  WebView simulado de conta Apple) - ativada via platform 'apple' no menu.
+
+========================================================
 FIM DO DOCUMENTO
 ================================================================

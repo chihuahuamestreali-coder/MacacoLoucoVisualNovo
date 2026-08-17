@@ -11,7 +11,7 @@
  */
 
 export interface AppSimulationOptions {
-  platform: 'instagram' | 'aliexpress' | 'tiktok' | 'facebook' | 'temu' | 'claude' | 'gmail' | 'manus' | 'universal' | 'skynetchat' | 'deephat' | 'venice' | 'simplelogin' | 'nastia' | 'mercadolibre' | 'amazon' | 'shopee' | 'discord' | 'github' | 'ifood' | 'zedelivery' | 'shein' | 'cider' | 'ugphone';
+  platform: 'instagram' | 'aliexpress' | 'tiktok' | 'facebook' | 'temu' | 'claude' | 'gmail' | 'manus' | 'universal' | 'skynetchat' | 'deephat' | 'venice' | 'simplelogin' | 'nastia' | 'mercadolibre' | 'amazon' | 'shopee' | 'discord' | 'github' | 'ifood' | 'zedelivery' | 'shein' | 'cider' | 'ugphone' | 'apple';
   locale?: string;
   appVersion?: string;
 }
@@ -488,6 +488,27 @@ export function generateNativeAppSimulationForProfile(
             window.__APP_ENV__ = 'native';
             if (!window.ReactNativeWebView) window.ReactNativeWebView = { postMessage: function(){} };
             console.log('%c🌸 Simulação local de App Nastia.ai ativa', 'color: #ec4899; font-weight: bold;');
+          } catch(err) { console.error('App sim erro:', err); }
+        })();
+      `;
+    case 'apple':
+      return `
+        (function() {
+          try {
+            window.isWebview = true;
+            window.AppleBridge = { isPresent: true, version: '5.4.1', locale: '${locale}', deviceId: '${options.imei}', appType: 'apple_account' };
+            window.__APP_ENV__ = 'native';
+            window.__NATIVE_SHELL__ = true;
+            if (!window.ReactNativeWebView) {
+              window.ReactNativeWebView = { postMessage: function(){}, injectJSON: function(){}, canGoBack: true, canGoForward: false };
+            }
+            try {
+              Object.defineProperty(navigator, 'userAgent', {
+                get: function() { return "${options.userAgent} AppleAccountWebView/5.4.1 (Android/13; ${locale})"; },
+                configurable: true
+              });
+            } catch(e) {}
+            console.log('%c🍎 Simulação de App Nativo APPLE CONTAS ATIVA (portal de conta desafiado)', 'color: #a2aaad; font-weight: bold; font-size: 13px;');
           } catch(err) { console.error('App sim erro:', err); }
         })();
       `;

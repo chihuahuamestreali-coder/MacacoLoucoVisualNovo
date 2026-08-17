@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import {
+  Apple,
   ArrowRight,
   Bot,
   Box,
@@ -236,6 +237,14 @@ const generators: Generator[] = [
     badge: 'GPT PT-BR',
   },
   {
+    title: 'AppleContas Master',
+    desc: 'Conta do ecossistema Apple: nova identidade MAC/IMEI + device ID, sessão, DSID e storefront, blindagem 16+ e app nativo',
+    path: '/apple-contas',
+    icon: Apple,
+    logo: 'apple.svg',
+    badge: 'APPLE ID PRO',
+  },
+  {
     title: 'Ursa',
     desc: 'Abertura de link externo e serviços associados',
     path: '/ursa',
@@ -356,7 +365,7 @@ const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/ursa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/apple-contas'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -563,7 +572,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 31 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 32 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -583,7 +592,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-                <p className="mt-1 text-[11px] text-slate-500">31 módulos reorganizados visualmente · nenhuma rota alterada</p>
+                <p className="mt-1 text-[11px] text-slate-500">32 módulos reorganizados visualmente · nenhuma rota alterada</p>
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>

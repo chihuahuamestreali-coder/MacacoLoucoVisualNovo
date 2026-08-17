@@ -650,4 +650,19 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão e plano da Leonardo.ai no domínio real via console, sem aba intermediária.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
   },
+  'apple-contas': {
+    key: 'apple-contas', title: 'Apple Contas Master', family: 'Hardware + persona',
+    mission: 'Suite anti-detecção para a conta do ecossistema Apple (account.apple.com), com nova identidade MAC/IMEI, device ID, sessão, DSID e cookies sintéticos, blindagem anti-bot e simulação de app nativo.',
+    scope: 'Focado no fluxo de login/criação da conta Apple: gera device fingerprint, ACL_DEVICE_ID, sessão, DSID e storefront antes de abrir o painel oficial de conta.',
+    fields: [
+      { label: 'Dispositivo', meaning: 'Modelo e hardware móvel simulado com MAC, IMEI e Android ID.' },
+      { label: 'ACL Device ID', meaning: 'Identificador sintético persistente no padrão ACL_DEVICE_ID da plataforma.' },
+      { label: 'Sessão & DSID', meaning: 'Cookies de sessão sintéticos (ACL_SESSION, ACL_ANON_ID, ACL_DSID) injetados no ambiente local.' },
+      { label: 'Storefront', meaning: 'Região de loja sintética (143,34 = Brasil) para consistência de catálogo Apple.' },
+      { label: 'Persona', meaning: 'Dados sintéticos locais (nome, email, telefone) para fins de teste de cadastro.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico com a nova identidade MAC.', 'Mantenha a simulação de app nativo e a blindagem ativos.', 'Inicie a injeção — o painel de conta da Apple abre em nova guia com a blindagem ativa.'],
+    whyDifferent: 'Injeta device ID, sessão, DSID e storefront da Apple no domínio real via console, sem aba intermediária.',
+    limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
+  },
 };
