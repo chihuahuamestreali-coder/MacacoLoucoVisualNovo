@@ -233,7 +233,7 @@ const generators: Generator[] = [
     desc: 'Nova identidade MAC/IMEI + device ID, sessão e modelo GPT do portal oficial, blindagem 16+ e app nativo',
     path: '/chatgpt',
     icon: Bot,
-    logo: 'chatgpt.svg',
+    logo: 'chatgpt-official.png',
     badge: 'GPT PT-BR',
   },
   {
@@ -249,8 +249,16 @@ const generators: Generator[] = [
     desc: 'Suite universal anti-detecção para QUALQUER site: digite a URL, identidade MAC/IMEI, blindagem 16+, WebView e persona',
     path: '/coringa',
     icon: Sparkles,
-    logo: 'coringa-photo.jpg',
+    logo: 'coringa-official.jpg',
     badge: 'UNIVERSAL',
+  },
+  {
+    title: 'YouTube Master',
+    desc: 'Streaming de vídeo SEM anúncios: identidade MAC/IMEI, sessão e visitor data + bloqueio de anúncios embutido (estilo Brave/ublock)',
+    path: '/youtube',
+    icon: Video,
+    logo: 'youtube.svg',
+    badge: 'NO ADS',
   },
   {
     title: 'Ursa',
@@ -341,7 +349,7 @@ const categories: Category[] = [
     description: 'social · vídeo social · comunidade',
     icon: UsersRound,
     tone: 'from-blue-400/15 via-blue-400/5 to-transparent border-blue-400/30 text-blue-200',
-    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/discord-site'].includes(item.path)),
+    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/discord-site'].includes(item.path)),
   },
   {
     id: 'image',
@@ -581,7 +589,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 33 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 34 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -601,7 +609,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-                <p className="mt-1 text-[11px] text-slate-500">32 módulos reorganizados visualmente · nenhuma rota alterada</p>
+                <p className="mt-1 text-[11px] text-slate-500">33 módulos reorganizados visualmente · nenhuma rota alterada</p>
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>

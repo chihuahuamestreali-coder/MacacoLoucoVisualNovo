@@ -126,6 +126,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão e identificadores do ChatGPT no domínio real via console, sem aba intermediária.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
   },
+  youtube: {
+    key: 'youtube', title: 'YouTube Master', family: 'Streaming + bloqueio de anúncios',
+    mission: 'Gerar um perfil de dispositivo para o YouTube (youtube.com) com identidade MAC/IMEI, sessão e visitor data sintéticos, e ativar o motor de bloqueio de anúncios embutido (estilo Brave/ublock).',
+    scope: 'Módulo focado em streaming de vídeo sem anúncios: gera device fingerprint e sessão, injeta cookies no domínio real e remove banners/overlays/pré-roll automaticamente.',
+    fields: [
+      { label: 'YT Device ID', meaning: 'Identificador sintético persistente do dispositivo no padrão do YouTube.' },
+      { label: 'Visitor Data', meaning: 'Cookie VISITOR_INFO1_LIVE sintético usado para rastrear preferências de visitante.' },
+      { label: 'Sessão', meaning: 'Cookies de sessão sintéticos (YSC, PREF, GPSVisitedState) injetados no ambiente local.' },
+      { label: 'Bloco de anúncios', meaning: 'Motor estilo Brave que remove banners, overlays e cards patrocinados e pula pré-roll automaticamente.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico com a nova identidade MAC.', 'Mantenha a simulação de app nativo e a blindagem ativos.', 'Inicie a injeção — o YouTube abre em nova guia com o bloqueio de anúncios ativo.'],
+    whyDifferent: 'Injeta device ID, sessão e visitor data no domínio real via console e ativa um bloqueador de anúncios embutido no próprio script (sem extensão).',
+    limitations: 'O bloqueio é client-side e cobre o fluxo do YouTube; mudanças no player da plataforma podem exigir atualização do script.',
+  },
   gmail: {
     key: 'gmail', title: 'Gmail Master', family: 'Conta e recuperação',
     mission: 'Gerenciar um perfil de conta Google com credenciais, recuperação e contexto de sessão.',
