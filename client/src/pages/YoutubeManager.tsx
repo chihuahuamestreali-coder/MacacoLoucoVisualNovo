@@ -1,5 +1,4 @@
 import ManusStyleInjectionPage from '@/components/ManusStyleInjectionPage';
-import YoutubeDownloader from '@/components/YoutubeDownloader';
 import { MODULE_GUIDES } from '@/lib/moduleGuides';
 import { generateYoutubeDevice, buildYoutubeScriptBody } from '@/lib/youtubeDeviceGenerator';
 
@@ -37,9 +36,6 @@ export default function YoutubeManager() {
           ],
         }}
       />
-      <div className="container max-w-7xl mx-auto px-4">
-        <YoutubeDownloader />
-      </div>
     </>
   );
 }
