@@ -506,6 +506,57 @@ comportamento humano e simulação de app nativo.
 - server/index.ts: removida a rota /api/yt/streams/:videoId.
 - vite.config.ts: removido o middleware vitePluginYtProxy.
 
+15. EMAILPLUS PRO (KIT COMPLETO DE EMAIL) + AJUSTES NA HOME
+================================================================
+
+15.1 EMAILPLUS (/email-plus) - novo módulo
+- Clonado a partir do Email Master com todas as ferramentas do projeto
+  agregadas em um só perfil. O QUE FOI ADICIONADO E POR QUÊ:
+  * Gerador multi-provedor (Outlook, Hotmail, Proton, Tuta) + país +
+    domínio + tipo de email + senha Microsoft: base do menu original.
+  * Persona completa (nome, telefone, data, CPF, endereço, senha forte)
+    via personalDataGenerator: os provedores pedem dados civis no cadastro;
+    ter persona e email juntos evita inconsistência entre credencial e perfil.
+  * User-Agent realista com rotação (cookieAndUserAgentManager): cada
+    cadastro sinaliza um navegador/sistema diferente, reduzindo repetição
+    de fingerprint entre contas.
+  * Motor Avançado Anti-Detecção 16+ (advancedAntiDetection) + Script
+    completo anti-detecção em 16 etapas (cookieAndUserAgentManager):
+    spoofing de canvas, WebGL, audio, timezone, screen, fonts, battery,
+    geolocation, webdriver/headless, cookies e histórico — a "blindagem"
+    que os demais módulos PRO usam.
+  * Comportamento humano simulado (humanBehaviorSimulator): delays,
+    digitação lenta, mouse e scroll naturais no preenchimento.
+  * Simulação de App Nativo/WebView (nativeAppSimulator): metadados de
+    app para enganar detecção "navegador vs app".
+  * Injeção in-site (inSiteInjection): script para colar no Console do
+    site real + bookmarklet, com os passos exibidos na tela.
+  * Histórico de contas + relatório de desempenho (accountHistoryManager):
+    rastreia quais configurações funcionam (taxa de sucesso).
+- Arquivo: client/src/pages/EmailPlusManager.tsx (v1.0, tema ciano/esmeralda).
+- Chave própria de armazenamento: 'emailplus_accounts' (não conflita com o
+  Email Master, que usa 'email_accounts').
+
+15.2 HOME - FAVORITOS E CONTAGEM
+- Favoritos: removidos TikTok e Cobalt (decisão solicitada); adicionado
+  EmailPlus (atalho "EmailPlus") ao lado do Email.
+- Categoria de email/recuperação: incluído /email-plus.
+- Card "EmailPlus" (badge "KIT 16+ PRO") ao lado de "Email Forwarder".
+- Contadores: "35 MÓDULOS + 3 HUBS" -> "36 MÓDULOS + 3 HUBS" e
+  "34 módulos reorganizados" -> "35 módulos reorganizados".
+
+15.3 LOGO DO COBALT
+- Card Cobalt na Home: logo github.svg -> cobalt.png (imagem do postimg
+  "edited-baixar-videos.png" baixada para client/public/brand-icons/).
+- Cobalt permanece apenas como atalho externo para o repositório yt-dlp.
+
+15.4 ARQUIVOS ALTERADOS
+- client/src/pages/Home.tsx (favoritos, card EmailPlus, categoria, contagem).
+- client/src/pages/EmailPlusManager.tsx (novo).
+- client/src/App.tsx (rota /email-plus).
+- client/src/lib/moduleGuides.ts (guia "emailPlus").
+- client/public/brand-icons/cobalt.png (novo).
+
 ========================================================
 FIM DO DOCUMENTO
 ================================================================

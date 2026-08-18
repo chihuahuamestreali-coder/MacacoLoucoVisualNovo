@@ -70,6 +70,23 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'MAC, IMEI, resolução e fingerprint não são exibidos porque o objetivo é credencial, não dispositivo.',
     limitations: 'O armazenamento local depende do navegador atual e não substitui uma conta real do provedor.',
   },
+  emailPlus: {
+    key: 'emailPlus', title: 'EmailPlus Pro', family: 'Credenciais de email + kit anti-detecção',
+    mission: 'Combinar a geração de email multi-provedor com persona, User-Agent, blindagem anti-detecção 16+, comportamento humano, simulação de app nativo e injeção in-site.',
+    scope: 'Este é um kit amplo: agrega credencial, dados pessoais e sinais de navegador/dispositivo no mesmo perfil local.',
+    fields: [
+      { label: 'Provedor', meaning: 'Define o serviço/domínio base usado no endereço.' },
+      { label: 'País', meaning: 'Ajuda a escolher o padrão regional do endereço e o market code de signup.' },
+      { label: 'Tipo de email', meaning: 'Controla a composição do nome e dos números.' },
+      { label: 'Persona', meaning: 'Nome, telefone, data, CPF, endereço e senha gerados para o perfil.' },
+      { label: 'User-Agent', meaning: 'Identidade textual de navegador/sistema usada na blindagem.' },
+      { label: 'Script in-site', meaning: 'Código gerado para ser colado no console do site real.' },
+      { label: 'Contas salvas', meaning: 'Registros mantidos no armazenamento local com status.' },
+    ],
+    recommendedFlow: ['Escolha provedor, país e formato.', 'Gere o perfil completo (email, senha, persona, User-Agent).', 'Revise a blindagem e os scripts gerados.', 'Copie os dados ou o script in-site e siga o fluxo do menu.'],
+    whyDifferent: 'Diferente do Email Master, este módulo também exibe persona, User-Agent e scripts de anti-detecção, unindo credencial e contexto de navegador.',
+    limitations: 'Os dados e scripts são locais; a interface não garante aceitação por plataformas externas nem substitui verificações do provedor.',
+  },
   manus: {
     key: 'manus', title: 'Manus AI Master', family: 'Hardware + persona',
     mission: 'Combinar um perfil de dispositivo com dados de persona usados pelo fluxo do Manus.',

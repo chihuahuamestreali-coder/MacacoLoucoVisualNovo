@@ -274,7 +274,7 @@ const generators: Generator[] = [
     desc: 'Repositório yt-dlp no GitHub (baixador de vídeos)',
     path: '/cobalt',
     icon: Github,
-    logo: 'github.svg',
+    logo: 'cobalt.png',
     badge: 'EXTERNAL SITE',
     externalUrl: 'https://github.com/yt-dlp/yt-dlp',
   },
@@ -292,6 +292,14 @@ const generators: Generator[] = [
     path: '/emails',
     icon: Mail,
     badge: 'INBOX PRO',
+  },
+  {
+    title: 'EmailPlus',
+    desc: 'Kit completo de email: gerador multi-provedor + persona + User-Agent, blindagem 16+, comportamento humano, app nativo e injeção in-site',
+    path: '/email-plus',
+    icon: Mail,
+    logo: 'gmail-official.png',
+    badge: 'KIT 16+ PRO',
   },
   {
     title: 'UGPhone Master',
@@ -390,7 +398,7 @@ const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -412,17 +420,16 @@ const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/coringa', '/emails', '/ursa', '/cobalt', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
+const favoritePaths = ['/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
 const favoriteLabels: Record<string, string> = {
   '/coringa': 'Coringa',
   '/emails': 'Email',
+  '/email-plus': 'EmailPlus',
   '/ursa': 'Ursa',
-  '/cobalt': 'Cobalt',
   '/monkeycode': 'Monkey',
   '/manus': 'Manus',
   '/aliexpress': 'AliExpress',
   '/facebook': 'Facebook',
-  '/tiktok': 'TikTok',
 };
 const favoriteGenerators = favoritePaths
   .map((path) => generators.find((item) => item.path === path))
@@ -599,7 +606,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 35 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 36 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -619,7 +626,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-                <p className="mt-1 text-[11px] text-slate-500">34 módulos reorganizados visualmente · nenhuma rota alterada</p>
+                <p className="mt-1 text-[11px] text-slate-500">35 módulos reorganizados visualmente · nenhuma rota alterada</p>
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>

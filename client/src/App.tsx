@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import AliExpressManager from "./pages/AliExpressManager";
 import EmailManager from "./pages/EmailManager";
+import EmailPlusManager from "./pages/EmailPlusManager";
 import FacebookManager from "./pages/FacebookManager";
 import InstagramManager from "./pages/InstagramManager";
 import ManusManager from "./pages/ManusManager";
@@ -52,6 +53,7 @@ function AppRouter() {
       <Switch>
       {/* Rotas específicas primeiro */}
       <Route path={"/emails"} component={EmailManager} />
+      <Route path={"/email-plus"} component={EmailPlusManager} />
       <Route path={"/facebook"} component={FacebookManager} />
       <Route path={"/instagram"} component={InstagramManager} />
       <Route path={"/manus"} component={ManusManager} />
