@@ -175,6 +175,15 @@ export function sortStreamsBestFirst(streams: YtStream[]): YtStream[] {
 }
 
 export async function resolveVideoInfo(videoId: string): Promise<YtDownloadInfo> {
+  try {
+    const res = await fetchWithTimeout(`/api/yt/streams/${videoId}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.streams && data.streams.length > 0) return data;
+    }
+  } catch {
+    /* fallback to direct instances */
+  }
   let lastErr: unknown = null;
   for (const base of PIPED_INSTANCES) {
     try {
@@ -203,4 +212,18 @@ export function formatFileSize(bytes?: number): string {
     i++;
   }
   return `${size.toFixed(1)} ${units[i]}`;
+}
+
+export function friendlyYtError(raw: string): string {
+  const msg = String(raw || '').toLowerCase();
+  if (msg.includes('login') || msg.includes('bot')) {
+    return 'O YouTube bloqueou o acesso anônimo a este vídeo (proteção anti-bot). Tente outro vídeo ou rode pelo seu navegador local.';
+  }
+  if (msg.includes('unavailable') || msg.includes('indispon')) {
+    return 'Este vídeo não está disponível para download (pode ser restrito ou privado).';
+  }
+  if (msg.includes('fetch failed') || msg.includes('network') || msg.includes('cors')) {
+    return 'Não consegui carregar o vídeo: falha de rede ou instâncias temporariamente fora do ar. Tente novamente em instantes.';
+  }
+  return `Não consegui carregar o vídeo: ${raw}`;
 }

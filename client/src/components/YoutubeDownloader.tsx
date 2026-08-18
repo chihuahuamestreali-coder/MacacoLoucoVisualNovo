@@ -17,6 +17,7 @@ import {
   downloadStreamBlob,
   sortStreamsBestFirst,
   formatFileSize,
+  friendlyYtError,
   type YtDownloadInfo,
   type YtStream,
 } from '@/lib/youtubeDownloader';
@@ -53,7 +54,7 @@ export default function YoutubeDownloader() {
       const result = await resolveVideoInfo(videoId);
       setInfo(result);
     } catch (e) {
-      setError(`Não consegui carregar o vídeo: ${e instanceof Error ? e.message : 'erro de rede'}`);
+      setError(friendlyYtError(e instanceof Error ? e.message : 'erro de rede'));
     } finally {
       setLoading(false);
     }

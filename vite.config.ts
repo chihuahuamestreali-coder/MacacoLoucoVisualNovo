@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { resolveStreamsServerSide } from "./shared/ytProxy.ts";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -150,6 +151,31 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
+function vitePluginYtProxy(): Plugin {
+  return {
+    name: "yt-proxy",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/api/yt/streams", async (req, res) => {
+        const videoId = req.url?.replace(/^\//, "").split("?")[0];
+        if (!videoId) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Missing videoId" }));
+          return;
+        }
+        try {
+          const info = await resolveStreamsServerSide(videoId);
+          res.setHeader("Access-Control-Allow-Origin", "*");
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(info));
+        } catch (e) {
+          res.writeHead(502, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: e instanceof Error ? e.message : "falha" }));
+        }
+      });
+    },
+  };
+}
+
 function vitePluginStorageProxy(): Plugin {
   return {
     name: "manus-storage-proxy",
@@ -203,7 +229,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginYtProxy()];
 
 export default defineConfig({
   plugins,
