@@ -41,6 +41,7 @@ import SeaArtManager from "@/pages/SeaArtManager";
 import CopilotDesignerManager from "@/pages/CopilotDesignerManager";
 import LeonardoManager from "@/pages/LeonardoManager";
 import AppleContasManager from "@/pages/AppleContasManager";
+import CoringaManager from "@/pages/CoringaManager";
 import IpDisplay from "@/components/IpDisplay";
 
 function AppRouter() {
@@ -82,6 +83,7 @@ function AppRouter() {
       <Route path={"/copilot-designer"} component={CopilotDesignerManager} />
       <Route path={"/leonardo"} component={LeonardoManager} />
       <Route path={"/apple-contas"} component={AppleContasManager} />
+      <Route path={"/coringa"} component={CoringaManager} />
       <Route path={"/ursa"} component={UrsaManager} />
       <Route path={"/van-gogh"} component={VanGoghHub} />
       <Route path={"/404"} component={NotFound} />

@@ -665,4 +665,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão, DSID e storefront da Apple no domínio real via console, sem aba intermediária.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
   },
+  'coringa': {
+    key: 'coringa', title: 'Coringa Master', family: 'Universal (qualquer site)',
+    mission: 'Suite anti-detecção universal: o usuário digita QUALQUER URL e recebe um perfil técnico completo (MAC/IMEI/Android ID, UA, tela, timezone, cookies, histórico) com blindagem 16+, comportamento humano e WebView de app nativo.',
+    scope: 'Alvo configurável. Serve para qualquer domínio que não tenha módulo dedicado ou para cenários de teste variados.',
+    fields: [
+      { label: 'Hardware', meaning: 'Modelo, fabricante, MAC, IMEI, Android ID e fingerprint sintéticos.' },
+      { label: 'Navegador', meaning: 'User-Agent, plataforma, idiomas, plugins e webdriver falsos.' },
+      { label: 'Tela & Timezone', meaning: 'Resolução 1080x2400 e fuso horário realista aleatório.' },
+      { label: 'Cookies', meaning: 'deviceId, sessionToken e fingerprint persistidos no domínio real via document.cookie.' },
+      { label: 'WebView', meaning: 'Simulação de app nativo universal (CoringaWebView + ReactNativeWebView).' },
+      { label: 'Persona', meaning: 'Dados sintéticos locais (nome, email, telefone, CPF) para testes.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico.', 'Digite a URL do site alvo.', 'Copie o script e abra o site.', 'No site, F12 → Console → cole → Enter.'],
+    whyDifferent: 'Funciona em qualquer domínio, sem módulo dedicado — concentra todas as técnicas do projeto em um único script universal.',
+    limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas de cada plataforma.',
+  },
 };

@@ -435,6 +435,47 @@ comportamento humano e simulação de app nativo.
 - nativeAppSimulator.ts: plataforma "apple" adicionada (AppleBridge,
   WebView simulado de conta Apple) - ativada via platform 'apple' no menu.
 
+13. NOVO MÓDULO CORINGA (SUITE UNIVERSAL / QUALQUER SITE)
+========================================================
+
+13.1 CORINGA MASTER (/coringa) - cor âmbar (brand #f59e0b)
+- Módulo universal: o usuário digita QUALQUER URL e recebe um perfil
+  técnico completo para aquele domínio, concentrando todas as técnicas
+  do projeto em um único script in-site.
+- Identidade de hardware aleatória (8 aparelhos: Galaxy S21/A51, Mi 11,
+  Realme 7, Pixel 8, Redmi Note 12, P30 Lite, Moto G54) com MAC, IMEI,
+  Android ID, fingerprint e session ID.
+- Navegador spoofado: User-Agent, platform Linux armv8l, languages
+  pt-BR, vendor Google Inc., hardwareConcurrency 8, deviceMemory 8.
+- Anti-detecção 16+: webdriver false, canvas xor, WebGL Intel Iris,
+  áudio com ruído, tela 1080x2400 (colorDepth/pixelDepth 24), timezone
+  aleatório (São Paulo, NY, Lisboa, Madrid, Cidade do México, Londres).
+- Cookies e persistência: grava CoringaDeviceProfile, session, AndroidId
+  e fingerprint no localStorage/sessionStorage e injeta deviceId,
+  sessionToken, visitorId via document.cookie no domínio real.
+- WebView universal: plataforma "coringa" no nativeAppSimulator
+  (CoringaWebView + ReactNativeWebView), ativada via toggle.
+- Comportamento humano (delays, scroll, clique, digitação) e persona
+  completa (nome, email, telefone, nascimento, CPF, endereço).
+- Botões: copiar script de injeção, copiar bookmarklet (evita bloqueio
+  de colar no Console), abrir site (URL editável) e dados pessoais.
+
+13.2 ARQUIVOS NOVOS CRIADOS NESTA ETAPA
+- client/src/lib/coringaDeviceGenerator.ts      (gerador + corpo do script)
+- client/src/pages/CoringaManager.tsx           (menu Coringa universal)
+- client/public/brand-icons/coringa.svg         (logo no card)
+
+13.3 ALTERAÇÕES EM ARQUIVOS EXISTENTES
+- App.tsx: rota /coringa.
+- Home.tsx: card "Coringa Master" na categoria de email/recuperação
+  (ao lado de /apple-contas), contador atualizado para
+  "33 MÓDULOS + 3 HUBS" e CORINGA adicionado como primeiro atalho de
+  favoritos (Acesso rápido).
+- moduleGuides.ts: guia "coringa" (título "Coringa Master", família
+  "Universal (qualquer site)", padrão in-site com alvo configurável).
+- nativeAppSimulator.ts: plataforma "coringa" adicionada (CoringaWebView,
+  WebView universal) - ativada via platform 'coringa' no menu.
+
 ========================================================
 FIM DO DOCUMENTO
 ================================================================

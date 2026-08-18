@@ -11,7 +11,7 @@
  */
 
 export interface AppSimulationOptions {
-  platform: 'instagram' | 'aliexpress' | 'tiktok' | 'facebook' | 'temu' | 'claude' | 'gmail' | 'manus' | 'universal' | 'skynetchat' | 'deephat' | 'venice' | 'simplelogin' | 'nastia' | 'mercadolibre' | 'amazon' | 'shopee' | 'discord' | 'github' | 'ifood' | 'zedelivery' | 'shein' | 'cider' | 'ugphone' | 'apple';
+  platform: 'instagram' | 'aliexpress' | 'tiktok' | 'facebook' | 'temu' | 'claude' | 'gmail' | 'manus' | 'universal' | 'coringa' | 'skynetchat' | 'deephat' | 'venice' | 'simplelogin' | 'nastia' | 'mercadolibre' | 'amazon' | 'shopee' | 'discord' | 'github' | 'ifood' | 'zedelivery' | 'shein' | 'cider' | 'ugphone' | 'apple';
   locale?: string;
   appVersion?: string;
 }
@@ -509,6 +509,27 @@ export function generateNativeAppSimulationForProfile(
               });
             } catch(e) {}
             console.log('%c🍎 Simulação de App Nativo APPLE CONTAS ATIVA (portal de conta desafiado)', 'color: #a2aaad; font-weight: bold; font-size: 13px;');
+          } catch(err) { console.error('App sim erro:', err); }
+        })();
+      `;
+    case 'coringa':
+      return `
+        (function() {
+          try {
+            window.isWebview = true;
+            window.CoringaWebView = { isPresent: true, version: '1.0.0', locale: '${locale}', deviceId: '${options.imei}' };
+            window.__APP_ENV__ = 'native';
+            window.__NATIVE_SHELL__ = true;
+            if (!window.ReactNativeWebView) {
+              window.ReactNativeWebView = { postMessage: function(){}, injectJSON: function(){}, canGoBack: true, canGoForward: false };
+            }
+            try {
+              Object.defineProperty(navigator, 'userAgent', {
+                get: function() { return "${options.userAgent} CoringaWebView/1.0.0 (Android/13; ${locale})"; },
+                configurable: true
+              });
+            } catch(e) {}
+            console.log('%c🃏 Simulação de App Nativo CORINGA ATIVA (WebView universal)', 'color: #f59e0b; font-weight: bold; font-size: 13px;');
           } catch(err) { console.error('App sim erro:', err); }
         })();
       `;

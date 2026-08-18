@@ -245,6 +245,14 @@ const generators: Generator[] = [
     badge: 'APPLE ID PRO',
   },
   {
+    title: 'Coringa Master',
+    desc: 'Suite universal anti-detecção para QUALQUER site: digite a URL, identidade MAC/IMEI, blindagem 16+, WebView e persona',
+    path: '/coringa',
+    icon: Sparkles,
+    logo: 'coringa.svg',
+    badge: 'UNIVERSAL',
+  },
+  {
     title: 'Ursa',
     desc: 'Abertura de link externo e serviços associados',
     path: '/ursa',
@@ -365,7 +373,7 @@ const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/apple-contas'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/apple-contas', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -387,8 +395,9 @@ const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/emails', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
+const favoritePaths = ['/coringa', '/emails', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
 const favoriteLabels: Record<string, string> = {
+  '/coringa': 'Coringa',
   '/emails': 'Email',
   '/ursa': 'Ursa',
   '/monkeycode': 'Monkey',
@@ -572,7 +581,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 32 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 33 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
