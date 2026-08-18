@@ -298,7 +298,7 @@ const generators: Generator[] = [
     desc: 'Kit completo de email: gerador multi-provedor + persona + User-Agent, blindagem 16+, comportamento humano, app nativo e injeção in-site',
     path: '/email-plus',
     icon: Mail,
-    logo: 'gmail-official.png',
+    logo: 'emailplus-plus.png',
     badge: 'KIT 16+ PRO',
   },
   {
