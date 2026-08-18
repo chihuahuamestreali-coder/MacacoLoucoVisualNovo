@@ -24,6 +24,7 @@ import ShopeeManager from "./pages/ShopeeManager";
 import PrivateTunnelsManager from "./pages/PrivateTunnelsManager";
 import DarkSpecial from "./pages/DarkSpecial";
 import UrsaManager from "@/pages/UrsaManager";
+import CobaltManager from "@/pages/CobaltManager";
 import VanGoghHub from "@/pages/VanGoghHub";
 import SheinManager from "@/pages/SheinManager";
 import CiderManager from "@/pages/CiderManager";
@@ -87,6 +88,7 @@ function AppRouter() {
       <Route path={"/coringa"} component={CoringaManager} />
       <Route path={"/youtube"} component={YoutubeManager} />
       <Route path={"/ursa"} component={UrsaManager} />
+      <Route path={"/cobalt"} component={CobaltManager} />
       <Route path={"/van-gogh"} component={VanGoghHub} />
       <Route path={"/404"} component={NotFound} />
       {/* Rotas raiz por último */}

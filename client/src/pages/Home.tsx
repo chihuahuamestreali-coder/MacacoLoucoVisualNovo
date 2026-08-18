@@ -270,6 +270,15 @@ const generators: Generator[] = [
     externalUrl: 'https://tuamaeaquelaursa.com/',
   },
   {
+    title: 'Cobalt',
+    desc: 'Repositório yt-dlp no GitHub (baixador de vídeos)',
+    path: '/cobalt',
+    icon: Github,
+    logo: 'github.svg',
+    badge: 'EXTERNAL SITE',
+    externalUrl: 'https://github.com/yt-dlp/yt-dlp',
+  },
+  {
     title: 'Gmail Generator',
     desc: 'Gerador automatizado de contas e dados pessoais fake',
     path: '/gmail',
@@ -381,7 +390,7 @@ const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/apple-contas', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -403,11 +412,12 @@ const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/coringa', '/emails', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
+const favoritePaths = ['/coringa', '/emails', '/ursa', '/cobalt', '/monkeycode', '/manus', '/aliexpress', '/facebook', '/tiktok'];
 const favoriteLabels: Record<string, string> = {
   '/coringa': 'Coringa',
   '/emails': 'Email',
   '/ursa': 'Ursa',
+  '/cobalt': 'Cobalt',
   '/monkeycode': 'Monkey',
   '/manus': 'Manus',
   '/aliexpress': 'AliExpress',
@@ -589,7 +599,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 34 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 35 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -609,7 +619,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-slate-100"><LayoutGrid className="h-4 w-4 text-primary" /> Catálogo principal</div>
-                <p className="mt-1 text-[11px] text-slate-500">33 módulos reorganizados visualmente · nenhuma rota alterada</p>
+                <p className="mt-1 text-[11px] text-slate-500">34 módulos reorganizados visualmente · nenhuma rota alterada</p>
               </div>
               <span className="text-[10px] uppercase tracking-wider text-slate-600">{visibleCategories.reduce((total, category) => total + category.items.length, 0)} resultados</span>
             </div>

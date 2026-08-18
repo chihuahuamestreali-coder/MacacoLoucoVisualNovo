@@ -476,6 +476,36 @@ comportamento humano e simulação de app nativo.
 - nativeAppSimulator.ts: plataforma "coringa" adicionada (CoringaWebView,
   WebView universal) - ativada via platform 'coringa' no menu.
 
+14. MÓDULO COBALT (LINK EXTERNO yt-dlp) + AJUSTES NO YOUTUBE
+================================================================
+
+14.1 COBALT (/cobalt) - cor teal (link externo)
+- Segue o padrão do menu Ursa: abre o site externo em guia NOVA após 1s,
+  sem alterar a página atual.
+- Alvo: https://github.com/yt-dlp/yt-dlp (repositório oficial do
+  baixador de vídeos).
+- Arquivo: client/src/pages/CobaltManager.tsx.
+- Card na Home com logo github.svg e badge "EXTERNAL SITE".
+- Adicionado à categoria de email/recuperação (ao lado de /ursa) e aos
+  favoritos (atalho "Cobalt").
+
+14.2 YOUTUBE MASTER - REMOÇÃO DO BAIXADOR EMBUTIDO
+- O baixador de vídeos (YoutubeDownloader.tsx, youtubeDownloader.ts e o
+  proxy server-side /api/yt em server/index.ts e vite.config.ts) foi
+  REMOVIDO: as instâncias públicas (Piped/Invidious) e o innerTube API
+  passaram a retornar LOGIN_REQUIRED (proteção anti-bot do YouTube),
+  tornando o download instável a partir de IPs de datacenter/preview.
+- O módulo YouTube permanece com o bloqueio de anúncios embutido
+  (estilo Brave/ublock) via injeção in-site.
+
+14.3 ALTERAÇÕES EM ARQUIVOS EXISTENTES
+- App.tsx: rota /cobalt.
+- Home.tsx: card "Cobalt" na categoria de email/recuperação (ao lado de
+  /ursa), contador atualizado para "35 MÓDULOS + 3 HUBS" e "34 módulos
+  reorganizados", favorito "Cobalt" adicionado.
+- server/index.ts: removida a rota /api/yt/streams/:videoId.
+- vite.config.ts: removido o middleware vitePluginYtProxy.
+
 ========================================================
 FIM DO DOCUMENTO
 ================================================================
