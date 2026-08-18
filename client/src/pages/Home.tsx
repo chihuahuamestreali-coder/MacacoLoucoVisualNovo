@@ -249,7 +249,7 @@ const generators: Generator[] = [
     desc: 'Suite universal anti-detecção para QUALQUER site: digite a URL, identidade MAC/IMEI, blindagem 16+, WebView e persona',
     path: '/coringa',
     icon: Sparkles,
-    logo: 'coringa.svg',
+    logo: 'coringa-photo.jpg',
     badge: 'UNIVERSAL',
   },
   {
