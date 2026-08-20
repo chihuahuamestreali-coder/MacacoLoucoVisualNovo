@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import ModuleGuide from '@/components/ModuleGuide';
 import type { ModuleGuide as ModuleGuideData } from '@/lib/moduleGuides';
 import { generatePersonalData } from '@/lib/personalDataGenerator';
+import { generateAdvancedAntiDetection } from '@/lib/advancedAntiDetection';
 import { generateRandomUserAgent, generateCompleteAntiDetectionScript } from '@/lib/cookieAndUserAgentManager';
 import { generateBehaviorInjectionScript } from '@/lib/humanBehaviorSimulator';
 import { generateNativeAppSimulationForProfile } from '@/lib/nativeAppSimulator';
@@ -85,6 +86,8 @@ export default function ManusStyleInjectionPage({ config }: { config: ManusStyle
       ? generateCompleteAntiDetectionScript(currentUserAgent)
       : '';
 
+    const advancedAntiDetectionCode = generateAdvancedAntiDetection();
+
     const behaviorCode = antiFraudMode
       ? generateBehaviorInjectionScript({
           minDelay: 1000,
@@ -100,10 +103,10 @@ export default function ManusStyleInjectionPage({ config }: { config: ManusStyle
       ? generateNativeAppSimulationForProfile({ platform: platform as any, userAgent: currentUserAgent?.userAgent || currentDevice.userAgent, imei: currentDevice.imei || currentDevice.fingerprint })
       : '';
 
-    const fullCode = [antiDetectionCode, nativeAppCode, behaviorCode, body].filter(Boolean).join('\n');
+    const fullCode = [advancedAntiDetectionCode, antiDetectionCode, nativeAppCode, behaviorCode, body].filter(Boolean).join('\n');
 
     const features = [
-      'Motor Anti-Detecção',
+      'Motor Anti-Detecção 16+',
       ...(simulateNativeApp ? ['App Nativo'] : []),
       ...(antiFraudMode ? ['Comportamento Humano'] : []),
     ];

@@ -41,6 +41,7 @@ import LdplayerManager from "@/pages/LdplayerManager";
 import TensorManager from "@/pages/TensorManager";
 import SeaArtManager from "@/pages/SeaArtManager";
 import CopilotDesignerManager from "@/pages/CopilotDesignerManager";
+import CopilotManager from "@/pages/CopilotManager";
 import LeonardoManager from "@/pages/LeonardoManager";
 import AppleContasManager from "@/pages/AppleContasManager";
 import CoringaManager from "@/pages/CoringaManager";
@@ -61,6 +62,7 @@ function AppRouter() {
       <Route path={"/gmail"} component={GmailManager} />
       <Route path={"/claude"} component={ClaudeManager} />
       <Route path={"/chatgpt"} component={ChatGptManager} />
+      <Route path={"/copilot"} component={CopilotManager} />
       <Route path={"/temu"} component={TemuManager} />
       <Route path={"/mercado-livre"} component={MercadoLibreManager} />
       <Route path={"/amazon"} component={AmazonManager} />

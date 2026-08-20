@@ -237,6 +237,14 @@ const generators: Generator[] = [
     badge: 'GPT PT-BR',
   },
   {
+    title: 'Copilot Master',
+    desc: 'Nova identidade MAC/IMEI + device ID, sessão, anon ID e modelo do Microsoft Copilot, blindagem 16+ e app nativo',
+    path: '/copilot',
+    icon: Bot,
+    logo: 'copilot.png',
+    badge: 'COPILOT PT-BR',
+  },
+  {
     title: 'AppleContas Master',
     desc: 'Conta do ecossistema Apple: nova identidade MAC/IMEI + device ID, sessão, DSID e storefront, blindagem 16+ e app nativo',
     path: '/apple-contas',
@@ -390,7 +398,7 @@ const categories: Category[] = [
     description: 'assistentes · agentes · serviços externos',
     icon: Bot,
     tone: 'from-violet-500/15 via-violet-500/5 to-transparent border-violet-500/30 text-violet-200',
-    items: generators.filter((item) => ['/manus', '/claude', '/chatgpt'].includes(item.path)),
+    items: generators.filter((item) => ['/manus', '/claude', '/chatgpt', '/copilot'].includes(item.path)),
   },
   {
     id: 'email',

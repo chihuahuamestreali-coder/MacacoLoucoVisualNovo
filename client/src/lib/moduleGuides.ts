@@ -143,6 +143,21 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão e identificadores do ChatGPT no domínio real via console, sem aba intermediária.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
   },
+  copilot: {
+    key: 'copilot', title: 'Copilot Master', family: 'Hardware + persona',
+    mission: 'Combinar um perfil de dispositivo com dados de persona para o fluxo do Microsoft Copilot (copilot.microsoft.com), com device ID, sessão, anon ID e modelo sintéticos.',
+    scope: 'Este módulo segue o padrão in-site do Manus: gera device fingerprint, sessão e identificadores Copilot antes de abrir o portal oficial de login.',
+    fields: [
+      { label: 'Hardware', meaning: 'Modelo, MAC, IMEI, Android ID, resolução e fingerprint do dispositivo.' },
+      { label: 'CPT Device ID', meaning: 'Identificador sintético persistente no padrão CPT_DEVICE_ID da plataforma.' },
+      { label: 'Sessão & Anon', meaning: 'Cookies de sessão sintéticos (CPT_SESSION, CPT_ANON_ID, CPT_UID) injetados no ambiente local.' },
+      { label: 'Modelo & Locale', meaning: 'Modelo de conversa sintético e localização pt-BR para consistência da sessão.' },
+      { label: 'Persona', meaning: 'Dados sintéticos locais (nome, email, telefone) para fins de teste de cadastro.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico com a nova identidade MAC.', 'Mantenha a simulação de app nativo e a blindagem ativos.', 'Inicie a injeção — o portal oficial abre em nova guia com a blindagem ativa.'],
+    whyDifferent: 'Injeta device ID, sessão, modelo e locale do Microsoft Copilot no domínio real via console, sem aba intermediária.',
+    limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
+  },
   youtube: {
     key: 'youtube', title: 'YouTube Master', family: 'Streaming + bloqueio de anúncios',
     mission: 'Gerar um perfil de dispositivo para o YouTube (youtube.com) com identidade MAC/IMEI, sessão e visitor data sintéticos, e ativar o motor de bloqueio de anúncios embutido (estilo Brave/ublock).',
