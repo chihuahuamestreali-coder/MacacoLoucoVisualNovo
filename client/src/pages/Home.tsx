@@ -11,6 +11,7 @@ import {
   Code2,
   Cpu,
   ExternalLink,
+  Eraser,
   Facebook,
   Flame,
   Gamepad2,
@@ -357,6 +358,13 @@ const generators: Generator[] = [
     logo: 'deephat.png',
     badge: 'HUB PRIVACIDADE',
   },
+  {
+    title: 'Apagar Histórico',
+    desc: 'Apague o histórico e os dados locais de um menu específico, como se ele nunca tivesse existido',
+    path: '/apagar-historico',
+    icon: Eraser,
+    badge: 'LIMPEZA',
+  },
 ];
 
 const categories: Category[] = [
@@ -422,14 +430,15 @@ const categories: Category[] = [
     description: 'hub Dark · segurança · controle de acesso',
     icon: ShieldCheck,
     tone: 'from-indigo-400/15 via-indigo-400/5 to-transparent border-indigo-400/30 text-indigo-200',
-    items: generators.filter((item) => item.path === '/discord-manager'),
+    items: generators.filter((item) => ['/discord-manager', '/apagar-historico'].includes(item.path)),
   },
 ];
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
+const favoritePaths = ['/apagar-historico', '/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
 const favoriteLabels: Record<string, string> = {
+  '/apagar-historico': 'Apagar Histórico',
   '/coringa': 'Coringa',
   '/emails': 'Email',
   '/email-plus': 'EmailPlus',
