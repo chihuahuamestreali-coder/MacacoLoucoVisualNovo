@@ -3,7 +3,7 @@ import { ArrowUp, Globe, Loader2, Copy, Check } from 'lucide-react';
 import { toast } from 'sonner';
 
 /**
- * IpDisplay - Mostra o IP público da máquina em um dock fixo inferior.
+ * IpDisplay - Mostra o IP público da máquina em um dock fixo central superior.
  * Consulta serviços públicos de IP com fallback encadeado e atualiza
  * automaticamente a cada 60s. Clique no display copia o IP.
  */
@@ -68,11 +68,8 @@ export default function IpDisplay() {
 
   return (
     <div
-      className="fixed z-[60] flex max-w-[calc(100vw-1.5rem)] items-center justify-end gap-1.5 rounded-2xl border border-cyan-400/20 bg-background/75 p-1 shadow-[0_0_18px_rgba(0,217,255,0.16)] backdrop-blur-md select-none"
-      style={{
-        bottom: 'max(1rem, env(safe-area-inset-bottom))',
-        right: 'max(1rem, env(safe-area-inset-right))',
-      }}
+      className="fixed left-1/2 top-2 z-[60] flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center justify-center gap-1.5 rounded-2xl border border-cyan-400/20 bg-background/75 p-1 shadow-[0_0_18px_rgba(0,217,255,0.16)] backdrop-blur-md select-none"
+      style={{ top: 'max(0.5rem, env(safe-area-inset-top))' }}
     >
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -83,7 +80,7 @@ export default function IpDisplay() {
         <ArrowUp className="h-3.5 w-3.5" />
       </button>
       <div
-        className="flex min-w-0 max-w-[calc(100vw-4.5rem)] items-center gap-1.5 rounded-full border border-cyan-400/40 bg-background/90 px-3 py-1.5 text-[10px] font-mono text-cyan-300 shadow-[0_0_12px_rgba(0,217,255,0.25)] backdrop-blur-md"
+        className="flex min-w-0 max-w-[calc(100vw-3.5rem)] items-center gap-1.5 rounded-full border border-cyan-400/40 bg-background/90 px-3 py-1.5 text-[10px] font-mono text-cyan-300 shadow-[0_0_12px_rgba(0,217,255,0.25)] backdrop-blur-md"
       >
         <Globe className="w-3 h-3 animate-pulse" />
         <span className="uppercase tracking-widest text-cyan-500/80">IP</span>
