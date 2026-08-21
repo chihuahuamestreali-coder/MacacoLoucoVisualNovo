@@ -158,12 +158,12 @@ export const generators: Generator[] = [
     badge: 'AI IMAGE PT-BR',
   },
   {
-    title: 'Copilot Designer Master',
-    desc: 'Criação de imagens Microsoft (PT-BR): nova identidade MAC/IMEI + device ID, sessão, UID e market, blindagem 16+ e app nativo',
+    title: 'Copilot Designer · Imagens',
+    desc: 'Microsoft Designer para criação de imagens (PT-BR): identidade de dispositivo, sessão, UID e market',
     path: '/copilot-designer',
     icon: Palette,
     logo: 'copilot.png',
-    badge: 'COPILOT PT-BR',
+    badge: 'DESIGNER / IMAGEM',
   },
   {
     title: 'Leonardo.ai Master',
@@ -238,12 +238,12 @@ export const generators: Generator[] = [
     badge: 'GPT PT-BR',
   },
   {
-    title: 'Copilot Master',
-    desc: 'Nova identidade MAC/IMEI + device ID, sessão, anon ID e modelo do Microsoft Copilot, blindagem 16+ e app nativo',
+    title: 'Copilot Chat Master',
+    desc: 'Microsoft Copilot Chat: assistente conversacional em copilot.microsoft.com; imagens ficam como opção dentro do próprio Copilot',
     path: '/copilot',
     icon: Bot,
     logo: 'copilot.png',
-    badge: 'COPILOT PT-BR',
+    badge: 'COPILOT / CHAT',
   },
   {
     title: 'AppleContas Master',

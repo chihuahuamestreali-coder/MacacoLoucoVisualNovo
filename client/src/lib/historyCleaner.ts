@@ -137,8 +137,8 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
   },
   {
     path: '/copilot',
-    title: 'Copilot Master',
-    desc: 'UID, sessão e perfil Copilot',
+    title: 'Copilot Chat Master',
+    desc: 'UID, sessão e perfil do Copilot Chat',
     keys: ['cpt_device_profile', 'cpt_device_id', 'cpt_session_id', 'cpt_anon_id', 'cpt_uid', 'cpt_persona'],
     cookies: ['CPT_DEVICE_ID', 'CPT_SESSION', 'CPT_ANON_ID', 'CPT_UID', 'CPT_LOCALE', 'CPT_MODEL'],
   },
