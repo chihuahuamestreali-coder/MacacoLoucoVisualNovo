@@ -242,7 +242,7 @@ export const generators: Generator[] = [
     desc: 'Microsoft Copilot Chat: assistente conversacional em copilot.microsoft.com; imagens ficam como opção dentro do próprio Copilot',
     path: '/copilot',
     icon: Bot,
-    logo: 'copilot.png',
+    logo: 'copilot-chat.webp',
     badge: 'COPILOT / CHAT',
   },
   {
