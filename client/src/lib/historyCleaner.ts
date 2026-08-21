@@ -7,6 +7,8 @@
  * limpeza de um menu não afete os demais.
  */
 
+import { generators } from '@/pages/Home';
+
 export interface MenuHistoryEntry {
   path: string;
   title: string;
@@ -19,7 +21,7 @@ export interface MenuHistoryEntry {
 
 
 
-export const MENU_HISTORY: MenuHistoryEntry[] = [
+const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
   {
     path: '/aliexpress',
     title: 'AliExpress Master',
@@ -304,8 +306,27 @@ export const MENU_HISTORY: MenuHistoryEntry[] = [
   },
 ];
 
+const manualPaths = new Set(MANUAL_MENU_HISTORY.map((entry) => entry.path));
+const discoveredMenuHistory: MenuHistoryEntry[] = generators
+  .filter((menu) => menu.path !== '/apagar-historico' && !manualPaths.has(menu.path))
+  .map((menu) => ({
+    path: menu.path,
+    title: menu.title,
+    desc: `${menu.desc} · cadastro automático`,
+    keys: [],
+    noteKeywords: [],
+  }));
+
+/**
+ * Catálogo efetivo usado pela tela Apagar Histórico.
+ * Menus novos do catálogo principal entram automaticamente como itens
+ * adicionais, sem duplicar os mapeamentos específicos acima.
+ */
+export const MENU_HISTORY: MenuHistoryEntry[] = [...MANUAL_MENU_HISTORY, ...discoveredMenuHistory];
+
 /**
  * Conta quantos itens de localStorage um menu possui atualmente.
+
  */
 export function countMenuLocalStorage(entry: MenuHistoryEntry): number {
   let count = 0;

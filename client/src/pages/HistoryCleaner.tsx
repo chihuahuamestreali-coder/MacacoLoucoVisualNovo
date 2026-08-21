@@ -25,7 +25,7 @@ type MenuGroup = {
   entries: MenuHistoryEntry[];
 };
 
-const groups: MenuGroup[] = [
+const staticGroups: MenuGroup[] = [
   {
     id: 'compras',
     label: 'Compras e marketplaces',
@@ -62,6 +62,16 @@ const groups: MenuGroup[] = [
     entries: MENU_HISTORY.filter((m) => ['/scooby-doo', '/dark', '/van-gogh'].includes(m.path)),
   },
 ].filter((g) => g.entries.length > 0);
+
+const groupedPaths = new Set(staticGroups.flatMap((group) => group.entries.map((entry) => entry.path)));
+const groups: MenuGroup[] = [
+  ...staticGroups,
+  {
+    id: 'outros',
+    label: 'Outros menus',
+    entries: MENU_HISTORY.filter((entry) => !groupedPaths.has(entry.path)),
+  },
+].filter((group) => group.entries.length > 0);
 
 function countTotal(entry: MenuHistoryEntry): number {
   try {

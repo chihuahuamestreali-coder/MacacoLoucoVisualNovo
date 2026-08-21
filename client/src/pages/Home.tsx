@@ -60,7 +60,7 @@ type Category = {
   items: Generator[];
 };
 
-const generators: Generator[] = [
+export const generators: Generator[] = [
   {
     title: 'AliExpress Master',
     desc: 'Bypass anti-bot + Injeção 16+ ferramentas anti-detecção',
