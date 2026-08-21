@@ -7,9 +7,9 @@ export default function CopilotManager() {
     <ManusStyleInjectionPage
       config={{
         siteKey: 'copilot',
-        siteName: 'Microsoft Copilot',
-        siteTitle: 'COPILOT DEVICE MASTER',
-        tagline: 'Assistente de IA Microsoft • copilot.microsoft.com (login de criação, PT-BR)',
+        siteName: 'Microsoft Copilot Chat',
+        siteTitle: 'COPILOT CHAT DEVICE MASTER',
+        tagline: 'Assistente conversacional Microsoft • copilot.microsoft.com (chat, PT-BR)',
         siteUrl: 'https://copilot.microsoft.com/',
         guide: MODULE_GUIDES['copilot'],
         accent: {

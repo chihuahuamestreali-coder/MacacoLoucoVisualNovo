@@ -11,6 +11,7 @@ import {
   Code2,
   Cpu,
   ExternalLink,
+  Eraser,
   Facebook,
   Flame,
   Gamepad2,
@@ -59,7 +60,7 @@ type Category = {
   items: Generator[];
 };
 
-const generators: Generator[] = [
+export const generators: Generator[] = [
   {
     title: 'AliExpress Master',
     desc: 'Bypass anti-bot + Injeção 16+ ferramentas anti-detecção',
@@ -157,12 +158,12 @@ const generators: Generator[] = [
     badge: 'AI IMAGE PT-BR',
   },
   {
-    title: 'Copilot Designer Master',
-    desc: 'Criação de imagens Microsoft (PT-BR): nova identidade MAC/IMEI + device ID, sessão, UID e market, blindagem 16+ e app nativo',
+    title: 'Copilot Designer · Imagens',
+    desc: 'Microsoft Designer para criação de imagens (PT-BR): identidade de dispositivo, sessão, UID e market',
     path: '/copilot-designer',
     icon: Palette,
     logo: 'copilot.png',
-    badge: 'COPILOT PT-BR',
+    badge: 'DESIGNER / IMAGEM',
   },
   {
     title: 'Leonardo.ai Master',
@@ -237,12 +238,12 @@ const generators: Generator[] = [
     badge: 'GPT PT-BR',
   },
   {
-    title: 'Copilot Master',
-    desc: 'Nova identidade MAC/IMEI + device ID, sessão, anon ID e modelo do Microsoft Copilot, blindagem 16+ e app nativo',
+    title: 'Copilot Chat Master',
+    desc: 'Microsoft Copilot Chat: assistente conversacional em copilot.microsoft.com; imagens ficam como opção dentro do próprio Copilot',
     path: '/copilot',
     icon: Bot,
-    logo: 'copilot.png',
-    badge: 'COPILOT PT-BR',
+    logo: 'copilot-chat.webp',
+    badge: 'COPILOT / CHAT',
   },
   {
     title: 'AppleContas Master',
@@ -357,6 +358,13 @@ const generators: Generator[] = [
     logo: 'deephat.png',
     badge: 'HUB PRIVACIDADE',
   },
+  {
+    title: 'Apagar Histórico',
+    desc: 'Apague o histórico e os dados locais de um menu específico, como se ele nunca tivesse existido',
+    path: '/apagar-historico',
+    icon: Eraser,
+    badge: 'LIMPEZA',
+  },
 ];
 
 const categories: Category[] = [
@@ -422,14 +430,15 @@ const categories: Category[] = [
     description: 'hub Dark · segurança · controle de acesso',
     icon: ShieldCheck,
     tone: 'from-indigo-400/15 via-indigo-400/5 to-transparent border-indigo-400/30 text-indigo-200',
-    items: generators.filter((item) => item.path === '/discord-manager'),
+    items: generators.filter((item) => ['/discord-manager', '/apagar-historico'].includes(item.path)),
   },
 ];
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
+const favoritePaths = ['/apagar-historico', '/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
 const favoriteLabels: Record<string, string> = {
+  '/apagar-historico': 'Apagar Histórico',
   '/coringa': 'Coringa',
   '/emails': 'Email',
   '/email-plus': 'EmailPlus',

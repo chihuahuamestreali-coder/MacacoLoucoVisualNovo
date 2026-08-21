@@ -16,7 +16,7 @@ import { MODULE_GUIDES } from '@/lib/moduleGuides';
  */
 
 import { useState, useEffect } from 'react';
-import { EMAIL_PROVIDERS, COUNTRIES, generateSignupUrl, generateRandomEmail, generateEmailWithBirthday, generateEmailWithNameAndBirthday, generateMicrosoftPassword, EmailAccount } from '@/lib/emailManager';
+import { EMAIL_PROVIDERS, COUNTRIES, EMAIL_REGIONAL_PROFILES, generateSignupUrl, generateRandomEmail, generateEmailWithBirthday, generateEmailWithNameAndBirthday, generateMicrosoftPassword, EmailAccount } from '@/lib/emailManager';
 import { generatePersonalData, PersonalData } from '@/lib/personalDataGenerator';
 import { generateRandomUserAgent, generateCompleteAntiDetectionScript, generateUserAgentRotationInfo, UserAgentProfile } from '@/lib/cookieAndUserAgentManager';
 import { generateAdvancedAntiDetection } from '@/lib/advancedAntiDetection';
@@ -35,6 +35,8 @@ export default function EmailPlusManager() {
   const brasilCountry = COUNTRIES.find(c => c.id === 'br') || COUNTRIES[0];
   const [selectedCountry, setSelectedCountry] = useState(brasilCountry);
   const [selectedDomain, setSelectedDomain] = useState(brasilCountry.defaultDomain);
+  const [selectedRegionalProfile, setSelectedRegionalProfile] = useState(EMAIL_REGIONAL_PROFILES[0]);
+  const isRegionalProvider = selectedProvider.id === 'proton' || selectedProvider.id === 'tuta';
 
   const [emailType, setEmailType] = useState<'name' | 'birthday' | 'combined'>('name');
   const [generatedEmail, setGeneratedEmail] = useState(generateRandomEmail());
@@ -329,6 +331,38 @@ export default function EmailPlusManager() {
     }
   };
 
+  const buildRegionalProfileScript = (): string => {
+    const profile = JSON.stringify({
+      provider: selectedProvider.id,
+      providerName: selectedProvider.name,
+      ...selectedRegionalProfile,
+    });
+
+    return `(() => {
+  const profile = ${profile};
+  localStorage.setItem('emailplus_region_profile', JSON.stringify(profile));
+  document.documentElement.lang = profile.locale;
+  console.info('EmailPlus: perfil regional de referência salvo', profile);
+  console.info('Limitação: este perfil não altera IP, VPN, proxy, geolocalização do navegador ou país da conexão.');
+})();`;
+  };
+
+  const handleCopyRegionalProfile = async () => {
+    if (!isRegionalProvider) return;
+    try {
+      const result = await copyInjectionScript(buildRegionalProfileScript());
+      if (result.success) {
+        toast.success(`Perfil regional ${selectedRegionalProfile.name} copiado!`, {
+          description: `${selectedRegionalProfile.locale} • ${selectedRegionalProfile.timeZone} • ${selectedRegionalProfile.currency}`,
+        });
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
+      toast.error('Falha ao copiar o perfil regional');
+    }
+  };
+
   const handleCopyBookmarklet = async () => {
     if (!bookmarklet) {
       toast.error('Gere e copie o script primeiro!');
@@ -595,6 +629,28 @@ CEP: ${currentPersonalData.zipCode}`;
                 </select>
               </div>
 
+              {isRegionalProvider && (
+                <div className="border-2 border-emerald-400/40 rounded-lg p-4 bg-card">
+                  <label className="text-xs font-bold text-emerald-400 font-mono mb-2 block">PERFIL REGIONAL EUROPEU</label>
+                  <select
+                    value={selectedRegionalProfile.id}
+                    onChange={(e) => {
+                      const profile = EMAIL_REGIONAL_PROFILES.find((item) => item.id === e.target.value);
+                      if (profile) setSelectedRegionalProfile(profile);
+                    }}
+                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm"
+                  >
+                    {EMAIL_REGIONAL_PROFILES.map((profile) => (
+                      <option key={profile.id} value={profile.id}>{profile.name} — {profile.locale}</option>
+                    ))}
+                  </select>
+                  <p className="mt-2 text-[11px] leading-5 text-muted-foreground font-mono">
+                    Referência local: {selectedRegionalProfile.timeZone} • {selectedRegionalProfile.currency} • {selectedRegionalProfile.dateFormat}.
+                    Isso não altera IP, VPN, proxy ou a geolocalização real da conexão.
+                  </p>
+                </div>
+              )}
+
               {/* Country Selection */}
               <div className="border border-cyan-400/30 rounded-lg p-4 bg-card">
                 <label className="text-xs font-bold text-cyan-400 font-mono mb-2 block">PAÍS</label>
@@ -841,8 +897,18 @@ CEP: ${currentPersonalData.zipCode}`;
                       className="w-full px-4 py-4 font-bold text-sm transition-all flex items-center justify-center gap-3 rounded border bg-gradient-to-r from-cyan-500/30 to-emerald-500/30 hover:from-cyan-500/50 hover:to-emerald-500/50 border-cyan-400 text-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <TerminalSquare size={18} />
-                      COPIAR SCRIPT DE INJEÇÃO
+                      {isRegionalProvider ? 'COPIAR SCRIPT DO PROVEDOR' : 'COPIAR SCRIPT DE INJEÇÃO'}
                     </button>
+                    {isRegionalProvider && (
+                      <button
+                        onClick={handleCopyRegionalProfile}
+                        disabled={!currentPersonalData || !currentUserAgent}
+                        className="w-full px-4 py-4 font-bold text-sm transition-all flex items-center justify-center gap-3 rounded border bg-emerald-500/20 hover:bg-emerald-500/40 border-emerald-400 text-emerald-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Globe size={18} />
+                        COPIAR PERFIL REGIONAL ({selectedRegionalProfile.name.toUpperCase()})
+                      </button>
+                    )}
                     <button
                       onClick={handleCopyBookmarklet}
                       className="w-full px-4 py-4 font-bold text-sm transition-all flex items-center justify-center gap-3 rounded border bg-blue-500/20 hover:bg-blue-500/40 border-blue-400 text-blue-300"

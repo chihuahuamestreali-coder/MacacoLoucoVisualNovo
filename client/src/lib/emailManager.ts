@@ -12,6 +12,16 @@ export interface EmailProvider {
   domainUrls?: Record<string, string>; // Mapeamento de domínio para URL de signup
 }
 
+export interface EmailRegionalProfile {
+  id: string;
+  name: string;
+  countryCode: string;
+  locale: string;
+  timeZone: string;
+  currency: string;
+  dateFormat: string;
+}
+
 export interface Country {
   id: string;
   name: string;
@@ -67,6 +77,17 @@ export const EMAIL_PROVIDERS: EmailProvider[] = [
     baseUrl: 'https://tuta.com/pt-br',
     color: 'from-green-600 to-green-800',
   },
+];
+
+// Perfis regionais usados apenas como referência de idioma, fuso, moeda e formato.
+// Eles não alteram o IP público nem substituem uma conexão oficial da região.
+export const EMAIL_REGIONAL_PROFILES: EmailRegionalProfile[] = [
+  { id: 'de', name: 'Alemanha', countryCode: 'DE', locale: 'de-DE', timeZone: 'Europe/Berlin', currency: 'EUR', dateFormat: 'DD.MM.YYYY' },
+  { id: 'fr', name: 'França', countryCode: 'FR', locale: 'fr-FR', timeZone: 'Europe/Paris', currency: 'EUR', dateFormat: 'DD/MM/YYYY' },
+  { id: 'nl', name: 'Holanda', countryCode: 'NL', locale: 'nl-NL', timeZone: 'Europe/Amsterdam', currency: 'EUR', dateFormat: 'DD-MM-YYYY' },
+  { id: 'pt', name: 'Portugal', countryCode: 'PT', locale: 'pt-PT', timeZone: 'Europe/Lisbon', currency: 'EUR', dateFormat: 'DD/MM/YYYY' },
+  { id: 'es', name: 'Espanha', countryCode: 'ES', locale: 'es-ES', timeZone: 'Europe/Madrid', currency: 'EUR', dateFormat: 'DD/MM/YYYY' },
+  { id: 'it', name: 'Itália', countryCode: 'IT', locale: 'it-IT', timeZone: 'Europe/Rome', currency: 'EUR', dateFormat: 'DD/MM/YYYY' },
 ];
 
 // Países com Market Codes para Outlook/Hotmail
