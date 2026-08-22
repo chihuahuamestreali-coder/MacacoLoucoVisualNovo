@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   ArrowUpRight,
   Check,
@@ -103,6 +103,10 @@ function ToolBody({ code }: { code: string }) {
 }
 
 function App() {
+  useEffect(() => {
+    document.title = "HUB-GLOBAL — MacacoLouco";
+  }, []);
+
   const [active, setActive] = useState("bot");
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -135,7 +139,7 @@ function App() {
           </div>
           <div>
             <strong>MACACOLOUCO</strong>
-            <span>DISCORD MANAGER</span>
+            <span>HUB-GLOBAL</span>
           </div>
           <button
             className="icon-button mobile-close"
@@ -193,7 +197,7 @@ function App() {
             <ChevronRight size={13} />
             <strong>MACACOLOUCO</strong>
             <ChevronRight size={13} />
-            <span>DISCORD MANAGER</span>
+            <span>HUB-GLOBAL</span>
           </div>
           <button className="copy-ip" onClick={() => copyShort("LOCAL-REFERENCE", "Identificador local copiado")}>
             <Hash size={14} /> COPIAR ID
@@ -203,7 +207,7 @@ function App() {
         <section className="hero-block">
           <div className="hero-copy">
             <div className="eyebrow">
-              <span>DISCORD MANAGER</span>
+              <span>HUB-GLOBAL</span>
               <i />
               <span>MENU MESTRE</span>
             </div>
@@ -250,7 +254,7 @@ function App() {
             className="outline-button"
             onClick={() =>
               copyShort(
-                "MacacoLouco Discord Manager Hub — 16 módulos documentais locais e autorizados.",
+                "MacacoLouco HUB-GLOBAL — 16 módulos documentais locais e autorizados.",
                 "Resumo copiado",
               )
             }

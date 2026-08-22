@@ -16,6 +16,7 @@ import {
   Flame,
   Gamepad2,
   Github,
+  Globe2,
   ImageIcon,
   Instagram,
   LayoutGrid,
@@ -351,6 +352,13 @@ export const generators: Generator[] = [
     badge: 'PC EMULATOR',
   },
   {
+    title: 'HUB-GLOBAL',
+    desc: 'Menu mestre global com 16 módulos locais de bots, webhooks, moderação e automação',
+    path: '/hub-global',
+    icon: Globe2,
+    badge: 'HUB GLOBAL',
+  },
+  {
     title: 'DARK MASTER HUB',
     desc: 'Menu mestre de privacidade: túneis onion, spoofing de headers e portais blindados',
     path: '/discord-manager',
@@ -430,7 +438,7 @@ const categories: Category[] = [
     description: 'hub Dark · segurança · controle de acesso',
     icon: ShieldCheck,
     tone: 'from-indigo-400/15 via-indigo-400/5 to-transparent border-indigo-400/30 text-indigo-200',
-    items: generators.filter((item) => ['/discord-manager', '/apagar-historico'].includes(item.path)),
+    items: generators.filter((item) => ['/hub-global', '/discord-manager', '/apagar-historico'].includes(item.path)),
   },
 ];
 

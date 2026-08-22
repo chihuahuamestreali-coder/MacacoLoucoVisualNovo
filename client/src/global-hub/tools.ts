@@ -238,7 +238,7 @@ const embed = {
     { name: "Ambiente", value: "produção", inline: true },
     { name: "Atualizado", value: new Date().toLocaleString("pt-BR"), inline: true },
   ],
-  footer: { text: "MacacoLouco Discord Manager" },
+  footer: { text: "MacacoLouco HUB-GLOBAL" },
   timestamp: new Date().toISOString(),
 };
 

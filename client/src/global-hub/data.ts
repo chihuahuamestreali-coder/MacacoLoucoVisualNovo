@@ -51,7 +51,7 @@ export const categoryOf: Record<string, string> = {
 };
 
 export const safeProfile = {
-  name: "MacacoLouco / Discord Manager",
+  name: "MacacoLouco / HUB-GLOBAL",
   mode: "gerador-de-scripts-local",
   modules: 16,
   groups: ["bot", "webhook", "moderação", "automação"],
