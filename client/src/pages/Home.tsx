@@ -359,6 +359,13 @@ export const generators: Generator[] = [
     badge: 'HUB GLOBAL',
   },
   {
+    title: 'MASTER HUB',
+    desc: 'Roteador central com TODAS as ferramentas do projeto: marketplaces, redes, IA, email, cloud, privacidade e hubs',
+    path: '/master-hub',
+    icon: Globe2,
+    badge: 'HUB TOTAL',
+  },
+  {
     title: 'DARK MASTER HUB',
     desc: 'Menu mestre de privacidade: túneis onion, spoofing de headers e portais blindados',
     path: '/discord-manager',
@@ -375,7 +382,7 @@ export const generators: Generator[] = [
   },
 ];
 
-const categories: Category[] = [
+export const categories: Category[] = [
   {
     id: 'marketplaces',
     title: 'Compras e marketplaces',
@@ -438,7 +445,7 @@ const categories: Category[] = [
     description: 'hub Dark · segurança · controle de acesso',
     icon: ShieldCheck,
     tone: 'from-indigo-400/15 via-indigo-400/5 to-transparent border-indigo-400/30 text-indigo-200',
-    items: generators.filter((item) => ['/hub-global', '/discord-manager', '/apagar-historico'].includes(item.path)),
+    items: generators.filter((item) => ['/master-hub', '/hub-global', '/discord-manager', '/apagar-historico'].includes(item.path)),
   },
 ];
 

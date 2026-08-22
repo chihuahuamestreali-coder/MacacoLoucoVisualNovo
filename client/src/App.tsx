@@ -49,6 +49,7 @@ import YoutubeManager from "@/pages/YoutubeManager";
 import IpDisplay from "@/components/IpDisplay";
 import HistoryCleaner from "./pages/HistoryCleaner";
 import GlobalHubPage from "./global-hub/GlobalHubPage";
+import MasterHubPage from "./master-hub/MasterHubPage";
 
 function AppRouter() {
   return (
@@ -98,6 +99,7 @@ function AppRouter() {
       <Route path={"/apagar-historico"} component={HistoryCleaner} />
       <Route path={"/van-gogh"} component={VanGoghHub} />
       <Route path={"/hub-global"} component={GlobalHubPage} />
+      <Route path={"/master-hub"} component={MasterHubPage} />
       <Route path={"/404"} component={NotFound} />
       {/* Rotas raiz por último */}
       <Route path={"/aliexpress"} component={AliExpressManager} />
