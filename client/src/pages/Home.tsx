@@ -359,11 +359,11 @@ export const generators: Generator[] = [
     badge: 'HUB GLOBAL',
   },
   {
-    title: 'MASTER HUB',
+    title: 'Asgard.HUB',
     desc: 'Roteador central com TODAS as ferramentas do projeto: marketplaces, redes, IA, email, cloud, privacidade e hubs',
     path: '/master-hub',
     icon: Globe2,
-    badge: 'HUB TOTAL',
+    badge: 'ASGARD',
   },
   {
     title: 'DARK MASTER HUB',

@@ -113,7 +113,7 @@ function ToolBody({ code }: { code: string }) {
 function App() {
   const [, setLocation] = useLocation();
   useEffect(() => {
-    document.title = "MASTER HUB — MacacoLouco";
+    document.title = "ASGARD.HUB — MacacoLouco";
   }, []);
 
   const [active, setActive] = useState("bot");
@@ -168,7 +168,7 @@ function App() {
           </div>
           <div>
             <strong>MACACOLOUCO</strong>
-            <span>MASTER HUB</span>
+            <span>ASGARD.HUB</span>
           </div>
           <button
             className="mh-icon-button mh-mobile-close"
@@ -227,7 +227,7 @@ function App() {
             <ChevronRight size={13} />
             <strong>MACACOLOUCO</strong>
             <ChevronRight size={13} />
-            <span>MASTER HUB</span>
+            <span>ASGARD.HUB</span>
           </div>
           <button className="mh-copy-id" onClick={() => copyShort("LOCAL-REFERENCE", "Identificador local copiado")}>
             <Hash size={14} /> COPIAR ID
@@ -237,7 +237,7 @@ function App() {
         <section className="mh-hero-block">
           <div className="mh-hero-copy">
             <div className="mh-eyebrow">
-              <span>MASTER HUB</span>
+              <span>ASGARD.HUB</span>
               <i />
               <span>HUB-GLOBAL + MANUS</span>
             </div>
@@ -285,7 +285,7 @@ function App() {
             className="mh-outline-button"
             onClick={() =>
               copyShort(
-                `MacacoLouco MASTER HUB — ${allCount} scripts documentais locais e autorizados.`,
+                `MacacoLouco ASGARD.HUB — ${allCount} scripts documentais locais e autorizados.`,
                 "Resumo copiado",
               )
             }
@@ -368,7 +368,7 @@ function App() {
 
         <section className="mh-hub-links">
           <div className="mh-section-kicker">
-            <Sparkles size={13} /> NAVEGAR PARA MÓDULOS DO PROJETO
+            <Sparkles size={13} /> PACOTÃO COMPLETO / TODAS AS FERRAMENTAS DO PROJETO ({projectTools.length} MÓDULOS)
           </div>
           <div className="mh-hub-link-grid mh-hub-link-grid--tools">
             {projectTools.map((item) => {
@@ -450,7 +450,7 @@ function App() {
             <div className="mh-modal-code">SAFE PROFILE / DRY RUN</div>
             <h2>Perfil documental gerado</h2>
             <p className="mh-modal-lead">
-              Resumo do acervo do MASTER HUB: {allCount} scripts montados no navegador, reunindo o HUB-GLOBAL (16) e os
+              Resumo do acervo do ASGARD.HUB: {allCount} scripts montados no navegador, reunindo o HUB-GLOBAL (16) e os
               scripts do menu Manus.
             </p>
             <pre>{JSON.stringify(safeProfile, null, 2)}</pre>

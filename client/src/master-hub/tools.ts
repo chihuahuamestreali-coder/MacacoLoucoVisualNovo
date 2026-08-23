@@ -268,7 +268,7 @@ export const categoryOf: Record<string, string> = {
 export { stripCategory };
 
 export const safeProfile = {
-  name: "MacacoLouco / MASTER HUB",
+  name: "MacacoLouco / ASGARD.HUB",
   mode: "gerador-de-scripts-local",
   modules: 24,
   groups: ["bot", "webhook", "moderação", "automação", "manus"],
