@@ -346,6 +346,100 @@
   box-shadow: 0 0 24px #a855f740;
 }
 
+.mh-pack-hero-button {
+  color: #04141a;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, #22d3ee, #a5f3fc);
+  border: 1px solid #22d3ee;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  font: 600 10px IBM Plex Mono;
+  transition: all 0.18s;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.mh-pack-hero-button:hover {
+  box-shadow: 0 0 28px #22d3ee59;
+  transform: translateY(-1px);
+}
+
+.mh-pack-card {
+  background: linear-gradient(135deg, #120b24e6, #071218cc);
+  border: 1px solid #22d3ee59;
+  gap: 18px;
+  margin-bottom: 38px;
+  padding: 24px;
+  display: grid;
+  position: relative;
+  overflow: hidden;
+}
+
+.mh-pack-card:before {
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(circle at 100% 0, #22d3ee26, #0000 45%);
+  position: absolute;
+  inset: 0;
+}
+
+.mh-pack-head {
+  z-index: 1;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px;
+  display: grid;
+}
+
+.mh-pack-icon {
+  color: #22d3ee;
+  background: #0d1b22;
+  border: 1px solid #22d3ee59;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  display: grid;
+}
+
+.mh-pack-card h2 {
+  color: #f1ebfb;
+  margin: 4px 0 7px;
+  font: 600 22px Space Grotesk;
+}
+
+.mh-pack-card p {
+  color: #a294b8;
+  max-width: 820px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.mh-pack-features {
+  z-index: 1;
+  flex-wrap: wrap;
+  gap: 7px;
+  display: flex;
+}
+
+.mh-pack-feature {
+  color: #a5f3fc;
+  background: #22d3ee10;
+  border: 1px solid #22d3ee38;
+  padding: 6px 9px;
+  font: 500 9px IBM Plex Mono;
+  letter-spacing: 0.08em;
+}
+
+.mh-pack-actions {
+  z-index: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+}
+
 .mh-safe-note {
   color: #9684ae;
   align-items: center;
@@ -489,7 +583,7 @@
 }
 
 .mh-tabs {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
   margin-bottom: 22px;
   display: grid;
@@ -991,7 +1085,8 @@
     padding: 0 25px;
   }
   .mh-module-grid,
-  .mh-hub-link-grid {
+  .mh-hub-link-grid,
+  .mh-tabs {
     grid-template-columns: repeat(3, 1fr);
   }
 }

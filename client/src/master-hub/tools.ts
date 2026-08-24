@@ -3,6 +3,7 @@ import type { LucideProps } from "lucide-react";
 import {
   Activity,
   Bot,
+  Fingerprint,
   Globe2,
   Link2,
   LockKeyhole,
@@ -23,6 +24,7 @@ import { generateBehaviorInjectionScript } from "@/lib/humanBehaviorSimulator";
 import { generateNativeAppSimulationForProfile } from "@/lib/nativeAppSimulator";
 import { generateAdvancedAntiDetection } from "@/lib/advancedAntiDetection";
 import { wrapInSiteScript } from "@/lib/inSiteInjection";
+import { generateGlobalIdentityPack, IDENTITY_PACK_FEATURES } from "@/lib/identityPack";
 
 export interface ToolField {
   key: string;
@@ -220,6 +222,16 @@ export const tools: Record<string, ToolDef> = {
       return `URL DE CADASTRO MANUS\n${url}`;
     },
   },
+  "25": {
+    file: "identidade-global.js",
+    lang: "javascript",
+    run: "colar no console de QUALQUER site",
+    fields: [],
+    randomize: true,
+    build: () => {
+      return generateGlobalIdentityPack().script;
+    },
+  },
 };
 
 const MANUS_MODULES: ModuleDef[] = [
@@ -231,6 +243,10 @@ const MANUS_MODULES: ModuleDef[] = [
   { code: "22", category: "MANUS", title: "Dados pessoais", description: "Persona completa: nome, email, telefone, CPF, senha e endereço.", status: "SCRIPT", tone: "cyan", icon: UserRound, randomize: true },
   { code: "23", category: "MANUS", title: "User-Agent realista", description: "Perfil de user-agent diverso com sistema e navegador.", status: "SCRIPT", tone: "purple", icon: Globe2, randomize: true },
   { code: "24", category: "MANUS", title: "URL de cadastro com convite", description: "Gera o link de cadastro do Manus com parâmetro de convite.", status: "SCRIPT", tone: "cyan", icon: Link2 },
+];
+
+const GLOBAL_MODULES: ModuleDef[] = [
+  { code: "25", category: "GLOBAL", title: "Identidade Global (TUDO EM UM)", description: "Pacotão único para colar no console de qualquer site: perfil, injeção, anti-detecção, canvas, WebGL, fingerprint, app nativo, comportamento humano, dados pessoais, UA e cookies.", status: "PACK", tone: "purple", icon: Fingerprint, randomize: true },
 ];
 
 const stripCategory = (category: string): string =>
@@ -247,6 +263,7 @@ export const modules: ModuleDef[] = [
     icon: mod.icon,
   })),
   ...MANUS_MODULES,
+  ...GLOBAL_MODULES,
 ];
 
 export const categories: CategoryDef[] = [
@@ -255,6 +272,7 @@ export const categories: CategoryDef[] = [
   { id: "mod", label: "Moderação", detail: "Automod & punições", icon: LockKeyhole },
   { id: "auto", label: "Automação", detail: "Cargos & rotinas", icon: SquareTerminal },
   { id: "manus", label: "Manus Scripts", detail: "Device & anti-detecção", icon: Sparkles },
+  { id: "global", label: "Identidade Global", detail: "Pacotão console universal", icon: Fingerprint },
 ];
 
 export const categoryOf: Record<string, string> = {
@@ -263,6 +281,7 @@ export const categoryOf: Record<string, string> = {
   MODERAÇÃO: "mod",
   AUTOMAÇÃO: "auto",
   MANUS: "manus",
+  GLOBAL: "global",
 };
 
 export { stripCategory };
@@ -270,8 +289,8 @@ export { stripCategory };
 export const safeProfile = {
   name: "MacacoLouco / ASGARD.HUB",
   mode: "gerador-de-scripts-local",
-  modules: 24,
-  groups: ["bot", "webhook", "moderação", "automação", "manus"],
+  modules: 25,
+  groups: ["bot", "webhook", "moderação", "automação", "manus", "global"],
   actions: ["generate-script", "copy", "download"],
   restrictions: ["no-remote-script", "no-credential-collection", "no-external-mutation"],
 };

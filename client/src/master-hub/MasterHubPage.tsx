@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Copy,
   Download,
+  Fingerprint,
   Hash,
   House,
   Menu,
@@ -13,10 +14,12 @@ import {
   Search,
   ShieldCheck,
   Sparkles,
+  TerminalSquare,
   X,
 } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { categories, categoryOf, modules, safeProfile, stripCategory, tools, type ModuleDef } from "./tools";
+import { generateGlobalIdentityPack, IDENTITY_PACK_FEATURES } from "@/lib/identityPack";
 import { generators } from "@/pages/Home";
 import "./styles.css";
 
@@ -122,6 +125,7 @@ function App() {
   const [tool, setTool] = useState<ModuleDef | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [packCopied, setPackCopied] = useState(false);
 
   const filtered = useMemo(
     () =>
@@ -149,6 +153,14 @@ function App() {
     copyText(text, message);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1500);
+  };
+
+  const packModule = modules.find((mod) => mod.code === "25") ?? null;
+
+  const copyPack = () => {
+    copyText(generateGlobalIdentityPack().script, "Pacotão console copiado — cole no console do site (F12)");
+    setPackCopied(true);
+    window.setTimeout(() => setPackCopied(false), 1500);
   };
 
   const openTool = (item: (typeof projectTools)[number]) => {
@@ -254,6 +266,9 @@ function App() {
               <button className="mh-primary-button" onClick={() => setProfileOpen(true)}>
                 <Sparkles size={15} /> GERAR PERFIL SEGURO
               </button>
+              <button className="mh-pack-hero-button" onClick={copyPack}>
+                {packCopied ? <Check size={15} /> : <Copy size={15} />} {packCopied ? "PACOTÃO COPIADO!" : "COPIAR PACOTÃO CONSOLE"}
+              </button>
               <span className="mh-safe-note">
                 <ShieldCheck size={14} /> gerado localmente / seu token nunca sai daqui
               </span>
@@ -292,6 +307,43 @@ function App() {
           >
             {copied ? <Check size={15} /> : <Copy size={15} />} {copied ? "COPIADO" : "COPIAR RESUMO"}
           </button>
+        </section>
+
+        <section className="mh-pack-card">
+          <div className="mh-pack-head">
+            <div className="mh-pack-icon">
+              <Fingerprint size={22} />
+            </div>
+            <div>
+              <div className="mh-section-kicker">ASGARD / PACOTÃO CONSOLE GLOBAL</div>
+              <h2>Nova identidade para QUALQUER site, colada de UMA vez</h2>
+              <p>
+                Um único script que reúne tudo: perfil de dispositivo, injeção local, user-agent,
+                anti-detecção, canvas, WebGL, fingerprint, app nativo, comportamento humano, dados
+                pessoais, timezone e cookies. Copie e cole no console (F12) da aba do site alvo.
+              </p>
+            </div>
+          </div>
+          <div className="mh-pack-features">
+            {IDENTITY_PACK_FEATURES.map((feature) => (
+              <span key={feature} className="mh-pack-feature">
+                {feature.toUpperCase()}
+              </span>
+            ))}
+          </div>
+          <div className="mh-pack-actions">
+            <button className="mh-primary-button" onClick={copyPack}>
+              {packCopied ? <Check size={15} /> : <Copy size={15} />} {packCopied ? "COPIADO! COLE NO CONSOLE" : "COPIAR PACOTÃO (1 CLIQUE)"}
+            </button>
+            <button className="mh-outline-button" onClick={() => setTool(packModule)}>
+              <TerminalSquare size={15} /> VER CÓDIGO NO MODAL
+            </button>
+            {packModule && (
+              <button className="mh-outline-button" onClick={() => setActive("global")}>
+                <Fingerprint size={15} /> ABRIR CATEGORIA IDENTIDADE GLOBAL
+              </button>
+            )}
+          </div>
         </section>
 
         <div className="mh-content-head">
