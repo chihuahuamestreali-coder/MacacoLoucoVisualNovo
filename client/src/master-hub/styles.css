@@ -972,6 +972,25 @@
   border-color: #c084fc;
 }
 
+.open-button {
+  color: #06121a;
+  background: #22d3ee;
+  border: 1px solid #22d3ee;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font: 10px IBM Plex Mono;
+  font-weight: 700;
+  display: inline-flex;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.open-button:hover {
+  background: #67e8f9;
+  transform: translateY(-1px);
+}
+
 .script-head {
   letter-spacing: 0.1em;
   color: #8f83a6;
