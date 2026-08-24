@@ -25,6 +25,7 @@ import { generateNativeAppSimulationForProfile } from "@/lib/nativeAppSimulator"
 import { generateAdvancedAntiDetection } from "@/lib/advancedAntiDetection";
 import { wrapInSiteScript } from "@/lib/inSiteInjection";
 import { generateGlobalIdentityPack, IDENTITY_PACK_FEATURES } from "@/lib/identityPack";
+import { buildDorkQuery, buildGoogleSearchUrl, GOOGLE_DORK_OPERATORS, GOOGLE_DORK_PRESETS } from "@/lib/googleDorkGenerator";
 
 export interface ToolField {
   key: string;
@@ -40,6 +41,7 @@ export interface ToolDef {
   run: string;
   fields: ToolField[];
   build: (values: Record<string, string>) => string;
+  openUrl?: (values: Record<string, string>) => string;
   randomize?: boolean;
 }
 
@@ -232,6 +234,40 @@ export const tools: Record<string, ToolDef> = {
       return generateGlobalIdentityPack().script;
     },
   },
+  "26": {
+    file: "google-dork-pro.txt",
+    lang: "text",
+    run: "abrir pesquisa no Google",
+    fields: [
+      field("keywords", "PALAVRAS-CHAVE / ASSUNTO", ""),
+      field(
+        "operators",
+        "OPERADORES (site:, intitle:, inurl:, intext:, filetype:, related:, numrange:, after:, before:)",
+        "site:.br",
+      ),
+    ],
+    build: (e) => {
+      const dork = buildDorkQuery(e.keywords, e.operators);
+      const presets = GOOGLE_DORK_PRESETS.map((p) => `- ${p.label}: ${p.operators}`).join("\n");
+      return [
+        "GOOGLE DORK PRO",
+        "Pesquisa avançada do Google",
+        "",
+        `Dork gerado:`,
+        dork || "(adicione palavras-chave ou operadores)",
+        "",
+        `Abrir no Google:`,
+        buildGoogleSearchUrl(dork),
+        "",
+        "Operadores disponíveis:",
+        GOOGLE_DORK_OPERATORS.map((o) => `- ${o.code}  (${o.label})`).join("\n"),
+        "",
+        "Modelos prontos:",
+        presets,
+      ].join("\n");
+    },
+    openUrl: (e) => buildGoogleSearchUrl(buildDorkQuery(e.keywords, e.operators)),
+  },
 };
 
 const MANUS_MODULES: ModuleDef[] = [
@@ -247,6 +283,7 @@ const MANUS_MODULES: ModuleDef[] = [
 
 const GLOBAL_MODULES: ModuleDef[] = [
   { code: "25", category: "GLOBAL", title: "Identidade Global (TUDO EM UM)", description: "Pacotão único para colar no console de qualquer site: perfil, injeção, anti-detecção, canvas, WebGL, fingerprint, app nativo, comportamento humano, dados pessoais, UA e cookies.", status: "PACK", tone: "purple", icon: Fingerprint, randomize: true },
+  { code: "26", category: "GLOBAL", title: "Google Dork Pro", description: "Monta pesquisas avançadas do Google com operadores dork e abre direto no navegador — resultado muito mais inteligente.", status: "SEARCH", tone: "cyan", icon: Globe2 },
 ];
 
 const stripCategory = (category: string): string =>
@@ -289,8 +326,8 @@ export { stripCategory };
 export const safeProfile = {
   name: "MacacoLouco / ASGARD.HUB",
   mode: "gerador-de-scripts-local",
-  modules: 25,
+  modules: 26,
   groups: ["bot", "webhook", "moderação", "automação", "manus", "global"],
-  actions: ["generate-script", "copy", "download"],
+  actions: ["generate-script", "copy", "download", "open-browser"],
   restrictions: ["no-remote-script", "no-credential-collection", "no-external-mutation"],
 };

@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Copy,
   Download,
+  ExternalLink,
   Fingerprint,
   Hash,
   House,
@@ -102,6 +103,16 @@ function ToolBody({ code }: { code: string }) {
           }}
         >
           <Download size={14} /> BAIXAR {tool.file.toUpperCase()}
+        </button>
+        <button
+          className="open-button"
+          onClick={() => {
+            const url = tool.openUrl ? tool.openUrl(values) : "https://www.google.com";
+            window.open(url, "_blank", "noopener");
+            toast.success("Navegador aberto");
+          }}
+        >
+          <ExternalLink size={14} /> {tool.openUrl ? "ABRIR NO GOOGLE" : "ABRIR NAVEGADOR"}
         </button>
         {tool.randomize && (
           <button className="ghost-button" onClick={() => setSeed((s) => s + 1)}>
