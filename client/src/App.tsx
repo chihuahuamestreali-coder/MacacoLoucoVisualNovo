@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Router, Route, Switch } from "wouter";
+import { Router, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import Home, { generators } from "./pages/Home";
+import { recordMenuVisit } from "./lib/historyCleaner";
 import AliExpressManager from "./pages/AliExpressManager";
 import EmailManager from "./pages/EmailManager";
 import EmailPlusManager from "./pages/EmailPlusManager";
@@ -51,9 +53,31 @@ import HistoryCleaner from "./pages/HistoryCleaner";
 import GlobalHubPage from "./global-hub/GlobalHubPage";
 import MasterHubPage from "./master-hub/MasterHubPage";
 
+const SPECIAL_ROUTES = {
+  '/dark': 'DARK MASTER HUB',
+  '/van-gogh': 'Van Gogh',
+  '/scooby-doo': 'Hub Scooby-Doo',
+} as const;
+
+function VisitTracker() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    if (!location || location === '/' || location === '/apagar-historico' || location === '/404') return;
+    const menu = generators.find((item) => item.path === location);
+    const specialTitle = SPECIAL_ROUTES[location as keyof typeof SPECIAL_ROUTES];
+    if (menu || specialTitle) {
+      recordMenuVisit(location, menu?.title ?? specialTitle, window.location.href, menu?.externalUrl);
+    }
+  }, [location]);
+
+  return null;
+}
+
 function AppRouter() {
   return (
     <Router base="/MacacoLoucoVisualNovo">
+      <VisitTracker />
       <Switch>
       {/* Rotas específicas primeiro */}
       <Route path={"/emails"} component={EmailManager} />

@@ -626,6 +626,21 @@
   object-fit: contain;
 }
 
+/* O asset do Asgard.HUB é deliberadamente aplicado em escala cheia no card. */
+.fm-asgard-logo-frame {
+  padding: 0 !important;
+  background: #fff;
+}
+
+.fm-asgard-logo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: scale(2.2);
+  border-radius: inherit;
+}
+
 .fm-favorite-card__content {
   position: relative;
   z-index: 1;

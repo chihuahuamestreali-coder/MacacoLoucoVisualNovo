@@ -363,6 +363,7 @@ export const generators: Generator[] = [
     desc: 'Roteador central com TODAS as ferramentas do projeto: marketplaces, redes, IA, email, cloud, privacidade e hubs',
     path: '/master-hub',
     icon: Globe2,
+    logo: 'Copilot_20260825_114830.png',
     badge: 'ASGARD',
   },
   {
@@ -451,9 +452,10 @@ export const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/apagar-historico', '/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
+const favoritePaths = ['/apagar-historico', '/master-hub', '/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
 const favoriteLabels: Record<string, string> = {
   '/apagar-historico': 'Apagar Histórico',
+  '/master-hub': 'Asgard',
   '/coringa': 'Coringa',
   '/emails': 'Email',
   '/email-plus': 'EmailPlus',
@@ -717,9 +719,13 @@ export default function Home() {
                         >
                           <div>
                             <div className="mb-5 flex items-center justify-between gap-3">
-                              <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-xl border border-white/10 bg-white p-2 shadow-md transition-transform group-hover:scale-105">
+                              <div className={`grid h-12 w-12 place-items-center overflow-hidden rounded-xl border border-white/10 bg-white p-2 shadow-md transition-transform group-hover:scale-105 ${item.path === '/master-hub' ? 'fm-asgard-logo-frame' : ''}`}>
                                 {logoUrl ? (
-                                  <img src={logoUrl} alt={`${item.title} logo`} className="h-full w-full object-contain" />
+                                  <img
+                                    src={logoUrl}
+                                    alt={`${item.title} logo`}
+                                    className={`h-full w-full object-contain ${item.path === '/master-hub' ? 'fm-asgard-logo' : ''}`}
+                                  />
                                 ) : (
                                   <Icon className="h-6 w-6 text-slate-900" />
                                 )}

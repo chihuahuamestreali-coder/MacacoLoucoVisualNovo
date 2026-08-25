@@ -1,10 +1,9 @@
 /**
- * History Cleaner - Registro de dados locais por menu.
+ * Registro e limpeza dos dados que o aplicativo consegue controlar.
  *
- * Este módulo mapeia cada rota aos dados locais específicos que o próprio app
- * registra. Ele não tenta apagar o histórico real do navegador nem cookies de
- * outros domínios. Chaves globais compartilhadas ficam preservadas para que a
- * limpeza de um menu não afete os demais.
+ * Uma página web não pode ler ou apagar o histórico global do Chrome/Edge.
+ * Este módulo cuida do histórico interno, dos dados locais próprios e mantém
+ * um registro de visitas para uma extensão autorizada poder fazer essa parte.
  */
 
 import { generators } from '@/pages/Home';
@@ -17,9 +16,22 @@ export interface MenuHistoryEntry {
   prefixes?: string[];
   cookies?: string[];
   noteKeywords?: string[];
+  externalUrl?: string;
+  visitCount?: number;
+  lastVisitedAt?: string;
+  visitedUrls?: string[];
 }
 
+export interface MenuVisit {
+  path: string;
+  title: string;
+  externalUrl?: string;
+  count: number;
+  lastVisitedAt: string;
+  urls: string[];
+}
 
+const MENU_VISITS_STORAGE_KEY = 'macacolouco_menu_visits';
 
 const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
   {
@@ -315,14 +327,77 @@ const discoveredMenuHistory: MenuHistoryEntry[] = generators
     desc: `${menu.desc} · cadastro automático`,
     keys: [],
     noteKeywords: [],
+    externalUrl: menu.externalUrl,
   }));
+
+const MENU_CATALOG: MenuHistoryEntry[] = [...MANUAL_MENU_HISTORY, ...discoveredMenuHistory];
+
+function readMenuVisitsRecord(): Record<string, MenuVisit> {
+  try {
+    const raw = localStorage.getItem(MENU_VISITS_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, MenuVisit>;
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function getMenuVisits(): MenuVisit[] {
+  return Object.values(readMenuVisitsRecord()).sort(
+    (a, b) => new Date(b.lastVisitedAt).getTime() - new Date(a.lastVisitedAt).getTime(),
+  );
+}
+
+/** Registra uma visita e o URL exato que a extensão poderá limpar. */
+export function recordMenuVisit(path: string, title: string, url?: string, externalUrl?: string): void {
+  if (typeof localStorage === 'undefined' || !path || path === '/apagar-historico') return;
+
+  const visits = readMenuVisitsRecord();
+  const current = visits[path];
+  const nextUrl = url || externalUrl;
+  visits[path] = {
+    path,
+    title,
+    externalUrl,
+    count: (current?.count ?? 0) + 1,
+    lastVisitedAt: new Date().toISOString(),
+    urls: Array.from(new Set([...(current?.urls ?? []), ...(nextUrl ? [nextUrl] : [])])),
+  };
+  localStorage.setItem(MENU_VISITS_STORAGE_KEY, JSON.stringify(visits));
+}
 
 /**
  * Catálogo efetivo usado pela tela Apagar Histórico.
- * Menus novos do catálogo principal entram automaticamente como itens
- * adicionais, sem duplicar os mapeamentos específicos acima.
+ * Menus novos entram pelo catálogo principal; rotas visitadas fora dele também
+ * aparecem automaticamente como "menu descoberto".
  */
-export const MENU_HISTORY: MenuHistoryEntry[] = [...MANUAL_MENU_HISTORY, ...discoveredMenuHistory];
+export function getMenuHistory(): MenuHistoryEntry[] {
+  const visits = readMenuVisitsRecord();
+  const knownPaths = new Set(MENU_CATALOG.map((entry) => entry.path));
+  const discoveredVisits = Object.values(visits)
+    .filter((visit) => !knownPaths.has(visit.path))
+    .map((visit) => ({
+      path: visit.path,
+      title: visit.title || visit.path,
+      desc: 'Menu descoberto pelo registro automático de visitas',
+      externalUrl: visit.externalUrl,
+      keys: [],
+      noteKeywords: [],
+    }));
+
+  return [...MENU_CATALOG, ...discoveredVisits].map((entry) => {
+    const visit = visits[entry.path];
+    return {
+      ...entry,
+      visitCount: visit?.count ?? 0,
+      lastVisitedAt: visit?.lastVisitedAt,
+      visitedUrls: visit?.urls ?? [],
+    };
+  });
+}
+
+export const MENU_HISTORY: MenuHistoryEntry[] = MENU_CATALOG;
 
 /**
  * Conta quantos itens de localStorage um menu possui atualmente.
@@ -363,6 +438,15 @@ export function countMenuAccountHistory(entry: MenuHistoryEntry): number {
  */
 export function countMenuHistory(entry: MenuHistoryEntry): number {
   return countMenuLocalStorage(entry) + countMenuAccountHistory(entry) + (entry.cookies?.filter((c) => document.cookie.includes(c + '=')).length ?? 0);
+}
+
+export function countMenuActivity(entry: MenuHistoryEntry): number {
+  return countMenuHistory(entry) + (entry.visitCount ?? 0);
+}
+
+export function getVisitedBrowserUrls(entry?: MenuHistoryEntry): string[] {
+  if (entry) return entry.visitedUrls ?? [];
+  return getMenuHistory().flatMap((item) => item.visitedUrls ?? []);
 }
 
 /**
@@ -413,4 +497,24 @@ export function clearMenuHistory(entry: MenuHistoryEntry): void {
       // ignora erros de parsing
     }
   }
+
+  const visits = readMenuVisitsRecord();
+  if (visits[entry.path]) {
+    delete visits[entry.path];
+    if (Object.keys(visits).length > 0) {
+      localStorage.setItem(MENU_VISITS_STORAGE_KEY, JSON.stringify(visits));
+    } else {
+      localStorage.removeItem(MENU_VISITS_STORAGE_KEY);
+    }
+  }
+}
+
+/** Remove todos os dados internos conhecidos pelo aplicativo. */
+export function clearAllManagedHistory(): void {
+  for (const entry of getMenuHistory()) {
+    clearMenuHistory(entry);
+  }
+  localStorage.removeItem('manus_account_history');
+  localStorage.removeItem('manus_successful_configs');
+  localStorage.removeItem(MENU_VISITS_STORAGE_KEY);
 }

@@ -13,11 +13,15 @@ import {
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import {
-  MENU_HISTORY,
+  getMenuHistory,
   countMenuHistory,
+  countMenuActivity,
   clearMenuHistory,
+  clearAllManagedHistory,
+  getVisitedBrowserUrls,
   type MenuHistoryEntry,
 } from '@/lib/historyCleaner';
+import { requestBrowserHistoryClear } from '@/lib/browserHistoryBridge';
 
 type MenuGroup = {
   id: string;
@@ -25,53 +29,55 @@ type MenuGroup = {
   entries: MenuHistoryEntry[];
 };
 
-const staticGroups: MenuGroup[] = [
-  {
-    id: 'compras',
-    label: 'Compras e marketplaces',
-    entries: MENU_HISTORY.filter((m) => ['/aliexpress', '/mercado-livre', '/amazon', '/shopee', '/shein', '/temu'].includes(m.path)),
-  },
-  {
-    id: 'social',
-    label: 'Redes sociais e comunidades',
-    entries: MENU_HISTORY.filter((m) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/discord-site'].includes(m.path)),
-  },
-  {
-    id: 'ia',
-    label: 'IA para imagem, código e design',
-    entries: MENU_HISTORY.filter((m) => ['/tensor', '/seaart', '/copilot-designer', '/leonardo', '/monkeycode', '/base44', '/lovable', '/emergente', '/github-manager'].includes(m.path)),
-  },
-  {
-    id: 'assistentes',
-    label: 'Assistentes e agentes de IA',
-    entries: MENU_HISTORY.filter((m) => ['/manus', '/claude', '/chatgpt', '/copilot', '/coringa'].includes(m.path)),
-  },
-  {
-    id: 'email',
-    label: 'Email e recuperação',
-    entries: MENU_HISTORY.filter((m) => ['/gmail', '/emails', '/email-plus', '/apple-contas'].includes(m.path)),
-  },
-  {
-    id: 'cloud',
-    label: 'Cloud phone e emuladores',
-    entries: MENU_HISTORY.filter((m) => ['/ugphone', '/geelark', '/redfinger', '/vmoscloud', '/ldplayer', '/cider'].includes(m.path)),
-  },
-  {
-    id: 'hubs',
-    label: 'Hubs especiais',
-    entries: MENU_HISTORY.filter((m) => ['/scooby-doo', '/dark', '/van-gogh'].includes(m.path)),
-  },
-].filter((g) => g.entries.length > 0);
+function buildGroups(menuHistory: MenuHistoryEntry[]): MenuGroup[] {
+  const staticGroups: MenuGroup[] = [
+    {
+      id: 'compras',
+      label: 'Compras e marketplaces',
+      entries: menuHistory.filter((m) => ['/aliexpress', '/mercado-livre', '/amazon', '/shopee', '/shein', '/temu'].includes(m.path)),
+    },
+    {
+      id: 'social',
+      label: 'Redes sociais e comunidades',
+      entries: menuHistory.filter((m) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/discord-site'].includes(m.path)),
+    },
+    {
+      id: 'ia',
+      label: 'IA para imagem, código e design',
+      entries: menuHistory.filter((m) => ['/tensor', '/seaart', '/copilot-designer', '/leonardo', '/monkeycode', '/base44', '/lovable', '/emergente', '/github-manager'].includes(m.path)),
+    },
+    {
+      id: 'assistentes',
+      label: 'Assistentes e agentes de IA',
+      entries: menuHistory.filter((m) => ['/manus', '/claude', '/chatgpt', '/copilot', '/coringa'].includes(m.path)),
+    },
+    {
+      id: 'email',
+      label: 'Email e recuperação',
+      entries: menuHistory.filter((m) => ['/gmail', '/emails', '/email-plus', '/apple-contas'].includes(m.path)),
+    },
+    {
+      id: 'cloud',
+      label: 'Cloud phone e emuladores',
+      entries: menuHistory.filter((m) => ['/ugphone', '/geelark', '/redfinger', '/vmoscloud', '/ldplayer', '/cider'].includes(m.path)),
+    },
+    {
+      id: 'hubs',
+      label: 'Hubs especiais',
+      entries: menuHistory.filter((m) => ['/scooby-doo', '/dark', '/van-gogh'].includes(m.path)),
+    },
+  ].filter((g) => g.entries.length > 0);
 
-const groupedPaths = new Set(staticGroups.flatMap((group) => group.entries.map((entry) => entry.path)));
-const groups: MenuGroup[] = [
-  ...staticGroups,
-  {
-    id: 'outros',
-    label: 'Outros menus',
-    entries: MENU_HISTORY.filter((entry) => !groupedPaths.has(entry.path)),
-  },
-].filter((group) => group.entries.length > 0);
+  const groupedPaths = new Set(staticGroups.flatMap((group) => group.entries.map((entry) => entry.path)));
+  return [
+    ...staticGroups,
+    {
+      id: 'outros',
+      label: 'Outros menus',
+      entries: menuHistory.filter((entry) => !groupedPaths.has(entry.path)),
+    },
+  ].filter((group) => group.entries.length > 0);
+}
 
 function countTotal(entry: MenuHistoryEntry): number {
   try {
@@ -83,19 +89,27 @@ function countTotal(entry: MenuHistoryEntry): number {
 
 function HistoryMenuCard({ entry, onDeleted }: { entry: MenuHistoryEntry; onDeleted: () => void }) {
   const [busy, setBusy] = useState(false);
-  const count = countTotal(entry);
+  const localCount = countTotal(entry);
+  const activityCount = countMenuActivity(entry);
+  const hasActivity = activityCount > 0;
 
-  const handleClear = () => {
-    if (busy) return;
+  const handleClear = async () => {
+    if (busy || !hasActivity) return;
     const confirmed = window.confirm(
-      `Limpar os dados locais de "${entry.title}"?\n\nIsso remove os registros específicos deste menu no aplicativo. O histórico real do navegador e os demais menus não serão afetados.`
+      `Limpar os dados reconhecidos de "${entry.title}"?\n\nIsso remove os dados locais deste menu e, se uma extensão autorizada responder, solicita a remoção das URLs visitadas no histórico do navegador.`
     );
     if (!confirmed) return;
     setBusy(true);
     try {
+      const visitedUrls = getVisitedBrowserUrls(entry);
       clearMenuHistory(entry);
+      const browserResult = await requestBrowserHistoryClear(visitedUrls);
+      const browserMessage =
+        browserResult.status === 'cleared'
+          ? ` ${browserResult.removed} URL(s) também removida(s) do histórico do navegador.`
+          : ' O histórico global do navegador exige uma extensão autorizada; os dados internos foram removidos.';
       toast.success(`Histórico de "${entry.title}" apagado!`, {
-        description: 'Todos os dados locais deste menu foram removidos.',
+        description: `Dados locais removidos.${browserMessage}`,
       });
       onDeleted();
     } catch (error) {
@@ -117,23 +131,23 @@ function HistoryMenuCard({ entry, onDeleted }: { entry: MenuHistoryEntry; onDele
         </div>
         <span
           className={`shrink-0 rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-wider ${
-            count > 0
+            hasActivity
               ? 'border-rose-500/40 bg-rose-500/10 text-rose-300'
               : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
           }`}
         >
-          {count > 0 ? `${count} item(ns)` : 'limpo'}
+          {entry.visitCount ? `${entry.visitCount} visita(s)` : localCount > 0 ? `${localCount} item(ns)` : 'limpo'}
         </span>
       </div>
       <Button
-        variant={count > 0 ? 'destructive' : 'outline'}
+        variant={hasActivity ? 'destructive' : 'outline'}
         size="sm"
         className="w-full"
         onClick={handleClear}
-        disabled={busy || count === 0}
+        disabled={busy || !hasActivity}
       >
-        {count > 0 ? <Trash2 className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
-        {busy ? 'Apagando...' : count > 0 ? 'Apagar histórico' : 'Sem dados'}
+        {hasActivity ? <Trash2 className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+        {busy ? 'Apagando...' : hasActivity ? 'Apagar histórico' : 'Sem dados'}
       </Button>
     </div>
   );
@@ -144,6 +158,8 @@ export default function HistoryCleaner() {
   const [refresh, setRefresh] = useState(0);
   const [query, setQuery] = useState('');
   const normalizedQuery = query.trim().toLocaleLowerCase();
+  const menuHistory = useMemo(() => getMenuHistory(), [refresh]);
+  const groups = useMemo(() => buildGroups(menuHistory), [menuHistory]);
 
   const visibleGroups = useMemo(() => {
     if (!normalizedQuery) return groups;
@@ -155,28 +171,30 @@ export default function HistoryCleaner() {
         ),
       }))
       .filter((group) => group.entries.length > 0);
-  }, [normalizedQuery, refresh]);
+  }, [groups, normalizedQuery]);
 
   const handleDeleted = () => setRefresh((r) => r + 1);
 
-  const totalItems = useMemo(() => {
-    let sum = 0;
-    for (const entry of MENU_HISTORY) {
-      sum += countTotal(entry);
-    }
-    return sum;
-  }, [refresh]);
+  const totalItems = useMemo(
+    () => menuHistory.reduce((sum, entry) => sum + countMenuActivity(entry), 0),
+    [menuHistory],
+  );
 
-  const handleClearAll = () => {
+  const handleClearAll = async () => {
+    if (totalItems === 0) return;
     const confirmed = window.confirm(
-      'Limpar os dados locais de TODOS os menus?\n\nIsso remove os registros específicos do aplicativo inteiro. O histórico real do navegador não será alterado.'
+      'Limpar os dados reconhecidos de TODOS os menus?\n\nIsso remove os dados internos do aplicativo. Se uma extensão autorizada responder, as URLs registradas também serão removidas do histórico do navegador.'
     );
     if (!confirmed) return;
     try {
-      for (const entry of MENU_HISTORY) {
-        clearMenuHistory(entry);
-      }
-      toast.success('Dados locais de todos os menus removidos!');
+      const visitedUrls = getVisitedBrowserUrls();
+      clearAllManagedHistory();
+      const browserResult = await requestBrowserHistoryClear(visitedUrls);
+      const browserMessage =
+        browserResult.status === 'cleared'
+          ? `${browserResult.removed} URL(s) removida(s) do histórico do navegador.`
+          : 'O histórico global do navegador exige uma extensão autorizada; os dados internos foram removidos.';
+      toast.success('Histórico reconhecido limpo', { description: browserMessage });
       handleDeleted();
     } catch (error) {
       console.error('Erro ao apagar tudo:', error);
@@ -204,7 +222,7 @@ export default function HistoryCleaner() {
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight md:text-4xl">APAGAR HISTÓRICO</h1>
             <p className="mt-2 max-w-3xl text-xs leading-relaxed text-muted-foreground md:text-sm">
-              Escolha um menu para remover os dados locais registrados pelo próprio aplicativo para aquele módulo. O histórico real do navegador não pode ser apagado por uma página web; apenas o menu selecionado é afetado.
+              Os menus são reconhecidos automaticamente quando você os abre. A página remove os dados internos que controla; a exclusão das URLs do histórico global do Chrome/Edge só é possível quando uma extensão autorizada responde.
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -238,7 +256,7 @@ export default function HistoryCleaner() {
           </div>
           <div className="flex shrink-0 items-center gap-2 text-[10px] font-black uppercase tracking-wider text-slate-500">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span>{totalItems > 0 ? `${totalItems} itens no total` : 'tudo limpo'}</span>
+            <span>{totalItems > 0 ? `${totalItems} registros reconhecidos` : 'tudo limpo'}</span>
           </div>
         </div>
 
@@ -268,7 +286,7 @@ export default function HistoryCleaner() {
         )}
 
         <footer className="mt-8 border-t border-border/30 pt-6 text-center text-xs text-muted-foreground">
-          <p>Limpeza seletiva de dados locais do aplicativo • O histórico real do navegador não é alterado</p>
+          <p>Limpeza dos dados reconhecidos pelo aplicativo • URLs externas exigem extensão autorizada do navegador</p>
         </footer>
       </div>
     </div>
