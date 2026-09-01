@@ -119,11 +119,11 @@ export function buildSpotifyScriptBody(device: SpotifyDeviceProfile, persona: an
     fingerprint: device.fingerprint,
     userAgent: device.userAgent,
     persona: persona ? { name: persona.fullName, email: persona.email, phone: persona.phone } : null,
-  }).replace(/"/g, '\\"');
+  });
 
   return `
     // SPOTIFY - identidade e sessão (domínio real)
-    const spProfile = JSON.parse("${profile}");
+    const spProfile = JSON.parse(${JSON.stringify(profile)});
     localStorage.setItem('sp_device_profile', JSON.stringify(spProfile));
     localStorage.setItem('sp_device_id', spProfile.spDeviceId);
     localStorage.setItem('sp_session', spProfile.spSession);

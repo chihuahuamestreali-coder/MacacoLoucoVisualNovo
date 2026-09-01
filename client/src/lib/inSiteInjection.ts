@@ -35,7 +35,10 @@ export interface InSiteInjectionResult {
 export async function copyInjectionScript(script: string): Promise<InSiteInjectionResult> {
   try {
     if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(script);
+      await Promise.race([
+        navigator.clipboard.writeText(script),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('clipboard-timeout')), 1500)),
+      ]);
       return { success: true, message: 'Script copiado!' };
     }
   } catch {
