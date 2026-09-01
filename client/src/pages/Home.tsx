@@ -23,6 +23,7 @@ import {
   Mail,
   MessageCircle,
   Monitor,
+  Music,
   Palette,
   Package,
   Rocket,
@@ -271,6 +272,14 @@ export const generators: Generator[] = [
     badge: 'NO ADS',
   },
   {
+    title: 'Spotify Master',
+    desc: 'Streaming de música SEM anúncios: identidade MAC/IMEI, sessão e anonymous id + bloqueio de anúncios embutido (estilo Brave/ublock)',
+    path: '/spotify',
+    icon: Music,
+    logo: 'spotify.svg',
+    badge: 'NO ADS',
+  },
+  {
     title: 'Ursa',
     desc: 'Abertura de link externo e serviços associados',
     path: '/ursa',
@@ -398,7 +407,7 @@ export const categories: Category[] = [
     description: 'social · vídeo social · comunidade',
     icon: UsersRound,
     tone: 'from-blue-400/15 via-blue-400/5 to-transparent border-blue-400/30 text-blue-200',
-    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/discord-site'].includes(item.path)),
+    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/spotify', '/discord-site'].includes(item.path)),
   },
   {
     id: 'image',

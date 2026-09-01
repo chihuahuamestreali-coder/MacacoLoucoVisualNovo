@@ -48,6 +48,7 @@ import LeonardoManager from "@/pages/LeonardoManager";
 import AppleContasManager from "@/pages/AppleContasManager";
 import CoringaManager from "@/pages/CoringaManager";
 import YoutubeManager from "@/pages/YoutubeManager";
+import SpotifyManager from "@/pages/SpotifyManager";
 import IpDisplay from "@/components/IpDisplay";
 import HistoryCleaner from "./pages/HistoryCleaner";
 import GlobalHubPage from "./global-hub/GlobalHubPage";
@@ -118,6 +119,7 @@ function AppRouter() {
       <Route path={"/apple-contas"} component={AppleContasManager} />
       <Route path={"/coringa"} component={CoringaManager} />
       <Route path={"/youtube"} component={YoutubeManager} />
+      <Route path={"/spotify"} component={SpotifyManager} />
       <Route path={"/ursa"} component={UrsaManager} />
       <Route path={"/cobalt"} component={CobaltManager} />
       <Route path={"/apagar-historico"} component={HistoryCleaner} />

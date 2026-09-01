@@ -172,6 +172,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão e visitor data no domínio real via console e ativa um bloqueador de anúncios embutido no próprio script (sem extensão).',
     limitations: 'O bloqueio é client-side e cobre o fluxo do YouTube; mudanças no player da plataforma podem exigir atualização do script.',
   },
+  spotify: {
+    key: 'spotify', title: 'Spotify Master', family: 'Streaming + bloqueio de anúncios',
+    mission: 'Gerar um perfil de dispositivo para o Spotify (open.spotify.com) com identidade MAC/IMEI, sessão e anonymous id sintéticos, e ativar o motor de bloqueio de anúncios embutido (estilo Brave/ublock).',
+    scope: 'Módulo focado em streaming de áudio sem anúncios: gera device fingerprint e sessão, injeta cookies no domínio real e remove banners, badges "Anúncio" e overlays de assinatura automaticamente.',
+    fields: [
+      { label: 'SP Device ID', meaning: 'Identificador sintético persistente do dispositivo no padrão do Spotify.' },
+      { label: 'Anonymous ID', meaning: 'Identificador de visitante sintético usado na sessão web (sp_anonymous_id).' },
+      { label: 'Sessão', meaning: 'Cookies de sessão sintéticos (sp_t, sp_dc, sp_key) injetados no ambiente local.' },
+      { label: 'Bloco de anúncios', meaning: 'Motor estilo Brave que remove banners, badges "Anúncio", contador de faixa e overlays de assinatura automaticamente.' },
+    ],
+    recommendedFlow: ['Gere o perfil técnico com a nova identidade MAC.', 'Mantenha a simulação de app nativo e a blindagem ativos.', 'Inicie a injeção — o Spotify abre em nova guia com o bloqueio de anúncios ativo.'],
+    whyDifferent: 'Injeta device ID, sessão e anonymous id no domínio real via console e ativa um bloqueador de anúncios embutido no próprio script (sem extensão).',
+    limitations: 'O bloqueio é client-side e cobre o fluxo do web player; mudanças no player da plataforma podem exigir atualização do script.',
+  },
   gmail: {
     key: 'gmail', title: 'Gmail Master', family: 'Conta e recuperação',
     mission: 'Gerenciar um perfil de conta Google com credenciais, recuperação e contexto de sessão.',

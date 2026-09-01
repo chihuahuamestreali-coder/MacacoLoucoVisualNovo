@@ -39,7 +39,7 @@ function buildGroups(menuHistory: MenuHistoryEntry[]): MenuGroup[] {
     {
       id: 'social',
       label: 'Redes sociais e comunidades',
-      entries: menuHistory.filter((m) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/discord-site'].includes(m.path)),
+      entries: menuHistory.filter((m) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/spotify', '/discord-site'].includes(m.path)),
     },
     {
       id: 'ia',
