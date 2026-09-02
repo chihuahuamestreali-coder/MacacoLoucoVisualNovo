@@ -54,7 +54,7 @@ function buildGroups(menuHistory: MenuHistoryEntry[]): MenuGroup[] {
     {
       id: 'email',
       label: 'Email e recuperação',
-      entries: menuHistory.filter((m) => ['/gmail', '/emails', '/email-plus', '/apple-contas'].includes(m.path)),
+      entries: menuHistory.filter((m) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/apple-contas'].includes(m.path)),
     },
     {
       id: 'cloud',

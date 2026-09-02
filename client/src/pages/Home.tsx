@@ -329,6 +329,13 @@ export const generators: Generator[] = [
     badge: 'KIT 16+ PRO',
   },
   {
+    title: 'Email(3)Alemao',
+    desc: 'Yandex, Mail.ru e Apple ID/iCloud com filtro de pais (Russia, EUA, Brasil, Alemanha, Europa) e dominio regional',
+    path: '/email-alemao',
+    icon: Mail,
+    badge: 'YANDEX MAIL.RU APPLE',
+  },
+  {
     title: 'UGPhone Master',
     desc: 'Nova identidade MAC/IMEI + sessão e cookies do portal cloud phone, blindagem 16+ e app nativo',
     path: '/ugphone',
@@ -447,7 +454,7 @@ export const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',

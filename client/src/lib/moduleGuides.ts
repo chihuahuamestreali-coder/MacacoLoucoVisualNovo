@@ -87,6 +87,21 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Diferente do Email Master, este módulo também exibe persona, User-Agent e scripts de anti-detecção, unindo credencial e contexto de navegador.',
     limitations: 'Os dados e scripts são locais; a interface não garante aceitação por plataformas externas nem substitui verificações do provedor.',
   },
+  emailAlemao: {
+    key: 'emailAlemao', title: 'Email(3) Alemao', family: 'Credenciais de email regionais',
+    mission: 'Gerar emails Yandex, Mail.ru e Apple ID/iCloud abrindo o cadastro no pais selecionado.',
+    scope: 'Este menu replica o fluxo de Email/EmailPlus para provedores Yandex, Mail.ru e Apple, com filtro de pais e dominio.',
+    fields: [
+      { label: 'Provedor', meaning: 'Yandex, Mail.ru ou Apple ID (depois iCloud.com).' },
+      { label: 'Pais', meaning: 'Define idioma, locale e URL de signup do provedor (Alemanha, Russia, EUA, Brasil, Europa...).' },
+      { label: 'Dominio', meaning: 'Escolhe o sufixo do endereco, ex. @yandex.com, @yandex.ru, @mail.ru, @icloud.com.' },
+      { label: 'Tipo de email', meaning: 'Controla a composicao do nome e dos numeros.' },
+      { label: 'Contas salvas', meaning: 'Lista os registros mantidos no armazenamento local deste menu.' },
+    ],
+    recommendedFlow: ['Escolha o provedor.', 'Selecione o pais para abrir o signup no locale correspondente.', 'Escolha o dominio.', 'Gere o email e abra o signup no pais filtrado.'],
+    whyDifferent: 'Diferente do Email Master, este modulo cobre Yandex, Mail.ru e Apple ID/iCloud, sempre carregando o cadastro no pais escolhido.',
+    limitations: 'Abrir o signup no locale do pais nao altera IP, VPN ou geolocalizacao real da conexao, nem garante criacao sem SMS.',
+  },
   manus: {
     key: 'manus', title: 'Manus AI Master', family: 'Hardware + persona',
     mission: 'Combinar um perfil de dispositivo com dados de persona usados pelo fluxo do Manus.',

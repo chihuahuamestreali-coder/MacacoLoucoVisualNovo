@@ -195,6 +195,12 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     keys: ['emailplus_accounts'],
   },
   {
+    path: '/email-alemao',
+    title: 'Email(3)Alemao',
+    desc: 'Contas Yandex, Mail.ru e Apple ID/iCloud',
+    keys: ['emailalemao_accounts'],
+  },
+  {
     path: '/ugphone',
     title: 'UGPhone Master',
     desc: 'Sessão, cookies e perfil UGPhone',

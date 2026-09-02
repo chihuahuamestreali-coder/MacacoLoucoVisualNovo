@@ -10,6 +10,7 @@ import { recordMenuVisit } from "./lib/historyCleaner";
 import AliExpressManager from "./pages/AliExpressManager";
 import EmailManager from "./pages/EmailManager";
 import EmailPlusManager from "./pages/EmailPlusManager";
+import EmailAlemaoManager from "./pages/EmailAlemaoManager";
 import FacebookManager from "./pages/FacebookManager";
 import InstagramManager from "./pages/InstagramManager";
 import ManusManager from "./pages/ManusManager";
@@ -84,6 +85,7 @@ function AppRouter() {
       {/* Rotas específicas primeiro */}
       <Route path={"/emails"} component={EmailManager} />
       <Route path={"/email-plus"} component={EmailPlusManager} />
+      <Route path={"/email-alemao"} component={EmailAlemaoManager} />
       <Route path={"/facebook"} component={FacebookManager} />
       <Route path={"/instagram"} component={InstagramManager} />
       <Route path={"/manus"} component={ManusManager} />
