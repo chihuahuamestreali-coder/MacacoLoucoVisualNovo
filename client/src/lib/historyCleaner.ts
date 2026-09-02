@@ -197,7 +197,7 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
   {
     path: '/email-alemao',
     title: 'Email(3)Alemao',
-    desc: 'Contas Yandex, Mail.ru e Apple ID/iCloud',
+    desc: 'Contas Apple ID/iCloud',
     keys: ['emailalemao_accounts'],
   },
   {

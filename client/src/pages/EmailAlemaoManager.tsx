@@ -171,7 +171,7 @@ export default function EmailAlemaoManager() {
             <Mail className="text-amber-400" size={28} />
             <div>
               <h1 className="text-2xl font-bold text-amber-400 font-mono">EMAIL(3) ALEMAO</h1>
-              <p className="text-xs text-muted-foreground font-mono">Yandex • Mail.ru • Apple ID / iCloud • v1.0</p>
+              <p className="text-xs text-muted-foreground font-mono">Apple ID / iCloud • v1.2</p>
             </div>
           </div>
           <div className="flex items-center gap-6">

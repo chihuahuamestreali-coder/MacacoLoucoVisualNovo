@@ -330,10 +330,10 @@ export const generators: Generator[] = [
   },
   {
     title: 'Email(3)Alemao',
-    desc: 'Yandex, Mail.ru e Apple ID/iCloud com filtro de pais (Russia, EUA, Brasil, Alemanha, Europa) e dominio regional',
+    desc: 'Apple ID / iCloud com filtro de pais (Russia, EUA, Brasil, Alemanha, Europa) e dominio @icloud.com',
     path: '/email-alemao',
     icon: Mail,
-    badge: 'YANDEX MAIL.RU APPLE',
+    badge: 'APPLE ICLOUD',
   },
   {
     title: 'UGPhone Master',
