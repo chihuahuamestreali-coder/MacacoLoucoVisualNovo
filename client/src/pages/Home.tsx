@@ -280,6 +280,14 @@ export const generators: Generator[] = [
     badge: 'NO ADS',
   },
   {
+    title: 'Spotify-Plus',
+    desc: 'Cole o link da playlist: abre popup na mesma pagina, gera IDs, copia/roda script e some com o anuncio da direita',
+    path: '/spotify-plus',
+    icon: Music,
+    logo: 'spotify.svg',
+    badge: 'POPUP NO ADS',
+  },
+  {
     title: 'Ursa',
     desc: 'Abertura de link externo e serviços associados',
     path: '/ursa',
@@ -407,7 +415,7 @@ export const categories: Category[] = [
     description: 'social · vídeo social · comunidade',
     icon: UsersRound,
     tone: 'from-blue-400/15 via-blue-400/5 to-transparent border-blue-400/30 text-blue-200',
-    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/spotify', '/discord-site'].includes(item.path)),
+    items: generators.filter((item) => ['/instagram', '/facebook', '/tiktok', '/youtube', '/spotify', '/spotify-plus', '/discord-site'].includes(item.path)),
   },
   {
     id: 'image',

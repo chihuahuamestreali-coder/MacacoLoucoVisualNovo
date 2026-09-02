@@ -186,6 +186,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão e anonymous id no domínio real via console e ativa um bloqueador de anúncios embutido no próprio script (sem extensão).',
     limitations: 'O bloqueio é client-side e cobre o fluxo do web player; mudanças no player da plataforma podem exigir atualização do script.',
   },
+  spotifyPlus: {
+    key: 'spotifyPlus', title: 'Spotify-Plus', family: 'Streaming + Brave Shield + filtro de playlist',
+    mission: 'Cole o link da playlist/musica, carregue num popup na mesma pagina (sem guia nova), gere IDs, copie o script e rode no proprio popup. O player embed nao mostra o anuncio da direita.',
+    scope: 'Versao Plus: painel de URL, popup na mesma pagina, gerar IDs, copiar/rodar script. O embed oficial remove o painel Premium / Anuncio 1 de 1 da direita.',
+    fields: [
+      { label: 'Link alvo', meaning: 'URL da playlist, album, artista ou pagina do open.spotify.com colada no painel.' },
+      { label: 'SP Device ID', meaning: 'Identificador sintetico persistente do dispositivo no padrao do Spotify.' },
+      { label: 'Anonymous ID / Session', meaning: 'Sessao e visitante sinteticos injetados no dominio real.' },
+      { label: 'Brave Shield', meaning: 'Motor estilo Nav do Brave: bloqueia hosts de ads, limpa DOM e corta fetch/XHR de anuncio na playlist.' },
+    ],
+    recommendedFlow: ['Cole o link da playlist no painel.', 'Gere os IDs.', 'Copie o script e cole no Console da pagina do Spotify (F12).'],
+    whyDifferent: 'Diferente do Spotify Master, este menu aceita qualquer link colado, gera IDs sob demanda e aplica um filtro de playlist com bloqueio de anuncios mais amplo (hosts + DOM + rede).',
+    limitations: 'O bloqueio e client-side. Mudancas no player do Spotify podem exigir atualizacao do script. Nao altera o servidor da plataforma.',
+  },
   gmail: {
     key: 'gmail', title: 'Gmail Master', family: 'Conta e recuperação',
     mission: 'Gerenciar um perfil de conta Google com credenciais, recuperação e contexto de sessão.',
