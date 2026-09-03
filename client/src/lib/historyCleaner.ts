@@ -162,6 +162,12 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     cookies: ['ACL_DEVICE_ID', 'ACL_SESSION', 'ACL_ANON_ID', 'ACL_DSID', 'ACL_STOREFRONT', 'ACL_COUNTRY', 'ACL_LOCALE'],
   },
   {
+    path: '/painel-icloud',
+    title: 'Painel-iCloud',
+    desc: 'Conta Manus e sessao iCloud gravada no painel',
+    keys: ['painel_icloud_manus_account', 'painel_icloud_manus_session'],
+  },
+  {
     path: '/coringa',
     title: 'Coringa Master',
     desc: 'Perfil, fingerprint e persona Coringa universal',

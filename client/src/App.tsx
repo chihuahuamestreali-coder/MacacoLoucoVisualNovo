@@ -47,6 +47,7 @@ import CopilotDesignerManager from "@/pages/CopilotDesignerManager";
 import CopilotManager from "@/pages/CopilotManager";
 import LeonardoManager from "@/pages/LeonardoManager";
 import AppleContasManager from "@/pages/AppleContasManager";
+import IcloudPanelManager from "@/pages/IcloudPanelManager";
 import CoringaManager from "@/pages/CoringaManager";
 import YoutubeManager from "@/pages/YoutubeManager";
 import SpotifyManager from "@/pages/SpotifyManager";
@@ -120,6 +121,7 @@ function AppRouter() {
       <Route path={"/copilot-designer"} component={CopilotDesignerManager} />
       <Route path={"/leonardo"} component={LeonardoManager} />
       <Route path={"/apple-contas"} component={AppleContasManager} />
+      <Route path={"/painel-icloud"} component={IcloudPanelManager} />
       <Route path={"/coringa"} component={CoringaManager} />
       <Route path={"/youtube"} component={YoutubeManager} />
       <Route path={"/spotify"} component={SpotifyManager} />

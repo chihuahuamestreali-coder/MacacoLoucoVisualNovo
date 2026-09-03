@@ -256,6 +256,14 @@ export const generators: Generator[] = [
     badge: 'APPLE ID PRO',
   },
   {
+    title: 'Painel-iCloud',
+    desc: 'Pede a conta Manus na entrada e abre o login do iCloud no card interno, com sessao gravada no Manus',
+    path: '/painel-icloud',
+    icon: Cloud,
+    logo: 'apple.svg',
+    badge: 'ICLOUD LOGIN',
+  },
+  {
     title: 'Coringa Master',
     desc: 'Suite universal anti-detecção para QUALQUER site: digite a URL, identidade MAC/IMEI, blindagem 16+, WebView e persona',
     path: '/coringa',
@@ -454,7 +462,7 @@ export const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/cobalt', '/apple-contas', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/cobalt', '/apple-contas', '/painel-icloud', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -664,7 +672,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 36 MÓDULOS + 3 HUBS</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 37 MÓDULOS + 3 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>

@@ -755,6 +755,19 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Injeta device ID, sessão, DSID e storefront da Apple no domínio real via console, sem aba intermediária.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas da plataforma.',
   },
+  'painel-icloud': {
+    key: 'painel-icloud', title: 'Painel-iCloud', family: 'Painel interno',
+    mission: 'Pedir a conta Manus na entrada, abrir o login do iCloud no card interno e gravar a sessao no Manus.',
+    scope: 'Primeiro conecta www.manus.im. Depois embute www.icloud.com no mesmo card e salva a sessao ligada a conta Manus.',
+    fields: [
+      { label: 'Manus', meaning: 'Login obrigatorio da sua conta Manus antes do iCloud.' },
+      { label: 'Destino', meaning: 'Login oficial do iCloud (www.icloud.com).' },
+      { label: 'Sessao', meaning: 'Gravada no painel ligada a conta Manus conectada.' },
+    ],
+    recommendedFlow: ['Abra o menu Painel-iCloud.', 'Conecte sua conta Manus no card.', 'Faca login na Apple no mesmo card.', 'Salve a sessao no Manus.'],
+    whyDifferent: 'Exige Manus na entrada e mantem o iCloud dentro do painel, sem guia nova.',
+    limitations: 'O iCloud pode recusar iframe por politica de seguranca do dominio oficial.',
+  },
   'coringa': {
     key: 'coringa', title: 'Coringa Master', family: 'Universal (qualquer site)',
     mission: 'Suite anti-detecção universal: o usuário digita QUALQUER URL e recebe um perfil técnico completo (MAC/IMEI/Android ID, UA, tela, timezone, cookies, histórico) com blindagem 16+, comportamento humano e WebView de app nativo.',
