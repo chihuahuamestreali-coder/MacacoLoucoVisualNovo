@@ -330,7 +330,7 @@ export const generators: Generator[] = [
   },
   {
     title: 'Email(3)Alemao',
-    desc: 'Apple ID / iCloud com filtro de pais (Russia, EUA, Brasil, Alemanha, Europa) e dominio @icloud.com',
+    desc: 'Apple ID / iCloud + DuckDuckGo Email Protection (Personal e Private @duck.com encaminhando para o Gmail)',
     path: '/email-alemao',
     icon: Mail,
     badge: 'APPLE ICLOUD',

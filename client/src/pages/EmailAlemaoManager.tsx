@@ -14,8 +14,14 @@ import {
   generateAlemaoSignupUrl,
   generateIcloudUrl,
   getDefaultDomain,
+  DUCK_EMAIL_PROTECTION_URL,
+  DUCK_EMAIL_START_URL,
+  DUCK_EMAIL_LOGIN_URL,
+  generatePersonalDuckAddress,
+  generatePrivateDuckAddress,
+  type DuckAddress,
 } from '@/lib/emailAlemaoManager';
-import { Mail, Copy, ExternalLink, Plus, Trash2, Zap, RefreshCw, Apple } from 'lucide-react';
+import { Mail, Copy, ExternalLink, Plus, Trash2, Zap, RefreshCw, Apple, Shield, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLocation } from 'wouter';
 
@@ -33,6 +39,13 @@ export default function EmailAlemaoManager() {
   const [emailAccounts, setEmailAccounts] = useState<EmailAccount[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEmail, setNewEmail] = useState('');
+
+  const [duckForwardTo, setDuckForwardTo] = useState('');
+  const [duckPersonalName, setDuckPersonalName] = useState('');
+  const [duckPersonalAddress, setDuckPersonalAddress] = useState(generatePersonalDuckAddress('seunome'));
+  const [duckPrivateAddress, setDuckPrivateAddress] = useState(generatePrivateDuckAddress());
+  const [duckPrivateService, setDuckPrivateService] = useState('');
+  const [duckAddresses, setDuckAddresses] = useState<DuckAddress[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem('emailalemao_accounts');
@@ -52,6 +65,31 @@ export default function EmailAlemaoManager() {
   useEffect(() => {
     localStorage.setItem('emailalemao_accounts', JSON.stringify(emailAccounts));
   }, [emailAccounts]);
+
+  useEffect(() => {
+    const savedDuck = localStorage.getItem('emailalemao_duck_addresses');
+    if (savedDuck) {
+      try {
+        const parsed = JSON.parse(savedDuck);
+        setDuckAddresses(parsed.map((item: DuckAddress) => ({
+          ...item,
+          createdAt: new Date(item.createdAt),
+        })));
+      } catch (e) {
+        console.error('Erro ao carregar enderecos Duck:', e);
+      }
+    }
+    const savedForward = localStorage.getItem('emailalemao_duck_forward');
+    if (savedForward) setDuckForwardTo(savedForward);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('emailalemao_duck_addresses', JSON.stringify(duckAddresses));
+  }, [duckAddresses]);
+
+  useEffect(() => {
+    localStorage.setItem('emailalemao_duck_forward', duckForwardTo);
+  }, [duckForwardTo]);
 
   useEffect(() => {
     const nextDomain = getDefaultDomain(selectedProvider.id, selectedCountry);
@@ -160,6 +198,57 @@ export default function EmailAlemaoManager() {
     });
   };
 
+  const handleGeneratePersonalDuck = () => {
+    setDuckPersonalAddress(generatePersonalDuckAddress(duckPersonalName));
+  };
+
+  const handleGeneratePrivateDuck = () => {
+    setDuckPrivateAddress(generatePrivateDuckAddress());
+  };
+
+  const handleCopyDuck = (address: string) => {
+    navigator.clipboard.writeText(address);
+    toast.success('Endereco Duck copiado!', {
+      description: address,
+    });
+  };
+
+  const handleSaveDuckAddress = (type: DuckAddress['type'], address: string, service: string) => {
+    if (!address.trim()) {
+      toast.error('Gere um endereco Duck primeiro');
+      return;
+    }
+    const item: DuckAddress = {
+      id: `${Date.now()}`,
+      type,
+      address,
+      forwardTo: duckForwardTo.trim() || 'seuemail@gmail.com',
+      service: service.trim(),
+      createdAt: new Date(),
+      enabled: true,
+    };
+    setDuckAddresses([item, ...duckAddresses]);
+    toast.success(type === 'personal' ? 'Personal Duck Address salvo' : 'Private Duck Address salvo', {
+      description: address,
+    });
+  };
+
+  const handleToggleDuckAddress = (id: string) => {
+    setDuckAddresses(duckAddresses.map((item) => (
+      item.id === id ? { ...item, enabled: !item.enabled } : item
+    )));
+  };
+
+  const handleDeleteDuckAddress = (id: string) => {
+    setDuckAddresses(duckAddresses.filter((item) => item.id !== id));
+    toast.success('Endereco Duck removido');
+  };
+
+  const handleOpenDuck = (url: string, label: string) => {
+    window.open(url, '_blank');
+    toast.success(label);
+  };
+
   const signupPreview = generateAlemaoSignupUrl(selectedProvider, selectedCountry, selectedDomain);
 
   return (
@@ -171,7 +260,7 @@ export default function EmailAlemaoManager() {
             <Mail className="text-amber-400" size={28} />
             <div>
               <h1 className="text-2xl font-bold text-amber-400 font-mono">EMAIL(3) ALEMAO</h1>
-              <p className="text-xs text-muted-foreground font-mono">Apple ID / iCloud • v1.2</p>
+              <p className="text-xs text-muted-foreground font-mono">Apple ID / iCloud • DuckDuckGo Email Protection • v1.3</p>
             </div>
           </div>
           <div className="flex items-center gap-6">
@@ -215,6 +304,8 @@ export default function EmailAlemaoManager() {
                 </p>
               </div>
 
+              {selectedProvider.id === 'apple' && (
+              <>
               <div className="border border-amber-400/30 rounded-lg p-4 bg-card">
                 <label className="text-xs font-bold text-amber-400 font-mono mb-2 block">PAIS</label>
                 <select
@@ -329,10 +420,194 @@ export default function EmailAlemaoManager() {
                   {signupPreview}
                 </p>
               </div>
+              </>
+              )}
             </div>
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
+            {selectedProvider.id === 'duck' && (
+            <div className="border-2 border-emerald-400/40 rounded-lg p-5 bg-card">
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-emerald-400 font-mono flex items-center gap-2">
+                    <Shield size={20} /> EXTENSAO DUCKDUCK
+                  </h2>
+                  <p className="text-xs text-muted-foreground font-mono mt-1">
+                    DuckDuckGo Email Protection • @duck.com encaminha para o seu Gmail
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/30">
+                  <p className="text-xs font-bold text-emerald-300 font-mono mb-2">COMO FUNCIONA</p>
+                  <p className="text-[12px] leading-5 text-muted-foreground font-mono">
+                    O site ve um endereco @duck.com. O DuckDuckGo encaminha a mensagem para o seu Gmail. Gratuito. Voce pode criar enderecos privados unicos e desativar so o que estiver com spam.
+                  </p>
+                  <p className="mt-3 text-[11px] leading-5 text-emerald-200/80 font-mono break-all">
+                    {duckForwardTo.trim() || 'seuemail@gmail.com'}
+                    <br />↑
+                    <br />algumacoisa@duck.com
+                  </p>
+                </div>
+                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/30">
+                  <p className="text-xs font-bold text-emerald-300 font-mono mb-2">GMAIL DE DESTINO</p>
+                  <input
+                    type="text"
+                    value={duckForwardTo}
+                    onChange={(e) => setDuckForwardTo(e.target.value)}
+                    placeholder="seuemail@gmail.com"
+                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-3"
+                  />
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handleOpenDuck(DUCK_EMAIL_START_URL, 'Abrindo cadastro DuckDuckGo Email Protection...')}
+                      className="w-full px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink size={14} /> CRIAR CONTA DUCK
+                    </button>
+                    <button
+                      onClick={() => handleOpenDuck(DUCK_EMAIL_LOGIN_URL, 'Abrindo login DuckDuckGo Email Protection...')}
+                      className="w-full px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink size={14} /> ENTRAR NO DUCK
+                    </button>
+                    <button
+                      onClick={() => handleOpenDuck(DUCK_EMAIL_PROTECTION_URL, 'Abrindo DuckDuckGo Email Protection...')}
+                      className="w-full px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
+                    >
+                      <ExternalLink size={14} /> ABRIR EMAIL PROTECTION
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/20">
+                  <p className="text-xs font-bold text-emerald-300 font-mono mb-1">1. PERSONAL DUCK ADDRESS</p>
+                  <p className="text-[11px] leading-5 text-muted-foreground font-mono mb-3">
+                    Seu endereco pessoal, no formato seunome@duck.com. Use como identidade principal. Encaminha tudo para o Gmail configurado acima.
+                  </p>
+                  <input
+                    type="text"
+                    value={duckPersonalName}
+                    onChange={(e) => setDuckPersonalName(e.target.value)}
+                    placeholder="seunome"
+                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-2"
+                  />
+                  <p className="text-sm font-bold text-emerald-200 font-mono break-all mb-3">{duckPersonalAddress}</p>
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      onClick={handleGeneratePersonalDuck}
+                      className="flex-1 px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs"
+                    >
+                      <Zap size={14} className="inline mr-1" /> GERAR
+                    </button>
+                    <button
+                      onClick={() => handleCopyDuck(duckPersonalAddress)}
+                      className="flex-1 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs"
+                    >
+                      <Copy size={14} className="inline mr-1" /> COPIAR
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleSaveDuckAddress('personal', duckPersonalAddress, 'pessoal')}
+                    className="w-full px-3 py-2 bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50 rounded transition-colors font-bold text-xs"
+                  >
+                    <Plus size={14} className="inline mr-1" /> SALVAR PERSONAL
+                  </button>
+                </div>
+
+                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/20">
+                  <p className="text-xs font-bold text-emerald-300 font-mono mb-1">2. PRIVATE DUCK ADDRESS</p>
+                  <p className="text-[11px] leading-5 text-muted-foreground font-mono mb-3">
+                    Gerado automaticamente, tipo amaze-gem-spider@duck.com. Um endereco diferente por servico (Amazon, Facebook, loja, newsletter). Se um receber spam, desative so aquele.
+                  </p>
+                  <input
+                    type="text"
+                    value={duckPrivateService}
+                    onChange={(e) => setDuckPrivateService(e.target.value)}
+                    placeholder="servico (ex: amazon, facebook, loja-x)"
+                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-2"
+                  />
+                  <p className="text-sm font-bold text-emerald-200 font-mono break-all mb-3">{duckPrivateAddress}</p>
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      onClick={handleGeneratePrivateDuck}
+                      className="flex-1 px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs"
+                    >
+                      <Zap size={14} className="inline mr-1" /> GERAR
+                    </button>
+                    <button
+                      onClick={() => handleCopyDuck(duckPrivateAddress)}
+                      className="flex-1 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs"
+                    >
+                      <Copy size={14} className="inline mr-1" /> COPIAR
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleSaveDuckAddress('private', duckPrivateAddress, duckPrivateService)}
+                    className="w-full px-3 py-2 bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50 rounded transition-colors font-bold text-xs"
+                  >
+                    <Plus size={14} className="inline mr-1" /> SALVAR PRIVATE
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-bold text-emerald-400 font-mono mb-3">ENDERECOS DUCK SALVOS</h3>
+                {duckAddresses.length === 0 ? (
+                  <div className="border border-emerald-400/20 rounded-lg p-6 text-center">
+                    <p className="text-muted-foreground font-mono text-xs">Nenhum endereco Duck salvo</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {duckAddresses.map((item) => (
+                      <div key={item.id} className="border border-emerald-400/30 rounded-lg p-3 bg-secondary/20">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="font-bold text-emerald-300 font-mono break-all text-sm">{item.address}</p>
+                            <p className="text-[11px] text-muted-foreground font-mono mt-1">
+                              {item.type === 'personal' ? 'Personal' : 'Private'}
+                              {item.service ? ` • ${item.service}` : ''}
+                              {' • encaminha para '}
+                              {item.forwardTo}
+                              {' • '}
+                              {item.enabled ? 'ativo' : 'desativado'}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => handleDeleteDuckAddress(item.id)}
+                            className="px-2 py-1 text-red-400 hover:bg-red-500/20 rounded transition-colors"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            onClick={() => handleCopyDuck(item.address)}
+                            className="flex-1 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded font-bold text-[11px]"
+                          >
+                            <Copy size={12} className="inline mr-1" /> COPIAR
+                          </button>
+                          <button
+                            onClick={() => handleToggleDuckAddress(item.id)}
+                            className="flex-1 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded font-bold text-[11px]"
+                          >
+                            <EyeOff size={12} className="inline mr-1" /> {item.enabled ? 'DESATIVAR' : 'REATIVAR'}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            )}
+
+            {selectedProvider.id === 'apple' && (
+            <>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-amber-400 font-mono">CONTAS SALVAS</h2>
               <button
@@ -409,6 +684,8 @@ export default function EmailAlemaoManager() {
                   </div>
                 ))}
               </div>
+            )}
+            </>
             )}
           </div>
         </div>

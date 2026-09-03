@@ -89,17 +89,18 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
   },
   emailAlemao: {
     key: 'emailAlemao', title: 'Email(3) Alemao', family: 'Credenciais de email regionais',
-    mission: 'Gerar emails Apple ID/iCloud abrindo o cadastro no pais selecionado.',
-    scope: 'Este menu replica o fluxo de Email/EmailPlus para Apple ID e iCloud, com filtro de pais e dominio.',
+    mission: 'Gerar emails Apple ID/iCloud e enderecos DuckDuckGo Email Protection (@duck.com) que encaminham para o Gmail.',
+    scope: 'Este menu replica o fluxo de Email/EmailPlus para Apple ID e iCloud, e inclui Personal Duck Address e Private Duck Address.',
     fields: [
       { label: 'Provedor', meaning: 'Apple ID (depois iCloud.com).' },
       { label: 'Pais', meaning: 'Define idioma, locale e URL de signup (Alemanha, Russia, EUA, Brasil, Europa...).' },
       { label: 'Dominio', meaning: 'Escolhe o sufixo do endereco, ex. @icloud.com, @me.com, @mac.com.' },
-      { label: 'Tipo de email', meaning: 'Controla a composicao do nome e dos numeros.' },
+      { label: 'Personal Duck', meaning: 'Endereco pessoal seunome@duck.com, encaminhado para o Gmail.' },
+      { label: 'Private Duck', meaning: 'Endereco automatico unico por servico, tipo amaze-gem-spider@duck.com.' },
       { label: 'Contas salvas', meaning: 'Lista os registros mantidos no armazenamento local deste menu.' },
     ],
-    recommendedFlow: ['Selecione o pais para abrir o signup no locale correspondente.', 'Escolha o dominio.', 'Gere o email e abra o signup da Apple ID no pais filtrado.', 'Depois abra iCloud.com com a conta criada.'],
-    whyDifferent: 'Diferente do Email Master, este modulo cobre apenas Apple ID/iCloud, sempre carregando o cadastro no pais escolhido.',
+    recommendedFlow: ['Selecione o pais para abrir o signup no locale correspondente.', 'Gere o email Apple e abra account.apple.com/account.', 'No painel DuckDuckGo, informe o Gmail de destino.', 'Crie um Personal Address e Private Addresses por servico.'],
+    whyDifferent: 'Alem da Apple ID/iCloud, este modulo explica e gera os dois tipos de endereco DuckDuckGo Email Protection.',
     limitations: 'Abrir o signup no locale do pais nao altera IP, VPN ou geolocalizacao real da conexao, nem garante criacao sem SMS.',
   },
   manus: {

@@ -24,6 +24,13 @@ export const ALEMAO_EMAIL_PROVIDERS: AlemaoEmailProvider[] = [
     color: 'from-slate-500 to-zinc-700',
     signupNote: 'Primeiro cria a Apple ID no pais escolhido; depois use iCloud.com com essa conta.',
   },
+  {
+    id: 'duck',
+    name: 'EXTENSAO DUCKDUCK',
+    domains: ['duck.com'],
+    color: 'from-emerald-600 to-green-800',
+    signupNote: 'DuckDuckGo Email Protection: Personal e Private @duck.com encaminhando para o seu Gmail.',
+  },
 ];
 
 export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
@@ -34,7 +41,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'pt-BR',
     appleLocale: 'pt_BR',
     applePath: 'br',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'de',
@@ -43,7 +50,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'de-DE',
     appleLocale: 'de_DE',
     applePath: 'de',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'ru',
@@ -52,7 +59,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'ru-RU',
     appleLocale: 'ru_RU',
     applePath: 'ru',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'us',
@@ -61,7 +68,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-US',
     appleLocale: 'en_US',
     applePath: 'us',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'eu',
@@ -70,7 +77,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-GB',
     appleLocale: 'en_GB',
     applePath: 'de',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'fr',
@@ -79,7 +86,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'fr-FR',
     appleLocale: 'fr_FR',
     applePath: 'fr',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'pt',
@@ -88,7 +95,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'pt-PT',
     appleLocale: 'pt_PT',
     applePath: 'pt',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'es',
@@ -97,7 +104,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'es-ES',
     appleLocale: 'es_ES',
     applePath: 'es',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'it',
@@ -106,7 +113,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'it-IT',
     appleLocale: 'it_IT',
     applePath: 'it',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'nl',
@@ -115,7 +122,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'nl-NL',
     appleLocale: 'nl_NL',
     applePath: 'nl',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'gb',
@@ -124,7 +131,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-GB',
     appleLocale: 'en_GB',
     applePath: 'uk',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'tr',
@@ -133,7 +140,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'tr-TR',
     appleLocale: 'tr_TR',
     applePath: 'tr',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'kz',
@@ -142,7 +149,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'kk-KZ',
     appleLocale: 'kk_KZ',
     applePath: 'kz',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
   {
     id: 'by',
@@ -151,7 +158,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'be-BY',
     appleLocale: 'be_BY',
     applePath: 'by',
-    defaultDomains: { apple: 'icloud.com' },
+    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
   },
 ];
 
@@ -167,10 +174,71 @@ export function generateIcloudUrl(country: AlemaoCountry): string {
   return `https://www.icloud.com/?language=${encodeURIComponent(country.locale)}`;
 }
 
+export const DUCK_EMAIL_PROTECTION_URL = 'https://duckduckgo.com/email';
+export const DUCK_EMAIL_START_URL = 'https://duckduckgo.com/email/start';
+export const DUCK_EMAIL_LOGIN_URL = 'https://duckduckgo.com/email/login';
+export const DUCK_DOMAIN = 'duck.com';
+
 export function generateAlemaoSignupUrl(
-  _provider: AlemaoEmailProvider,
+  provider: AlemaoEmailProvider,
   country: AlemaoCountry,
   _domain: string,
 ): string {
+  if (provider.id === 'duck') return DUCK_EMAIL_START_URL;
   return generateAppleIdSignupUrl(country);
+}
+
+export type DuckAddressType = 'personal' | 'private';
+
+export interface DuckAddress {
+  id: string;
+  type: DuckAddressType;
+  address: string;
+  forwardTo: string;
+  service: string;
+  createdAt: Date;
+  enabled: boolean;
+}
+
+const DUCK_ADJECTIVES = [
+  'amaze', 'brave', 'calm', 'clever', 'cosmic', 'crisp', 'curious', 'dawn',
+  'ember', 'fast', 'gentle', 'golden', 'hidden', 'ivory', 'jade', 'kind',
+  'lucky', 'misty', 'noble', 'olive', 'quiet', 'rapid', 'silent', 'solar',
+  'swift', 'tidal', 'ultra', 'vivid', 'wild', 'zen',
+];
+
+const DUCK_NOUNS = [
+  'anchor', 'badge', 'cedar', 'comet', 'coral', 'crane', 'delta', 'echo',
+  'falcon', 'gem', 'glacier', 'harbor', 'island', 'lantern', 'maple', 'meadow',
+  'nebula', 'orchid', 'otter', 'pebble', 'pine', 'quartz', 'raven', 'river',
+  'shadow', 'spider', 'stone', 'summit', 'tiger', 'willow',
+];
+
+function pickDuckWord(list: string[]): string {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+export function sanitizeDuckLocalPart(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '')
+    .replace(/^[._-]+|[._-]+$/g, '')
+    .slice(0, 32);
+}
+
+export function generatePersonalDuckAddress(localPart: string): string {
+  const clean = sanitizeDuckLocalPart(localPart) || 'seunome';
+  return `${clean}@${DUCK_DOMAIN}`;
+}
+
+export function generatePrivateDuckAddress(): string {
+  let first = pickDuckWord(DUCK_ADJECTIVES);
+  let second = pickDuckWord(DUCK_NOUNS);
+  let third = pickDuckWord(DUCK_NOUNS);
+  while (second === third) {
+    third = pickDuckWord(DUCK_NOUNS);
+  }
+  return `${first}-${second}-${third}@${DUCK_DOMAIN}`;
 }
