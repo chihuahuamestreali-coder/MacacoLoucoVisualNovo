@@ -28,6 +28,15 @@ export const ALEMAO_EMAIL_PROVIDERS: AlemaoEmailProvider[] = [
 
 export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
   {
+    id: 'br',
+    name: 'Brasil',
+    code: 'BR',
+    locale: 'pt-BR',
+    appleLocale: 'pt_BR',
+    applePath: 'br',
+    defaultDomains: { apple: 'icloud.com' },
+  },
+  {
     id: 'de',
     name: 'Alemanha',
     code: 'DE',
@@ -52,15 +61,6 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-US',
     appleLocale: 'en_US',
     applePath: 'us',
-    defaultDomains: { apple: 'icloud.com' },
-  },
-  {
-    id: 'br',
-    name: 'Brasil',
-    code: 'BR',
-    locale: 'pt-BR',
-    appleLocale: 'pt_BR',
-    applePath: 'br',
     defaultDomains: { apple: 'icloud.com' },
   },
   {
@@ -159,8 +159,8 @@ export function getDefaultDomain(providerId: string, country: AlemaoCountry): st
   return country.defaultDomains[providerId] || ALEMAO_EMAIL_PROVIDERS.find((p) => p.id === providerId)?.domains[0] || '';
 }
 
-export function generateAppleIdSignupUrl(country: AlemaoCountry): string {
-  return `https://account.apple.com/account?locale=${encodeURIComponent(country.appleLocale)}`;
+export function generateAppleIdSignupUrl(_country?: AlemaoCountry): string {
+  return 'https://account.apple.com/account';
 }
 
 export function generateIcloudUrl(country: AlemaoCountry): string {
