@@ -23,9 +23,9 @@ export default function EmailAlemaoManager() {
   const [, setLocation] = useLocation();
   const [selectedProvider, setSelectedProvider] = useState(ALEMAO_EMAIL_PROVIDERS[0]);
 
-  const germanyCountry = ALEMAO_COUNTRIES.find((c) => c.id === 'de') || ALEMAO_COUNTRIES[0];
-  const [selectedCountry, setSelectedCountry] = useState(germanyCountry);
-  const [selectedDomain, setSelectedDomain] = useState(getDefaultDomain(ALEMAO_EMAIL_PROVIDERS[0].id, germanyCountry));
+  const brasilCountry = ALEMAO_COUNTRIES.find((c) => c.id === 'br') || ALEMAO_COUNTRIES[0];
+  const [selectedCountry, setSelectedCountry] = useState(brasilCountry);
+  const [selectedDomain, setSelectedDomain] = useState(getDefaultDomain(ALEMAO_EMAIL_PROVIDERS[0].id, brasilCountry));
 
   const [emailType, setEmailType] = useState<'name' | 'birthday' | 'combined'>('name');
   const [generatedEmail, setGeneratedEmail] = useState(generateRandomEmail());

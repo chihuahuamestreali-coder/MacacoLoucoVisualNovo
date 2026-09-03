@@ -160,8 +160,7 @@ export function getDefaultDomain(providerId: string, country: AlemaoCountry): st
 }
 
 export function generateAppleIdSignupUrl(country: AlemaoCountry): string {
-  const path = country.applePath ? `/${country.applePath}` : '';
-  return `https://appleid.apple.com${path}/account?locale=${encodeURIComponent(country.appleLocale)}`;
+  return `https://account.apple.com/account?locale=${encodeURIComponent(country.appleLocale)}`;
 }
 
 export function generateIcloudUrl(country: AlemaoCountry): string {
