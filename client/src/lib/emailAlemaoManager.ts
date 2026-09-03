@@ -31,7 +31,36 @@ export const ALEMAO_EMAIL_PROVIDERS: AlemaoEmailProvider[] = [
     color: 'from-emerald-600 to-green-800',
     signupNote: 'DuckDuckGo Email Protection: Personal e Private @duck.com encaminhando para o seu Gmail.',
   },
+  {
+    id: 'simplelogin',
+    name: 'EXTENSAO SIMPLELOGIN',
+    domains: ['aleeas.com'],
+    color: 'from-violet-600 to-purple-800',
+    signupNote: 'SimpleLogin (Proton): aliases @aleeas.com encaminhando para o seu Gmail. Desative ou exclua cada alias.',
+  },
+  {
+    id: 'firefoxrelay',
+    name: 'EXTENSAO FIREFOX RELAY',
+    domains: ['mozmail.com'],
+    color: 'from-sky-600 to-blue-800',
+    signupNote: 'Firefox Relay (Mozilla): enderecos mascarados @mozmail.com que encaminham para a caixa real.',
+  },
+  {
+    id: 'addy',
+    name: 'EXTENSAO ADDY.IO',
+    domains: ['anonaddy.me', 'anonaddy.com'],
+    color: 'from-orange-600 to-amber-800',
+    signupNote: 'Addy.io: aliases por servico (amazon@, facebook@, aliexpress@) com controle de encaminhamento.',
+  },
 ];
+
+const SHARED_DEFAULT_DOMAINS: Record<string, string> = {
+  apple: 'icloud.com',
+  duck: 'duck.com',
+  simplelogin: 'aleeas.com',
+  firefoxrelay: 'mozmail.com',
+  addy: 'anonaddy.me',
+};
 
 export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
   {
@@ -41,7 +70,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'pt-BR',
     appleLocale: 'pt_BR',
     applePath: 'br',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'de',
@@ -50,7 +79,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'de-DE',
     appleLocale: 'de_DE',
     applePath: 'de',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'ru',
@@ -59,7 +88,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'ru-RU',
     appleLocale: 'ru_RU',
     applePath: 'ru',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'us',
@@ -68,7 +97,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-US',
     appleLocale: 'en_US',
     applePath: 'us',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'eu',
@@ -77,7 +106,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-GB',
     appleLocale: 'en_GB',
     applePath: 'de',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'fr',
@@ -86,7 +115,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'fr-FR',
     appleLocale: 'fr_FR',
     applePath: 'fr',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'pt',
@@ -95,7 +124,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'pt-PT',
     appleLocale: 'pt_PT',
     applePath: 'pt',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'es',
@@ -104,7 +133,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'es-ES',
     appleLocale: 'es_ES',
     applePath: 'es',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'it',
@@ -113,7 +142,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'it-IT',
     appleLocale: 'it_IT',
     applePath: 'it',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'nl',
@@ -122,7 +151,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'nl-NL',
     appleLocale: 'nl_NL',
     applePath: 'nl',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'gb',
@@ -131,7 +160,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'en-GB',
     appleLocale: 'en_GB',
     applePath: 'uk',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'tr',
@@ -140,7 +169,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'tr-TR',
     appleLocale: 'tr_TR',
     applePath: 'tr',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'kz',
@@ -149,7 +178,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'kk-KZ',
     appleLocale: 'kk_KZ',
     applePath: 'kz',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
   {
     id: 'by',
@@ -158,7 +187,7 @@ export const ALEMAO_COUNTRIES: AlemaoCountry[] = [
     locale: 'be-BY',
     appleLocale: 'be_BY',
     applePath: 'by',
-    defaultDomains: { apple: 'icloud.com', duck: 'duck.com' },
+    defaultDomains: { ...SHARED_DEFAULT_DOMAINS },
   },
 ];
 
@@ -179,16 +208,37 @@ export const DUCK_EMAIL_START_URL = 'https://duckduckgo.com/email/start';
 export const DUCK_EMAIL_LOGIN_URL = 'https://duckduckgo.com/email/login';
 export const DUCK_DOMAIN = 'duck.com';
 
+export const SIMPLELOGIN_HOME_URL = 'https://simplelogin.io';
+export const SIMPLELOGIN_START_URL = 'https://app.simplelogin.io/auth/register';
+export const SIMPLELOGIN_LOGIN_URL = 'https://app.simplelogin.io/auth/login';
+export const SIMPLELOGIN_DOMAIN = 'aleeas.com';
+
+export const FIREFOX_RELAY_HOME_URL = 'https://relay.firefox.com';
+export const FIREFOX_RELAY_START_URL = 'https://relay.firefox.com/accounts/profile/';
+export const FIREFOX_RELAY_LOGIN_URL = 'https://relay.firefox.com/accounts/login/';
+export const FIREFOX_RELAY_DOMAIN = 'mozmail.com';
+
+export const ADDY_HOME_URL = 'https://addy.io';
+export const ADDY_START_URL = 'https://app.addy.io/register';
+export const ADDY_LOGIN_URL = 'https://app.addy.io/login';
+export const ADDY_DOMAIN = 'anonaddy.me';
+export const ADDY_NAMED_DOMAIN = 'anonaddy.com';
+
 export function generateAlemaoSignupUrl(
   provider: AlemaoEmailProvider,
   country: AlemaoCountry,
   _domain: string,
 ): string {
   if (provider.id === 'duck') return DUCK_EMAIL_START_URL;
+  if (provider.id === 'simplelogin') return SIMPLELOGIN_START_URL;
+  if (provider.id === 'firefoxrelay') return FIREFOX_RELAY_START_URL;
+  if (provider.id === 'addy') return ADDY_START_URL;
   return generateAppleIdSignupUrl(country);
 }
 
 export type DuckAddressType = 'personal' | 'private';
+export type AliasAddressType = DuckAddressType;
+export type AliasExtensionId = 'duck' | 'simplelogin' | 'firefoxrelay' | 'addy';
 
 export interface DuckAddress {
   id: string;
@@ -199,6 +249,8 @@ export interface DuckAddress {
   createdAt: Date;
   enabled: boolean;
 }
+
+export type AliasAddress = DuckAddress;
 
 const DUCK_ADJECTIVES = [
   'amaze', 'brave', 'calm', 'clever', 'cosmic', 'crisp', 'curious', 'dawn',
@@ -216,6 +268,15 @@ const DUCK_NOUNS = [
 
 function pickDuckWord(list: string[]): string {
   return list[Math.floor(Math.random() * list.length)];
+}
+
+function randomToken(length = 8): string {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for (let i = 0; i < length; i += 1) {
+    out += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return out;
 }
 
 export function sanitizeDuckLocalPart(value: string): string {
@@ -241,4 +302,39 @@ export function generatePrivateDuckAddress(): string {
     third = pickDuckWord(DUCK_NOUNS);
   }
   return `${first}-${second}-${third}@${DUCK_DOMAIN}`;
+}
+
+export function generatePersonalSimpleLoginAddress(localPart: string): string {
+  const clean = sanitizeDuckLocalPart(localPart) || 'seunome';
+  return `${clean}@${SIMPLELOGIN_DOMAIN}`;
+}
+
+export function generatePrivateSimpleLoginAddress(): string {
+  return `${randomToken(6)}${randomToken(4)}@${SIMPLELOGIN_DOMAIN}`;
+}
+
+export function generatePersonalFirefoxRelayAddress(localPart: string): string {
+  const clean = sanitizeDuckLocalPart(localPart) || 'seunome';
+  return `${clean}@${FIREFOX_RELAY_DOMAIN}`;
+}
+
+export function generatePrivateFirefoxRelayAddress(): string {
+  return `${pickDuckWord(DUCK_ADJECTIVES)}.${randomToken(6)}@${FIREFOX_RELAY_DOMAIN}`;
+}
+
+export function generatePersonalAddyAddress(localPart: string): string {
+  const clean = sanitizeDuckLocalPart(localPart) || 'seunome';
+  return `${clean}@${ADDY_DOMAIN}`;
+}
+
+export function generatePrivateAddyAddress(service: string, username: string): string {
+  const user = sanitizeDuckLocalPart(username) || 'seunome';
+  const svc = sanitizeDuckLocalPart(service) || pickDuckWord(DUCK_NOUNS);
+  return `${svc}@${user}.${ADDY_NAMED_DOMAIN}`;
+}
+
+export const ALIAS_EXTENSION_IDS: AliasExtensionId[] = ['duck', 'simplelogin', 'firefoxrelay', 'addy'];
+
+export function isAliasExtensionId(id: string): id is AliasExtensionId {
+  return ALIAS_EXTENSION_IDS.includes(id as AliasExtensionId);
 }

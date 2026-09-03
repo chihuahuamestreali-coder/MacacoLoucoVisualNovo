@@ -1,4 +1,5 @@
 import ModuleGuide from '@/components/ModuleGuide';
+import AliasExtensionPanel, { type AliasPanelConfig } from '@/components/AliasExtensionPanel';
 import { MODULE_GUIDES } from '@/lib/moduleGuides';
 import { useState, useEffect } from 'react';
 import {
@@ -17,13 +18,210 @@ import {
   DUCK_EMAIL_PROTECTION_URL,
   DUCK_EMAIL_START_URL,
   DUCK_EMAIL_LOGIN_URL,
+  SIMPLELOGIN_HOME_URL,
+  SIMPLELOGIN_START_URL,
+  SIMPLELOGIN_LOGIN_URL,
+  FIREFOX_RELAY_HOME_URL,
+  FIREFOX_RELAY_START_URL,
+  FIREFOX_RELAY_LOGIN_URL,
+  ADDY_HOME_URL,
+  ADDY_START_URL,
+  ADDY_LOGIN_URL,
   generatePersonalDuckAddress,
   generatePrivateDuckAddress,
-  type DuckAddress,
+  generatePersonalSimpleLoginAddress,
+  generatePrivateSimpleLoginAddress,
+  generatePersonalFirefoxRelayAddress,
+  generatePrivateFirefoxRelayAddress,
+  generatePersonalAddyAddress,
+  generatePrivateAddyAddress,
+  isAliasExtensionId,
+  type AliasAddress,
+  type AliasExtensionId,
 } from '@/lib/emailAlemaoManager';
-import { Mail, Copy, ExternalLink, Plus, Trash2, Zap, RefreshCw, Apple, Shield, EyeOff } from 'lucide-react';
+import { Mail, Copy, ExternalLink, Plus, Trash2, Zap, RefreshCw, Apple } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLocation } from 'wouter';
+
+interface AliasPanelState {
+  forwardTo: string;
+  personalName: string;
+  personalAddress: string;
+  privateService: string;
+  privateAddress: string;
+  addresses: AliasAddress[];
+}
+
+const STORAGE_KEYS: Record<AliasExtensionId, { addresses: string; forward: string }> = {
+  duck: { addresses: 'emailalemao_duck_addresses', forward: 'emailalemao_duck_forward' },
+  simplelogin: { addresses: 'emailalemao_simplelogin_addresses', forward: 'emailalemao_simplelogin_forward' },
+  firefoxrelay: { addresses: 'emailalemao_firefoxrelay_addresses', forward: 'emailalemao_firefoxrelay_forward' },
+  addy: { addresses: 'emailalemao_addy_addresses', forward: 'emailalemao_addy_forward' },
+};
+
+function createInitialAliasState(id: AliasExtensionId): AliasPanelState {
+  if (id === 'simplelogin') {
+    return {
+      forwardTo: '',
+      personalName: '',
+      personalAddress: generatePersonalSimpleLoginAddress('seunome'),
+      privateService: '',
+      privateAddress: generatePrivateSimpleLoginAddress(),
+      addresses: [],
+    };
+  }
+  if (id === 'firefoxrelay') {
+    return {
+      forwardTo: '',
+      personalName: '',
+      personalAddress: generatePersonalFirefoxRelayAddress('seunome'),
+      privateService: '',
+      privateAddress: generatePrivateFirefoxRelayAddress(),
+      addresses: [],
+    };
+  }
+  if (id === 'addy') {
+    return {
+      forwardTo: '',
+      personalName: 'seunome',
+      personalAddress: generatePersonalAddyAddress('seunome'),
+      privateService: '',
+      privateAddress: generatePrivateAddyAddress('amazon', 'seunome'),
+      addresses: [],
+    };
+  }
+  return {
+    forwardTo: '',
+    personalName: '',
+    personalAddress: generatePersonalDuckAddress('seunome'),
+    privateService: '',
+    privateAddress: generatePrivateDuckAddress(),
+    addresses: [],
+  };
+}
+
+const ALIAS_PANEL_CONFIG: Record<AliasExtensionId, AliasPanelConfig> = {
+  duck: {
+    title: 'EXTENSAO DUCKDUCK',
+    subtitle: 'DuckDuckGo Email Protection • @duck.com encaminha para o seu Gmail',
+    howItWorks: 'O site ve um endereco @duck.com. O DuckDuckGo encaminha a mensagem para o seu Gmail. Gratuito. Voce pode criar enderecos privados unicos e desativar so o que estiver com spam.',
+    exampleAlias: 'algumacoisa@duck.com',
+    personalTitle: '1. PERSONAL DUCK ADDRESS',
+    personalHelp: 'Seu endereco pessoal, no formato seunome@duck.com. Use como identidade principal. Encaminha tudo para o Gmail configurado acima.',
+    personalPlaceholder: 'seunome',
+    privateTitle: '2. PRIVATE DUCK ADDRESS',
+    privateHelp: 'Gerado automaticamente, tipo amaze-gem-spider@duck.com. Um endereco diferente por servico (Amazon, Facebook, loja, newsletter). Se um receber spam, desative so aquele.',
+    privatePlaceholder: 'servico (ex: amazon, facebook, loja-x)',
+    savedTitle: 'ENDERECOS DUCK SALVOS',
+    emptyLabel: 'Nenhum endereco Duck salvo',
+    startLabel: 'CRIAR CONTA DUCK',
+    loginLabel: 'ENTRAR NO DUCK',
+    homeLabel: 'ABRIR EMAIL PROTECTION',
+    startUrl: DUCK_EMAIL_START_URL,
+    loginUrl: DUCK_EMAIL_LOGIN_URL,
+    homeUrl: DUCK_EMAIL_PROTECTION_URL,
+    theme: {
+      border: 'border-emerald-400/40',
+      title: 'text-emerald-400',
+      muted: 'text-emerald-300',
+      button: 'bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50',
+      buttonAlt: 'bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40',
+      save: 'bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50',
+    },
+  },
+  simplelogin: {
+    title: 'EXTENSAO SIMPLELOGIN',
+    subtitle: 'SimpleLogin (Proton) • @aleeas.com encaminha para o seu Gmail',
+    howItWorks: 'Voce cria aliases como random@aleeas.com. O SimpleLogin encaminha para o Gmail. A grande vantagem e desativar ou excluir cada alias individualmente. Pertence ao ecossistema Proton.',
+    exampleAlias: 'random@aleeas.com',
+    personalTitle: '1. PERSONAL SIMPLELOGIN',
+    personalHelp: 'Seu alias pessoal no formato seunome@aleeas.com. Use como identidade principal. Encaminha tudo para o Gmail configurado acima.',
+    personalPlaceholder: 'seunome',
+    privateTitle: '2. PRIVATE SIMPLELOGIN',
+    privateHelp: 'Alias aleatorio tipo k7m2n9p1@aleeas.com. Um endereco diferente por servico. Se um receber spam, desative so aquele.',
+    privatePlaceholder: 'servico (ex: amazon, facebook, loja-x)',
+    savedTitle: 'ALIASES SIMPLELOGIN SALVOS',
+    emptyLabel: 'Nenhum alias SimpleLogin salvo',
+    startLabel: 'CRIAR CONTA SIMPLELOGIN',
+    loginLabel: 'ENTRAR NO SIMPLELOGIN',
+    homeLabel: 'ABRIR SIMPLELOGIN',
+    startUrl: SIMPLELOGIN_START_URL,
+    loginUrl: SIMPLELOGIN_LOGIN_URL,
+    homeUrl: SIMPLELOGIN_HOME_URL,
+    theme: {
+      border: 'border-violet-400/40',
+      title: 'text-violet-400',
+      muted: 'text-violet-300',
+      button: 'bg-violet-500/20 hover:bg-violet-500/40 text-violet-300 border border-violet-500/50',
+      buttonAlt: 'bg-violet-500/10 hover:bg-violet-500/30 text-violet-300 border border-violet-500/40',
+      save: 'bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50',
+    },
+  },
+  firefoxrelay: {
+    title: 'EXTENSAO FIREFOX RELAY',
+    subtitle: 'Mozilla Firefox Relay • @mozmail.com mascara o endereco real',
+    howItWorks: 'O Firefox Relay cria enderecos mascarados @mozmail.com que encaminham para a sua caixa real. Feito para evitar fornecer o Gmail verdadeiro aos sites.',
+    exampleAlias: 'mascara@mozmail.com',
+    personalTitle: '1. PERSONAL RELAY',
+    personalHelp: 'Seu endereco mascarado pessoal, no formato seunome@mozmail.com. Encaminha tudo para o Gmail configurado acima.',
+    personalPlaceholder: 'seunome',
+    privateTitle: '2. PRIVATE RELAY',
+    privateHelp: 'Mascara gerada automaticamente, tipo brave.k8m2n1@mozmail.com. Use um endereco diferente por site. Se receber spam, desative so aquele.',
+    privatePlaceholder: 'servico (ex: amazon, facebook, newsletter)',
+    savedTitle: 'MASCARAS RELAY SALVAS',
+    emptyLabel: 'Nenhuma mascara Firefox Relay salva',
+    startLabel: 'CRIAR CONTA RELAY',
+    loginLabel: 'ENTRAR NO RELAY',
+    homeLabel: 'ABRIR FIREFOX RELAY',
+    startUrl: FIREFOX_RELAY_START_URL,
+    loginUrl: FIREFOX_RELAY_LOGIN_URL,
+    homeUrl: FIREFOX_RELAY_HOME_URL,
+    theme: {
+      border: 'border-sky-400/40',
+      title: 'text-sky-400',
+      muted: 'text-sky-300',
+      button: 'bg-sky-500/20 hover:bg-sky-500/40 text-sky-300 border border-sky-500/50',
+      buttonAlt: 'bg-sky-500/10 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40',
+      save: 'bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50',
+    },
+  },
+  addy: {
+    title: 'EXTENSAO ADDY.IO',
+    subtitle: 'Addy.io • aliases por servico encaminhando para o Gmail',
+    howItWorks: 'Crie muitos aliases e controle o encaminhamento. Formato por servico: amazon@seunome.anonaddy.com, facebook@seunome.anonaddy.com, aliexpress@, newsletter@.',
+    exampleAlias: 'amazon@seunome.anonaddy.com',
+    personalTitle: '1. PERSONAL ADDY',
+    personalHelp: 'Seu endereco pessoal no formato seunome@anonaddy.me. Use como identidade principal. Encaminha tudo para o Gmail configurado acima.',
+    personalPlaceholder: 'seunome',
+    privateTitle: '2. PRIVATE ADDY POR SERVICO',
+    privateHelp: 'Alias nomeado por servico, tipo amazon@seunome.anonaddy.com. Ideal para Amazon, Facebook, AliExpress, newsletter. Desative so o que estiver com spam.',
+    privatePlaceholder: 'servico (ex: amazon, facebook, aliexpress, newsletter)',
+    privateNeedsUsername: true,
+    savedTitle: 'ALIASES ADDY.IO SALVOS',
+    emptyLabel: 'Nenhum alias Addy.io salvo',
+    startLabel: 'CRIAR CONTA ADDY.IO',
+    loginLabel: 'ENTRAR NO ADDY.IO',
+    homeLabel: 'ABRIR ADDY.IO',
+    startUrl: ADDY_START_URL,
+    loginUrl: ADDY_LOGIN_URL,
+    homeUrl: ADDY_HOME_URL,
+    theme: {
+      border: 'border-orange-400/40',
+      title: 'text-orange-400',
+      muted: 'text-orange-300',
+      button: 'bg-orange-500/20 hover:bg-orange-500/40 text-orange-300 border border-orange-500/50',
+      buttonAlt: 'bg-orange-500/10 hover:bg-orange-500/30 text-orange-300 border border-orange-500/40',
+      save: 'bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50',
+    },
+  },
+};
+
+const ALIAS_LABEL: Record<AliasExtensionId, string> = {
+  duck: 'Duck',
+  simplelogin: 'SimpleLogin',
+  firefoxrelay: 'Firefox Relay',
+  addy: 'Addy.io',
+};
 
 export default function EmailAlemaoManager() {
   const [, setLocation] = useLocation();
@@ -40,12 +238,12 @@ export default function EmailAlemaoManager() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newEmail, setNewEmail] = useState('');
 
-  const [duckForwardTo, setDuckForwardTo] = useState('');
-  const [duckPersonalName, setDuckPersonalName] = useState('');
-  const [duckPersonalAddress, setDuckPersonalAddress] = useState(generatePersonalDuckAddress('seunome'));
-  const [duckPrivateAddress, setDuckPrivateAddress] = useState(generatePrivateDuckAddress());
-  const [duckPrivateService, setDuckPrivateService] = useState('');
-  const [duckAddresses, setDuckAddresses] = useState<DuckAddress[]>([]);
+  const [aliasState, setAliasState] = useState<Record<AliasExtensionId, AliasPanelState>>({
+    duck: createInitialAliasState('duck'),
+    simplelogin: createInitialAliasState('simplelogin'),
+    firefoxrelay: createInitialAliasState('firefoxrelay'),
+    addy: createInitialAliasState('addy'),
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('emailalemao_accounts');
@@ -67,29 +265,40 @@ export default function EmailAlemaoManager() {
   }, [emailAccounts]);
 
   useEffect(() => {
-    const savedDuck = localStorage.getItem('emailalemao_duck_addresses');
-    if (savedDuck) {
-      try {
-        const parsed = JSON.parse(savedDuck);
-        setDuckAddresses(parsed.map((item: DuckAddress) => ({
-          ...item,
-          createdAt: new Date(item.createdAt),
-        })));
-      } catch (e) {
-        console.error('Erro ao carregar enderecos Duck:', e);
-      }
-    }
-    const savedForward = localStorage.getItem('emailalemao_duck_forward');
-    if (savedForward) setDuckForwardTo(savedForward);
+    setAliasState((prev) => {
+      const next = { ...prev };
+      (Object.keys(STORAGE_KEYS) as AliasExtensionId[]).forEach((id) => {
+        const keys = STORAGE_KEYS[id];
+        const savedAddresses = localStorage.getItem(keys.addresses);
+        if (savedAddresses) {
+          try {
+            const parsed = JSON.parse(savedAddresses);
+            next[id] = {
+              ...next[id],
+              addresses: parsed.map((item: AliasAddress) => ({
+                ...item,
+                createdAt: new Date(item.createdAt),
+              })),
+            };
+          } catch (e) {
+            console.error(`Erro ao carregar enderecos ${id}:`, e);
+          }
+        }
+        const savedForward = localStorage.getItem(keys.forward);
+        if (savedForward) {
+          next[id] = { ...next[id], forwardTo: savedForward };
+        }
+      });
+      return next;
+    });
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('emailalemao_duck_addresses', JSON.stringify(duckAddresses));
-  }, [duckAddresses]);
-
-  useEffect(() => {
-    localStorage.setItem('emailalemao_duck_forward', duckForwardTo);
-  }, [duckForwardTo]);
+    (Object.keys(STORAGE_KEYS) as AliasExtensionId[]).forEach((id) => {
+      localStorage.setItem(STORAGE_KEYS[id].addresses, JSON.stringify(aliasState[id].addresses));
+      localStorage.setItem(STORAGE_KEYS[id].forward, aliasState[id].forwardTo);
+    });
+  }, [aliasState]);
 
   useEffect(() => {
     const nextDomain = getDefaultDomain(selectedProvider.id, selectedCountry);
@@ -198,58 +407,72 @@ export default function EmailAlemaoManager() {
     });
   };
 
-  const handleGeneratePersonalDuck = () => {
-    setDuckPersonalAddress(generatePersonalDuckAddress(duckPersonalName));
+  const updateAlias = (id: AliasExtensionId, patch: Partial<AliasPanelState>) => {
+    setAliasState((prev) => ({ ...prev, [id]: { ...prev[id], ...patch } }));
   };
 
-  const handleGeneratePrivateDuck = () => {
-    setDuckPrivateAddress(generatePrivateDuckAddress());
+  const handleGeneratePersonal = (id: AliasExtensionId) => {
+    const name = aliasState[id].personalName;
+    if (id === 'simplelogin') updateAlias(id, { personalAddress: generatePersonalSimpleLoginAddress(name) });
+    else if (id === 'firefoxrelay') updateAlias(id, { personalAddress: generatePersonalFirefoxRelayAddress(name) });
+    else if (id === 'addy') updateAlias(id, { personalAddress: generatePersonalAddyAddress(name) });
+    else updateAlias(id, { personalAddress: generatePersonalDuckAddress(name) });
   };
 
-  const handleCopyDuck = (address: string) => {
+  const handleGeneratePrivate = (id: AliasExtensionId) => {
+    if (id === 'simplelogin') updateAlias(id, { privateAddress: generatePrivateSimpleLoginAddress() });
+    else if (id === 'firefoxrelay') updateAlias(id, { privateAddress: generatePrivateFirefoxRelayAddress() });
+    else if (id === 'addy') updateAlias(id, { privateAddress: generatePrivateAddyAddress(aliasState[id].privateService, aliasState[id].personalName) });
+    else updateAlias(id, { privateAddress: generatePrivateDuckAddress() });
+  };
+
+  const handleCopyAlias = (address: string, id: AliasExtensionId) => {
     navigator.clipboard.writeText(address);
-    toast.success('Endereco Duck copiado!', {
+    toast.success(`Endereco ${ALIAS_LABEL[id]} copiado!`, {
       description: address,
     });
   };
 
-  const handleSaveDuckAddress = (type: DuckAddress['type'], address: string, service: string) => {
+  const handleSaveAlias = (id: AliasExtensionId, type: AliasAddress['type'], address: string, service: string) => {
     if (!address.trim()) {
-      toast.error('Gere um endereco Duck primeiro');
+      toast.error(`Gere um endereco ${ALIAS_LABEL[id]} primeiro`);
       return;
     }
-    const item: DuckAddress = {
+    const item: AliasAddress = {
       id: `${Date.now()}`,
       type,
       address,
-      forwardTo: duckForwardTo.trim() || 'seuemail@gmail.com',
+      forwardTo: aliasState[id].forwardTo.trim() || 'seuemail@gmail.com',
       service: service.trim(),
       createdAt: new Date(),
       enabled: true,
     };
-    setDuckAddresses([item, ...duckAddresses]);
-    toast.success(type === 'personal' ? 'Personal Duck Address salvo' : 'Private Duck Address salvo', {
+    updateAlias(id, { addresses: [item, ...aliasState[id].addresses] });
+    toast.success(type === 'personal' ? `Personal ${ALIAS_LABEL[id]} salvo` : `Private ${ALIAS_LABEL[id]} salvo`, {
       description: address,
     });
   };
 
-  const handleToggleDuckAddress = (id: string) => {
-    setDuckAddresses(duckAddresses.map((item) => (
-      item.id === id ? { ...item, enabled: !item.enabled } : item
-    )));
+  const handleToggleAlias = (id: AliasExtensionId, itemId: string) => {
+    updateAlias(id, {
+      addresses: aliasState[id].addresses.map((item) => (
+        item.id === itemId ? { ...item, enabled: !item.enabled } : item
+      )),
+    });
   };
 
-  const handleDeleteDuckAddress = (id: string) => {
-    setDuckAddresses(duckAddresses.filter((item) => item.id !== id));
-    toast.success('Endereco Duck removido');
+  const handleDeleteAlias = (id: AliasExtensionId, itemId: string) => {
+    updateAlias(id, { addresses: aliasState[id].addresses.filter((item) => item.id !== itemId) });
+    toast.success(`Endereco ${ALIAS_LABEL[id]} removido`);
   };
 
-  const handleOpenDuck = (url: string, label: string) => {
+  const handleOpenAlias = (url: string, label: string) => {
     window.open(url, '_blank');
     toast.success(label);
   };
 
   const signupPreview = generateAlemaoSignupUrl(selectedProvider, selectedCountry, selectedDomain);
+  const activeAliasId = isAliasExtensionId(selectedProvider.id) ? selectedProvider.id : null;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -260,7 +483,7 @@ export default function EmailAlemaoManager() {
             <Mail className="text-amber-400" size={28} />
             <div>
               <h1 className="text-2xl font-bold text-amber-400 font-mono">EMAIL(3) ALEMAO</h1>
-              <p className="text-xs text-muted-foreground font-mono">Apple ID / iCloud • DuckDuckGo Email Protection • v1.3</p>
+              <p className="text-xs text-muted-foreground font-mono">Apple ID / iCloud • Duck • SimpleLogin • Firefox Relay • Addy.io • v1.4</p>
             </div>
           </div>
           <div className="flex items-center gap-6">
@@ -426,184 +649,26 @@ export default function EmailAlemaoManager() {
           </div>
 
           <div className="lg:col-span-2 space-y-8">
-            {selectedProvider.id === 'duck' && (
-            <div className="border-2 border-emerald-400/40 rounded-lg p-5 bg-card">
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <div>
-                  <h2 className="text-xl font-bold text-emerald-400 font-mono flex items-center gap-2">
-                    <Shield size={20} /> EXTENSAO DUCKDUCK
-                  </h2>
-                  <p className="text-xs text-muted-foreground font-mono mt-1">
-                    DuckDuckGo Email Protection • @duck.com encaminha para o seu Gmail
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
-                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/30">
-                  <p className="text-xs font-bold text-emerald-300 font-mono mb-2">COMO FUNCIONA</p>
-                  <p className="text-[12px] leading-5 text-muted-foreground font-mono">
-                    O site ve um endereco @duck.com. O DuckDuckGo encaminha a mensagem para o seu Gmail. Gratuito. Voce pode criar enderecos privados unicos e desativar so o que estiver com spam.
-                  </p>
-                  <p className="mt-3 text-[11px] leading-5 text-emerald-200/80 font-mono break-all">
-                    {duckForwardTo.trim() || 'seuemail@gmail.com'}
-                    <br />↑
-                    <br />algumacoisa@duck.com
-                  </p>
-                </div>
-                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/30">
-                  <p className="text-xs font-bold text-emerald-300 font-mono mb-2">GMAIL DE DESTINO</p>
-                  <input
-                    type="text"
-                    value={duckForwardTo}
-                    onChange={(e) => setDuckForwardTo(e.target.value)}
-                    placeholder="seuemail@gmail.com"
-                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-3"
-                  />
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => handleOpenDuck(DUCK_EMAIL_START_URL, 'Abrindo cadastro DuckDuckGo Email Protection...')}
-                      className="w-full px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
-                    >
-                      <ExternalLink size={14} /> CRIAR CONTA DUCK
-                    </button>
-                    <button
-                      onClick={() => handleOpenDuck(DUCK_EMAIL_LOGIN_URL, 'Abrindo login DuckDuckGo Email Protection...')}
-                      className="w-full px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
-                    >
-                      <ExternalLink size={14} /> ENTRAR NO DUCK
-                    </button>
-                    <button
-                      onClick={() => handleOpenDuck(DUCK_EMAIL_PROTECTION_URL, 'Abrindo DuckDuckGo Email Protection...')}
-                      className="w-full px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs flex items-center justify-center gap-2"
-                    >
-                      <ExternalLink size={14} /> ABRIR EMAIL PROTECTION
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
-                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/20">
-                  <p className="text-xs font-bold text-emerald-300 font-mono mb-1">1. PERSONAL DUCK ADDRESS</p>
-                  <p className="text-[11px] leading-5 text-muted-foreground font-mono mb-3">
-                    Seu endereco pessoal, no formato seunome@duck.com. Use como identidade principal. Encaminha tudo para o Gmail configurado acima.
-                  </p>
-                  <input
-                    type="text"
-                    value={duckPersonalName}
-                    onChange={(e) => setDuckPersonalName(e.target.value)}
-                    placeholder="seunome"
-                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-2"
-                  />
-                  <p className="text-sm font-bold text-emerald-200 font-mono break-all mb-3">{duckPersonalAddress}</p>
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={handleGeneratePersonalDuck}
-                      className="flex-1 px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs"
-                    >
-                      <Zap size={14} className="inline mr-1" /> GERAR
-                    </button>
-                    <button
-                      onClick={() => handleCopyDuck(duckPersonalAddress)}
-                      className="flex-1 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs"
-                    >
-                      <Copy size={14} className="inline mr-1" /> COPIAR
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => handleSaveDuckAddress('personal', duckPersonalAddress, 'pessoal')}
-                    className="w-full px-3 py-2 bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50 rounded transition-colors font-bold text-xs"
-                  >
-                    <Plus size={14} className="inline mr-1" /> SALVAR PERSONAL
-                  </button>
-                </div>
-
-                <div className="border border-emerald-400/30 rounded-lg p-4 bg-secondary/20">
-                  <p className="text-xs font-bold text-emerald-300 font-mono mb-1">2. PRIVATE DUCK ADDRESS</p>
-                  <p className="text-[11px] leading-5 text-muted-foreground font-mono mb-3">
-                    Gerado automaticamente, tipo amaze-gem-spider@duck.com. Um endereco diferente por servico (Amazon, Facebook, loja, newsletter). Se um receber spam, desative so aquele.
-                  </p>
-                  <input
-                    type="text"
-                    value={duckPrivateService}
-                    onChange={(e) => setDuckPrivateService(e.target.value)}
-                    placeholder="servico (ex: amazon, facebook, loja-x)"
-                    className="w-full px-3 py-2 bg-secondary border border-emerald-400/30 rounded text-foreground font-mono text-sm mb-2"
-                  />
-                  <p className="text-sm font-bold text-emerald-200 font-mono break-all mb-3">{duckPrivateAddress}</p>
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={handleGeneratePrivateDuck}
-                      className="flex-1 px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/50 rounded transition-colors font-bold text-xs"
-                    >
-                      <Zap size={14} className="inline mr-1" /> GERAR
-                    </button>
-                    <button
-                      onClick={() => handleCopyDuck(duckPrivateAddress)}
-                      className="flex-1 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded transition-colors font-bold text-xs"
-                    >
-                      <Copy size={14} className="inline mr-1" /> COPIAR
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => handleSaveDuckAddress('private', duckPrivateAddress, duckPrivateService)}
-                    className="w-full px-3 py-2 bg-green-500/20 hover:bg-green-500/40 text-green-400 border border-green-500/50 rounded transition-colors font-bold text-xs"
-                  >
-                    <Plus size={14} className="inline mr-1" /> SALVAR PRIVATE
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-bold text-emerald-400 font-mono mb-3">ENDERECOS DUCK SALVOS</h3>
-                {duckAddresses.length === 0 ? (
-                  <div className="border border-emerald-400/20 rounded-lg p-6 text-center">
-                    <p className="text-muted-foreground font-mono text-xs">Nenhum endereco Duck salvo</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {duckAddresses.map((item) => (
-                      <div key={item.id} className="border border-emerald-400/30 rounded-lg p-3 bg-secondary/20">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <p className="font-bold text-emerald-300 font-mono break-all text-sm">{item.address}</p>
-                            <p className="text-[11px] text-muted-foreground font-mono mt-1">
-                              {item.type === 'personal' ? 'Personal' : 'Private'}
-                              {item.service ? ` • ${item.service}` : ''}
-                              {' • encaminha para '}
-                              {item.forwardTo}
-                              {' • '}
-                              {item.enabled ? 'ativo' : 'desativado'}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => handleDeleteDuckAddress(item.id)}
-                            className="px-2 py-1 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            onClick={() => handleCopyDuck(item.address)}
-                            className="flex-1 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded font-bold text-[11px]"
-                          >
-                            <Copy size={12} className="inline mr-1" /> COPIAR
-                          </button>
-                          <button
-                            onClick={() => handleToggleDuckAddress(item.id)}
-                            className="flex-1 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded font-bold text-[11px]"
-                          >
-                            <EyeOff size={12} className="inline mr-1" /> {item.enabled ? 'DESATIVAR' : 'REATIVAR'}
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            {activeAliasId && (
+              <AliasExtensionPanel
+                config={ALIAS_PANEL_CONFIG[activeAliasId]}
+                forwardTo={aliasState[activeAliasId].forwardTo}
+                onForwardToChange={(value) => updateAlias(activeAliasId, { forwardTo: value })}
+                personalName={aliasState[activeAliasId].personalName}
+                onPersonalNameChange={(value) => updateAlias(activeAliasId, { personalName: value })}
+                personalAddress={aliasState[activeAliasId].personalAddress}
+                privateService={aliasState[activeAliasId].privateService}
+                onPrivateServiceChange={(value) => updateAlias(activeAliasId, { privateService: value })}
+                privateAddress={aliasState[activeAliasId].privateAddress}
+                addresses={aliasState[activeAliasId].addresses}
+                onGeneratePersonal={() => handleGeneratePersonal(activeAliasId)}
+                onGeneratePrivate={() => handleGeneratePrivate(activeAliasId)}
+                onCopy={(address) => handleCopyAlias(address, activeAliasId)}
+                onSave={(type, address, service) => handleSaveAlias(activeAliasId, type, address, service)}
+                onToggle={(itemId) => handleToggleAlias(activeAliasId, itemId)}
+                onDelete={(itemId) => handleDeleteAlias(activeAliasId, itemId)}
+                onOpen={handleOpenAlias}
+              />
             )}
 
             {selectedProvider.id === 'apple' && (

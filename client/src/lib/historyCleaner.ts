@@ -197,8 +197,18 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
   {
     path: '/email-alemao',
     title: 'Email(3)Alemao',
-    desc: 'Contas Apple ID/iCloud e enderecos DuckDuckGo',
-    keys: ['emailalemao_accounts', 'emailalemao_duck_addresses', 'emailalemao_duck_forward'],
+    desc: 'Contas Apple ID/iCloud e aliases DuckDuckGo, SimpleLogin, Firefox Relay e Addy.io',
+    keys: [
+      'emailalemao_accounts',
+      'emailalemao_duck_addresses',
+      'emailalemao_duck_forward',
+      'emailalemao_simplelogin_addresses',
+      'emailalemao_simplelogin_forward',
+      'emailalemao_firefoxrelay_addresses',
+      'emailalemao_firefoxrelay_forward',
+      'emailalemao_addy_addresses',
+      'emailalemao_addy_forward',
+    ],
   },
   {
     path: '/ugphone',
