@@ -31,6 +31,7 @@ import UrsaManager from "@/pages/UrsaManager";
 import CobaltManager from "@/pages/CobaltManager";
 import VanGoghHub from "@/pages/VanGoghHub";
 import BrazucaHub from "@/pages/BrazucaHub";
+import BazucandoHub from "@/pages/BazucandoHub";
 import SheinManager from "@/pages/SheinManager";
 import CiderManager from "@/pages/CiderManager";
 import UgphoneManager from "@/pages/UgphoneManager";
@@ -63,6 +64,7 @@ const SPECIAL_ROUTES = {
   '/van-gogh': 'Van Gogh',
   '/scooby-doo': 'Hub Scooby-Doo',
   '/brazuca': 'Brazuca',
+  '/bazucando': 'Bazucando',
 } as const;
 
 function VisitTracker() {
@@ -133,6 +135,7 @@ function AppRouter() {
       <Route path={"/apagar-historico"} component={HistoryCleaner} />
       <Route path={"/van-gogh"} component={VanGoghHub} />
       <Route path={"/brazuca"} component={BrazucaHub} />
+      <Route path={"/bazucando"} component={BazucandoHub} />
       <Route path={"/hub-global"} component={GlobalHubPage} />
       <Route path={"/master-hub"} component={MasterHubPage} />
       <Route path={"/404"} component={NotFound} />

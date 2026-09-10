@@ -64,7 +64,7 @@ function buildGroups(menuHistory: MenuHistoryEntry[]): MenuGroup[] {
     {
       id: 'hubs',
       label: 'Hubs especiais',
-      entries: menuHistory.filter((m) => ['/scooby-doo', '/dark', '/van-gogh', '/brazuca'].includes(m.path)),
+      entries: menuHistory.filter((m) => ['/scooby-doo', '/dark', '/van-gogh', '/brazuca', '/bazucando'].includes(m.path)),
     },
   ].filter((g) => g.entries.length > 0);
 

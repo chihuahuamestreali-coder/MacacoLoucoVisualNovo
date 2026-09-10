@@ -43,6 +43,7 @@ import DarkSpecialBanner from '@/components/DarkSpecialBanner';
 import VanGoghBanner from '@/components/VanGoghBanner';
 import ScoobyDooBanner from '@/components/ScoobyDooBanner';
 import BrazucaBanner from '@/components/BrazucaBanner';
+import BazucandoBanner from '@/components/BazucandoBanner';
 
 type Generator = {
   title: string;
@@ -620,6 +621,7 @@ export default function Home() {
             <a href="#van-gogh-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">VAN GOGH</a>
             <a href="#scooby-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">SCOOBY-DOO</a>
             <a href="#brazuca-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">BRAZUCA</a>
+            <a href="#bazucando-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">BAZUCANDO</a>
           </nav>
         </aside>
 
@@ -794,6 +796,7 @@ export default function Home() {
             <div id="van-gogh-hub" className="scroll-mt-6"><VanGoghBanner onClick={() => setLocation('/van-gogh')} /></div>
             <div id="scooby-hub" className="scroll-mt-6"><ScoobyDooBanner onClick={() => setLocation('/scooby-doo')} /></div>
             <div id="brazuca-hub" className="scroll-mt-6"><BrazucaBanner onClick={() => setLocation('/brazuca')} /></div>
+            <div id="bazucando-hub" className="scroll-mt-6"><BazucandoBanner onClick={() => setLocation('/bazucando')} /></div>
           </div>
 
           <footer className="mt-16 border-t border-border/30 pt-6 text-center text-xs text-muted-foreground">

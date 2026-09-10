@@ -345,6 +345,13 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     prefixes: ['brazuca_'],
     noteKeywords: ['Brazuca'],
   },
+  {
+    path: '/bazucando',
+    title: 'Bazucando',
+    desc: 'Bot OSINT Brasil com categorias da planilha',
+    prefixes: ['bazucando_'],
+    noteKeywords: ['Bazucando'],
+  },
 ];
 
 const manualPaths = new Set(MANUAL_MENU_HISTORY.map((entry) => entry.path));

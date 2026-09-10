@@ -800,4 +800,18 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Não simula bot de Telegram nem consulta bases vazadas: agrega só o que Wikipedia, Wikidata e os portais do OSINT-Brazuca já expõem.',
     limitations: 'CPF, RG e nascimento de pessoas comuns quase nunca estão em fonte aberta. Sem isso, a coluna permanece como não publicado.',
   },
+  bazucando: {
+    key: 'bazucando', title: 'Bazucando', family: 'OSINT Brasil',
+    mission: 'Abrir o bot de consultas OSINT Brasil com as categorias da planilha: beneficios, desaparecidos, processos, CNPJ, dorks, geo e imagens.',
+    scope: 'O menu clona o visual do Brazuca, mas a estrutura segue o bot da planilha: categorias, comandos e links publicos. Nao consulta bases privadas.',
+    fields: [
+      { label: 'Chat', meaning: 'Interface estilo bot com comandos e botoes de categoria.' },
+      { label: 'Categorias', meaning: 'Grupos extraidos da planilha (beneficios, processos, CNPJ, etc.).' },
+      { label: 'Comandos', meaning: 'Atalhos como /categorias, /cnpj, /dorks e /ajuda.' },
+      { label: 'Fontes', meaning: 'Links oficiais/publicos de cada comando.' },
+    ],
+    recommendedFlow: ['Abra o Bazucando.', 'Use /categorias ou os botoes.', 'Escolha um grupo.', 'Abra a fonte publica.'],
+    whyDifferent: 'Nao monta dossie Wikipedia/Wikidata como o Brazuca: replica a arvore de categorias e URLs do bot OSINT Brasil da planilha.',
+    limitations: 'So entrega atalhos publicos. Nao armazena dados pessoais e nao consulta cadastros privados.',
+  },
 };

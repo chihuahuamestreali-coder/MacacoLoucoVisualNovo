@@ -159,6 +159,7 @@ function App() {
     { title: "VAN GOGH HUB", desc: "Hub especial estilo Van Gogh", path: "/van-gogh", icon: Sparkles },
     { title: "SCOOBY-DOO HUB", desc: "Hub especial estilo Scooby-Doo", path: "/scooby-doo", icon: ArrowUpRight },
     { title: "BRAZUCA", desc: "OSINT Brasil: busca de informações públicas", path: "/brazuca", icon: Search },
+    { title: "BAZUCANDO", desc: "Bot OSINT Brasil: categorias e links da planilha", path: "/bazucando", icon: Search },
   ];
 
   const copyShort = (text: string, message: string) => {
