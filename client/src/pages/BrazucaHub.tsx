@@ -5,6 +5,7 @@ import {
   Building2,
   ExternalLink,
   Flag,
+  Filter,
   Globe2,
   Loader2,
   Search,
@@ -16,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import ModuleGuide from '@/components/ModuleGuide';
 import { MODULE_GUIDES } from '@/lib/moduleGuides';
 import { BR_DOMAIN_CATEGORIES, OSINT_BRAZUCA_META, OSINT_CATEGORIES, OSINT_SOURCES } from '@/lib/osintBrazucaCatalog';
-import { runBrazucaSearch, type BrazucaDossier, type QueryKind } from '@/lib/osintBrazucaSearch';
+import { filterHits, runBrazucaSearch, type BrazucaDossier, type QueryKind } from '@/lib/osintBrazucaSearch';
 
 const KIND_LABEL: Record<QueryKind, string> = {
   nome: 'Nome completo',
@@ -36,12 +37,15 @@ export default function BrazucaHub() {
   const [loading, setLoading] = useState(false);
   const [dossier, setDossier] = useState<BrazucaDossier | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('todas');
+  const [toolFilters, setToolFilters] = useState<string[]>(['todas']);
   const [error, setError] = useState('');
 
   const sources = useMemo(() => {
     if (activeCategory === 'todas') return OSINT_SOURCES;
     return OSINT_SOURCES.filter((item) => item.category === activeCategory);
   }, [activeCategory]);
+
+  const visibleHits = useMemo(() => (dossier ? filterHits(dossier.hits, toolFilters) : []), [dossier, toolFilters]);
 
   const handleSearch = async (event?: FormEvent) => {
     event?.preventDefault();
@@ -107,6 +111,35 @@ export default function BrazucaHub() {
               Fontes públicas · sem login · material local de {OSINT_BRAZUCA_META.origin}
             </p>
           </form>
+          <div className="mx-auto mt-5 max-w-3xl">
+            <p className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-200">
+              <Filter className="h-3.5 w-3.5" /> Filtrar pelas ferramentas OSINT-Brazuca
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {['todas', ...OSINT_CATEGORIES].map((category) => {
+                const active = toolFilters.includes(category) || (category === 'todas' && toolFilters.includes('todas'));
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => {
+                      if (category === 'todas') {
+                        setToolFilters(['todas']);
+                        return;
+                      }
+                      setToolFilters((current) => {
+                        const next = current.filter((item) => item !== 'todas');
+                        return next.includes(category) ? (next.filter((item) => item !== category).length ? next.filter((item) => item !== category) : ['todas']) : [...next, category];
+                      });
+                    }}
+                    className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] ${active ? 'border-yellow-300/50 bg-yellow-300/10 text-yellow-100' : 'border-white/10 text-slate-400'}`}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {error && <p className="mt-4 rounded-xl border border-red-400/30 bg-red-950/40 px-4 py-3 text-xs text-red-200">{error}</p>}
@@ -119,7 +152,7 @@ export default function BrazucaHub() {
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-200">Dossiê montado</p>
                   <h2 className="mt-1 text-2xl font-black text-white">{dossier.query}</h2>
                   <p className="mt-1 text-xs text-slate-400">
-                    Tipo detectado: {KIND_LABEL[dossier.kind]} · {dossier.hits.length} atalhos · {new Date(dossier.searchedAt).toLocaleString('pt-BR')}
+                    Tipo detectado: {KIND_LABEL[dossier.kind]} · {visibleHits.length} atalhos filtrados · {new Date(dossier.searchedAt).toLocaleString('pt-BR')}
                   </p>
                 </div>
                 <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-100">
@@ -133,6 +166,72 @@ export default function BrazucaHub() {
                   </span>
                 ))}
               </div>
+            </div>
+
+            <div className="rounded-2xl border border-yellow-300/20 bg-black/50 p-6">
+              <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-yellow-200">
+                  <UserRound className="h-4 w-4" /> Lista de nomes relacionados
+                </h3>
+                <span className="text-[10px] uppercase tracking-[0.16em] text-slate-500">{dossier.people.length} registros públicos</span>
+              </div>
+              <p className="mb-4 text-xs leading-5 text-slate-400">
+                Homônimos encontrados em Wikipedia/Wikidata. CPF só aparece se a fonte pública publicar; as ferramentas OSINT-Brazuca não expõem cadastro civil em massa.
+              </p>
+              {dossier.people.length === 0 ? (
+                <p className="rounded-xl border border-white/10 bg-black/30 px-4 py-6 text-center text-xs text-slate-500">
+                  Nenhum homônimo público indexado para “{dossier.query}”. Use os filtros e as fontes abaixo para continuar.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[640px] text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] uppercase tracking-[0.16em] text-slate-500">
+                        <th className="py-2 pr-3">Nome</th>
+                        <th className="py-2 pr-3">Nascimento</th>
+                        <th className="py-2 pr-3">CPF</th>
+                        <th className="py-2 pr-3">Origem</th>
+                        <th className="py-2">Fontes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dossier.people.map((person) => (
+                        <tr key={person.id} className="border-b border-white/5 align-top">
+                          <td className="py-3 pr-3">
+                            <a href={person.url} target="_blank" rel="noreferrer" className="font-bold text-white hover:text-emerald-200">
+                              {person.name}
+                            </a>
+                            <p className="mt-1 text-[11px] leading-4 text-slate-400">{person.description}</p>
+                            {(person.place || person.occupation) && (
+                              <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-slate-500">
+                                {[person.occupation, person.place].filter(Boolean).join(' · ')}
+                              </p>
+                            )}
+                          </td>
+                          <td className="py-3 pr-3 text-emerald-100">{person.birthDate}</td>
+                          <td className="py-3 pr-3 text-slate-400">{person.cpf}</td>
+                          <td className="py-3 pr-3 text-slate-400">{person.source}</td>
+                          <td className="py-3">
+                            <div className="flex flex-wrap gap-1">
+                              {person.extraUrls.slice(0, 4).map((link) => (
+                                <a
+                                  key={link.url}
+                                  href={link.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="rounded-full border border-emerald-300/20 px-2 py-0.5 text-[9px] uppercase tracking-wider text-emerald-200 hover:border-yellow-300/40"
+                                >
+                                  {link.label}
+                                </a>
+                              ))}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
 
             {dossier.wiki.length > 0 && (
@@ -206,7 +305,7 @@ export default function BrazucaHub() {
                 <UserRound className="h-4 w-4" /> Resultados por fonte OSINT
               </h3>
               <div className="grid gap-3 md:grid-cols-2">
-                {dossier.hits.map((hit) => (
+                {visibleHits.map((hit) => (
                   <a
                     key={hit.id}
                     href={hit.url}

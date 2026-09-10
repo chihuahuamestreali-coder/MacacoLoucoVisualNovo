@@ -33,6 +33,20 @@ export type CompanyHit = {
   socios?: string[];
 };
 
+export type RelatedPerson = {
+  id: string;
+  name: string;
+  birthDate: string;
+  deathDate?: string;
+  place?: string;
+  occupation?: string;
+  description: string;
+  cpf: string;
+  source: string;
+  url: string;
+  extraUrls: Array<{ label: string; url: string }>;
+};
+
 export type BrazucaDossier = {
   query: string;
   kind: QueryKind;
@@ -40,8 +54,10 @@ export type BrazucaDossier = {
   variations: string[];
   wiki: WikiHit[];
   company: CompanyHit | null;
+  people: RelatedPerson[];
   hits: SearchHit[];
   dorks: Array<{ label: string; query: string; url: string }>;
+  activeFilters: string[];
   searchedAt: string;
 };
 
@@ -175,6 +191,232 @@ function buildDorks(query: string): Array<{ label: string; query: string; url: s
   return items.map((item) => ({ ...item, url: g(item.query) }));
 }
 
+function titleCaseName(value: string): string {
+  return value
+    .trim()
+    .split(/\s+/)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
+function stripHtml(value: string): string {
+  return value.replace(/<[^>]+>/g, ' ').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+}
+
+function extractBirthDate(text: string): string {
+  const patterns = [
+    /nascid[oa]\s+em\s+(\d{1,2}\s+de\s+[a-zç]+\s+de\s+\d{4})/i,
+    /(\d{1,2}\s+de\s+[a-zç]+\s+de\s+\d{4})/i,
+    /(\d{4}-\d{2}-\d{2})/,
+    /(\d{1,2}\/\d{1,2}\/\d{4})/,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match?.[1]) return match[1];
+  }
+  return 'não publicado';
+}
+
+function extractPlace(text: string): string | undefined {
+  const match = text.match(/(?:em|de)\s+([A-ZÁÉÍÓÚÂÊÔÃÕ][\wÀ-ÿ]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕ][\wÀ-ÿ]+){0,3})/);
+  return match?.[1];
+}
+
+function personMatchesQuery(name: string, query: string): boolean {
+  const normalize = (value: string) =>
+    value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  const nameN = normalize(name);
+  const queryParts = normalize(query).split(' ').filter((part) => part.length > 1);
+  if (queryParts.length === 0) return false;
+  return queryParts.every((part) => nameN.includes(part));
+}
+
+function sourceLinksForPerson(name: string): Array<{ label: string; url: string }> {
+  const quoted = `"${name}"`;
+  return OSINT_SOURCES.filter((source) => Boolean(source.searchUrl))
+    .slice(0, 8)
+    .map((source) => ({
+      label: source.title,
+      url: source.searchUrl ? source.searchUrl(name) : source.url,
+    }))
+    .concat([
+      { label: 'Google', url: g(quoted) },
+      { label: 'JusBrasil', url: `https://www.jusbrasil.com.br/busca?q=${encodeURIComponent(name)}` },
+      { label: 'Escavador', url: `https://www.escavador.com/busca?q=${encodeURIComponent(name)}` },
+    ]);
+}
+
+function claimDate(entity: WikidataEntity, prop: string): string | undefined {
+  const value = entity.claims?.[prop]?.[0]?.mainsnak?.datavalue?.value;
+  if (value && typeof value === 'object' && 'time' in value && typeof value.time === 'string') {
+    const match = value.time.match(/([+-]?\d{4}-\d{2}-\d{2})/);
+    return match?.[1]?.replace(/^\+/, '');
+  }
+  return undefined;
+}
+
+function claimLabel(entity: WikidataEntity, entities: Record<string, WikidataEntity>, prop: string): string | undefined {
+  const id = entity.claims?.[prop]?.[0]?.mainsnak?.datavalue?.value;
+  if (id && typeof id === 'object' && 'id' in id && typeof id.id === 'string') {
+    const related = entities[id.id];
+    return related?.labels?.pt?.value ?? related?.labels?.en?.value;
+  }
+  return undefined;
+}
+
+type WikidataEntity = {
+  id: string;
+  labels?: Record<string, { value: string }>;
+  descriptions?: Record<string, { value: string }>;
+  claims?: Record<string, Array<{ mainsnak?: { datavalue?: { value?: unknown } } }>>;
+  sitelinks?: Record<string, { title: string }>;
+};
+
+async function searchWikidataPeople(query: string): Promise<RelatedPerson[]> {
+  try {
+    const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(query)}&language=pt&uselang=pt&type=item&limit=20&format=json&origin=*`;
+    const searchResp = await fetch(searchUrl);
+    if (!searchResp.ok) return [];
+    const searchData = (await searchResp.json()) as { search?: Array<{ id: string; label?: string; description?: string }> };
+    const ids = (searchData.search ?? []).map((item) => item.id).filter(Boolean);
+    if (ids.length === 0) return [];
+    const entitiesUrl = `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${ids.join('|')}&props=labels|descriptions|claims|sitelinks&languages=pt|en&format=json&origin=*`;
+    const entitiesResp = await fetch(entitiesUrl);
+    if (!entitiesResp.ok) return [];
+    const entitiesData = (await entitiesResp.json()) as { entities?: Record<string, WikidataEntity> };
+    const entities = entitiesData.entities ?? {};
+    const extraIds = Object.values(entities)
+      .flatMap((entity) =>
+        ['P19', 'P106']
+          .map((prop) => entity.claims?.[prop]?.[0]?.mainsnak?.datavalue?.value)
+          .filter((value): value is { id: string } => Boolean(value && typeof value === 'object' && 'id' in value)),
+      )
+      .map((value) => value.id);
+    const missing = extraIds.filter((id) => !entities[id]);
+    if (missing.length > 0) {
+      const extraResp = await fetch(
+        `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${missing.slice(0, 40).join('|')}&props=labels&languages=pt|en&format=json&origin=*`,
+      );
+      if (extraResp.ok) {
+        const extraData = (await extraResp.json()) as { entities?: Record<string, WikidataEntity> };
+        Object.assign(entities, extraData.entities ?? {});
+      }
+    }
+    return ids
+      .map((id) => entities[id])
+      .filter((entity): entity is WikidataEntity => Boolean(entity))
+      .filter((entity) => {
+        const instance = entity.claims?.P31?.[0]?.mainsnak?.datavalue?.value;
+        const instanceId = instance && typeof instance === 'object' && 'id' in instance ? instance.id : '';
+        return instanceId === 'Q5' || Boolean(entity.claims?.P569) || Boolean(entity.sitelinks?.ptwiki);
+      })
+      .map((entity) => {
+        const name = entity.labels?.pt?.value ?? entity.labels?.en?.value ?? '';
+        const birth = claimDate(entity, 'P569') ?? 'não publicado';
+        const death = claimDate(entity, 'P570');
+        const place = claimLabel(entity, entities, 'P19');
+        const occupation = claimLabel(entity, entities, 'P106');
+        const wikiTitle = entity.sitelinks?.ptwiki?.title;
+        const url = wikiTitle
+          ? `https://pt.wikipedia.org/wiki/${encodeURIComponent(wikiTitle.replace(/ /g, '_'))}`
+          : `https://www.wikidata.org/wiki/${entity.id}`;
+        return {
+          id: entity.id,
+          name,
+          birthDate: birth,
+          deathDate: death,
+          place,
+          occupation,
+          description:
+            entity.descriptions?.pt?.value ??
+            entity.descriptions?.en?.value ??
+            [occupation, place].filter(Boolean).join(' · ') ??
+            'Pessoa em fonte pública (Wikidata)',
+          cpf: 'não publicado nesta fonte',
+          source: 'Wikidata / Wikipedia',
+          url,
+          extraUrls: sourceLinksForPerson(name),
+        } satisfies RelatedPerson;
+      })
+      .filter((person) => person.name && personMatchesQuery(person.name, query));
+  } catch {
+    return [];
+  }
+}
+
+async function searchWikipediaPeople(query: string): Promise<RelatedPerson[]> {
+  try {
+    const url = `https://pt.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(`${query} pessoa`)}&utf8=&format=json&origin=*&srlimit=20`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    const data = (await response.json()) as {
+      query?: { search?: Array<{ title: string; snippet: string; pageid: number }> };
+    };
+    return (data.query?.search ?? [])
+      .map((item) => {
+        const snippet = stripHtml(item.snippet);
+        return {
+          id: `wiki-${item.pageid}`,
+          name: item.title,
+          birthDate: extractBirthDate(snippet),
+          place: extractPlace(snippet),
+          description: snippet,
+          cpf: 'não publicado nesta fonte',
+          source: 'Wikipedia PT',
+          url: `https://pt.wikipedia.org/?curid=${item.pageid}`,
+          extraUrls: sourceLinksForPerson(item.title),
+        } satisfies RelatedPerson;
+      })
+      .filter((person) => personMatchesQuery(person.name, query));
+  } catch {
+    return [];
+  }
+}
+
+function mergePeople(groups: RelatedPerson[][]): RelatedPerson[] {
+  const map = new Map<string, RelatedPerson>();
+  const keyOf = (name: string) =>
+    name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+  for (const group of groups) {
+    for (const person of group) {
+      const key = keyOf(person.name);
+      const current = map.get(key);
+      if (!current) {
+        map.set(key, person);
+        continue;
+      }
+      map.set(key, {
+        ...current,
+        birthDate: current.birthDate !== 'não publicado' ? current.birthDate : person.birthDate,
+        deathDate: current.deathDate ?? person.deathDate,
+        place: current.place ?? person.place,
+        occupation: current.occupation ?? person.occupation,
+        description: current.description.length >= person.description.length ? current.description : person.description,
+        extraUrls: [...current.extraUrls, ...person.extraUrls].filter(
+          (item, index, list) => list.findIndex((entry) => entry.url === item.url) === index,
+        ),
+      });
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+}
+
+export function filterHits(hits: SearchHit[], filters: string[]): SearchHit[] {
+  if (filters.length === 0 || filters.includes('todas')) return hits;
+  return hits.filter((hit) => filters.includes(hit.category) || filters.includes(hit.id) || filters.includes(hit.source));
+}
+
 async function searchWikipedia(query: string): Promise<WikiHit[]> {
   try {
     const url = `https://pt.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&origin=*&srlimit=5`;
@@ -231,19 +473,27 @@ async function searchCompany(query: string): Promise<CompanyHit | null> {
   }
 }
 
-export async function runBrazucaSearch(raw: string): Promise<BrazucaDossier> {
+export async function runBrazucaSearch(raw: string, filters: string[] = []): Promise<BrazucaDossier> {
   const query = raw.trim().replace(/\s+/g, ' ');
   const kind = detectQueryKind(query);
-  const [wiki, company] = await Promise.all([searchWikipedia(query), searchCompany(query)]);
+  const [wiki, company, wikidataPeople, wikiPeople] = await Promise.all([
+    searchWikipedia(query),
+    searchCompany(query),
+    kind === 'cnpj' ? Promise.resolve([] as RelatedPerson[]) : searchWikidataPeople(query),
+    kind === 'cnpj' ? Promise.resolve([] as RelatedPerson[]) : searchWikipediaPeople(query),
+  ]);
+  const people = mergePeople([wikidataPeople, wikiPeople]);
   return {
     query,
     kind,
-    normalized: query,
+    normalized: titleCaseName(query),
     variations: nameVariations(query),
     wiki,
     company,
+    people,
     hits: buildHits(query, kind),
     dorks: buildDorks(query),
+    activeFilters: filters,
     searchedAt: new Date().toISOString(),
   };
 }
