@@ -338,6 +338,13 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     desc: 'Perfis locais dos submenus criativos',
     prefixes: ['device_master_local_profile_'],
   },
+  {
+    path: '/brazuca',
+    title: 'Brazuca',
+    desc: 'Buscas OSINT Brasil e dossiês locais',
+    prefixes: ['brazuca_'],
+    noteKeywords: ['Brazuca'],
+  },
 ];
 
 const manualPaths = new Set(MANUAL_MENU_HISTORY.map((entry) => entry.path));

@@ -158,6 +158,7 @@ function App() {
     { title: "DARK SUITE", desc: "Túneis onion, spoofing de headers e portais blindados", path: "/dark", icon: ShieldCheck },
     { title: "VAN GOGH HUB", desc: "Hub especial estilo Van Gogh", path: "/van-gogh", icon: Sparkles },
     { title: "SCOOBY-DOO HUB", desc: "Hub especial estilo Scooby-Doo", path: "/scooby-doo", icon: ArrowUpRight },
+    { title: "BRAZUCA", desc: "OSINT Brasil: busca de informações públicas", path: "/brazuca", icon: Search },
   ];
 
   const copyShort = (text: string, message: string) => {

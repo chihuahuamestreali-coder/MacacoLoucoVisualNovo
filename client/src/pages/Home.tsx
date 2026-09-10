@@ -42,6 +42,7 @@ import {
 import DarkSpecialBanner from '@/components/DarkSpecialBanner';
 import VanGoghBanner from '@/components/VanGoghBanner';
 import ScoobyDooBanner from '@/components/ScoobyDooBanner';
+import BrazucaBanner from '@/components/BrazucaBanner';
 
 type Generator = {
   title: string;
@@ -618,6 +619,7 @@ export default function Home() {
             <a href="#dark-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">DARK SUITE</a>
             <a href="#van-gogh-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">VAN GOGH</a>
             <a href="#scooby-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">SCOOBY-DOO</a>
+            <a href="#brazuca-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">BRAZUCA</a>
           </nav>
         </aside>
 
@@ -672,7 +674,7 @@ export default function Home() {
           <header className="fm-home-hero border-b border-border/50 pb-8 text-center">
             <div className="mb-5 flex items-center justify-center gap-3">
               <div className="text-left">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 37 MÓDULOS + 3 HUBS</p>
+                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-teal-300">FIELD MANUAL / 37 MÓDULOS + 4 HUBS</p>
                 <p className="mt-1 text-xs text-slate-500">Leia o escopo antes de operar</p>
               </div>
             </div>
@@ -791,6 +793,7 @@ export default function Home() {
             <div id="dark-hub" className="scroll-mt-6"><DarkSpecialBanner onClick={() => setLocation('/dark')} /></div>
             <div id="van-gogh-hub" className="scroll-mt-6"><VanGoghBanner onClick={() => setLocation('/van-gogh')} /></div>
             <div id="scooby-hub" className="scroll-mt-6"><ScoobyDooBanner onClick={() => setLocation('/scooby-doo')} /></div>
+            <div id="brazuca-hub" className="scroll-mt-6"><BrazucaBanner onClick={() => setLocation('/brazuca')} /></div>
           </div>
 
           <footer className="mt-16 border-t border-border/30 pt-6 text-center text-xs text-muted-foreground">

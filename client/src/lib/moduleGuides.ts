@@ -784,4 +784,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Funciona em qualquer domínio, sem módulo dedicado — concentra todas as técnicas do projeto em um único script universal.',
     limitations: 'Simulações locais auxiliam na consistência de perfil, mas dependem das políticas de cada plataforma.',
   },
+  brazuca: {
+    key: 'brazuca', title: 'Brazuca', family: 'OSINT Brasil',
+    mission: 'Pesquisar nome, CPF, CNPJ, telefone ou handle em fontes públicas brasileiras reunidas no acervo OSINT-Brazuca, com dossiê estilo Google.',
+    scope: 'Este menu agrega portais oficiais, dorks e APIs públicas. Ele não consulta bases vazadas nem contorna login/CAPTCHA dos sites de origem.',
+    fields: [
+      { label: 'Consulta', meaning: 'Nome ou identificador informado na busca.' },
+      { label: 'Tipo', meaning: 'Classificação automática: nome, CPF, CNPJ, telefone, e-mail ou usuário.' },
+      { label: 'Wikipedia', meaning: 'Páginas públicas em português relacionadas ao termo.' },
+      { label: 'CNPJ', meaning: 'Cadastro empresarial via BrasilAPI quando a consulta for um CNPJ.' },
+      { label: 'Dorks', meaning: 'Pesquisas prontas no Google sobre processos, gov.br, redes e documentos.' },
+      { label: 'Fontes', meaning: 'Atalhos para cada portal do acervo OSINT-Brazuca.' },
+    ],
+    recommendedFlow: ['Digite o nome ou identificador.', 'Revise o tipo detectado e as variações.', 'Abra Wikipedia/CNPJ se existirem.', 'Use os dorks e as fontes oficiais para aprofundar.'],
+    whyDifferent: 'Não gera dispositivo nem persona sintética: o objetivo é localizar informações públicas já indexadas no contexto Brasil.',
+    limitations: 'Os resultados dependem do que cada portal público expõe. Dados cadastrais restritos continuam atrás de autenticação nos sites oficiais.',
+  },
 };
