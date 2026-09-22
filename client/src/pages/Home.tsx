@@ -569,12 +569,18 @@ export default function Home() {
                 const Icon = item.icon;
                 const logoUrl = getLogoUrl(item.logo);
                 return (
-                  <a key={`sidebar-${item.path}`} href={`#favorite-${item.path.slice(1)}`} className="fm-sidebar-favorite-link">
+                  <button
+                    key={`sidebar-${item.path}`}
+                    type="button"
+                    className="fm-sidebar-favorite-link"
+                    onClick={() => openGenerator(item)}
+                    aria-label={`Abrir ${item.title}`}
+                  >
                     <span className="fm-sidebar-favorite-icon">
                       {logoUrl ? <img src={logoUrl} alt="" /> : <Icon className="h-3.5 w-3.5" />}
                     </span>
                     <span>{favoriteLabels[item.path] ?? item.title}</span>
-                  </a>
+                  </button>
                 );
               })}
             </div>
@@ -616,7 +622,7 @@ export default function Home() {
             <Sparkles className="h-3.5 w-3.5" />
             Hubs especiais
           </div>
-          <nav className="mt-3 grid gap-1.5" aria-label="Hubs especiais">
+          <nav className="fm-special-hubs-nav mt-3 grid gap-1.5" aria-label="Hubs especiais">
             <a href="#dark-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">DARK SUITE</a>
             <a href="#van-gogh-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">VAN GOGH</a>
             <a href="#scooby-hub" className="rounded-lg px-3 py-2.5 text-xs text-slate-400 transition-colors hover:bg-pink-500/10 hover:text-pink-200">SCOOBY-DOO</a>
@@ -720,7 +726,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="space-y-12">
+          <div className="fm-category-list space-y-7 md:space-y-12">
             {visibleCategories.map((category) => {
               const CategoryIcon = category.icon;
               return (
@@ -738,7 +744,7 @@ export default function Home() {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{category.items.length} módulos</span>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4">
                     {category.items.map((item) => {
                       const Icon = item.icon;
                       const logoUrl = getLogoUrl(item.logo);
