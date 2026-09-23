@@ -103,6 +103,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Alem da Apple ID/iCloud, este modulo explica e gera aliases DuckDuckGo, SimpleLogin (Proton), Firefox Relay e Addy.io.',
     limitations: 'Abrir o signup no locale do pais nao altera IP, VPN ou geolocalizacao real da conexao, nem garante criacao sem SMS.',
   },
+  drael: {
+    key: 'drael', title: 'Drael Master', family: 'Hardware + persona',
+    mission: 'Combinar um perfil de dispositivo com dados de persona usados pelo fluxo do Drael (drael.sh).',
+    scope: 'Este módulo replica o Manus: hardware, identidade e contexto de conta no mesmo perfil.',
+    fields: [
+      { label: 'Hardware', meaning: 'Modelo, MAC, IMEI, resolução e fingerprint do dispositivo.' },
+      { label: 'Persona', meaning: 'Nome, email, telefone, data e outros campos pessoais do perfil.' },
+      { label: 'Status', meaning: 'Indica o estado local do fluxo de preparação ou abertura.' },
+      { label: 'Convite', meaning: 'Campo opcional para o link informado pelo usuário.' },
+    ],
+    recommendedFlow: ['Leia o resumo do perfil.', 'Gere o dispositivo e a persona.', 'Revise campos técnicos e pessoais.', 'Abra drael.sh e cole o script no Console.'],
+    whyDifferent: 'Mesmo schema do Manus, apontado para o portal drael.sh.',
+    limitations: 'Dados pessoais devem ser tratados com responsabilidade; a interface não valida identidade real nem garante aceitação externa.',
+  },
   manus: {
     key: 'manus', title: 'Manus AI Master', family: 'Hardware + persona',
     mission: 'Combinar um perfil de dispositivo com dados de persona usados pelo fluxo do Manus.',

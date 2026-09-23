@@ -28,6 +28,8 @@ import ShopeeManager from "./pages/ShopeeManager";
 import PrivateTunnelsManager from "./pages/PrivateTunnelsManager";
 import DarkSpecial from "./pages/DarkSpecial";
 import UrsaManager from "@/pages/UrsaManager";
+import DraelManager from "@/pages/DraelManager";
+import PlanilhaManager from "@/pages/PlanilhaManager";
 import CobaltManager from "@/pages/CobaltManager";
 import VanGoghHub from "@/pages/VanGoghHub";
 import BrazucaHub from "@/pages/BrazucaHub";
@@ -94,6 +96,7 @@ function AppRouter() {
       <Route path={"/facebook"} component={FacebookManager} />
       <Route path={"/instagram"} component={InstagramManager} />
       <Route path={"/manus"} component={ManusManager} />
+      <Route path={"/drael"} component={DraelManager} />
       <Route path={"/tiktok"} component={TikTokManager} />
       <Route path={"/gmail"} component={GmailManager} />
       <Route path={"/claude"} component={ClaudeManager} />
@@ -131,6 +134,7 @@ function AppRouter() {
       <Route path={"/spotify"} component={SpotifyManager} />
       <Route path={"/spotify-plus"} component={SpotifyPlusManager} />
       <Route path={"/ursa"} component={UrsaManager} />
+      <Route path={"/planilha"} component={PlanilhaManager} />
       <Route path={"/cobalt"} component={CobaltManager} />
       <Route path={"/apagar-historico"} component={HistoryCleaner} />
       <Route path={"/van-gogh"} component={VanGoghHub} />

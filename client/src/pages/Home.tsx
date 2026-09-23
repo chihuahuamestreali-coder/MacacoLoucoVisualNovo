@@ -226,6 +226,14 @@ export const generators: Generator[] = [
     badge: 'AGENT CORE',
   },
   {
+    title: 'Drael Master',
+    desc: 'Injeção de perfil e sessão para drael.sh com as mesmas ferramentas do Manus',
+    path: '/drael',
+    icon: Globe2,
+    badge: 'AGENT CORE',
+    externalUrl: 'https://drael.sh',
+  },
+  {
     title: 'Claude AI Master',
     desc: 'Spoofing avançado para sessões e prompts Claude',
     path: '/claude',
@@ -305,6 +313,14 @@ export const generators: Generator[] = [
     logo: 'ursa.png',
     badge: 'EXTERNAL SITE',
     externalUrl: 'https://tuamaeaquelaursa.com/',
+  },
+  {
+    title: 'Planilha',
+    desc: 'Abre a planilha Google Sheets em nova guia',
+    path: '/planilha',
+    icon: LayoutGrid,
+    badge: 'EXTERNAL SITE',
+    externalUrl: 'https://docs.google.com/spreadsheets/d/1FFKklOd9HWZbJH8ffG13py3wp4O40g-S5OhA6uSRa3A/edit?pli=1&gid=0#gid=0',
   },
   {
     title: 'Cobalt',
@@ -456,7 +472,7 @@ export const categories: Category[] = [
     description: 'assistentes · agentes · serviços externos',
     icon: Bot,
     tone: 'from-violet-500/15 via-violet-500/5 to-transparent border-violet-500/30 text-violet-200',
-    items: generators.filter((item) => ['/manus', '/claude', '/chatgpt', '/copilot'].includes(item.path)),
+    items: generators.filter((item) => ['/manus', '/drael', '/claude', '/chatgpt', '/copilot'].includes(item.path)),
   },
   {
     id: 'email',
@@ -464,7 +480,7 @@ export const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/cobalt', '/apple-contas', '/painel-icloud', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/planilha', '/cobalt', '/apple-contas', '/painel-icloud', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',
@@ -486,7 +502,7 @@ export const categories: Category[] = [
 
 const miniMenus = [{ title: 'ImgBB', externalUrl: 'https://pt-br.imgbb.com/', icon: ImageIcon }];
 
-const favoritePaths = ['/apagar-historico', '/master-hub', '/coringa', '/emails', '/email-plus', '/ursa', '/monkeycode', '/manus', '/aliexpress', '/facebook'];
+const favoritePaths = ['/apagar-historico', '/master-hub', '/coringa', '/emails', '/email-plus', '/ursa', '/planilha', '/monkeycode', '/manus', '/drael', '/aliexpress', '/facebook'];
 const favoriteLabels: Record<string, string> = {
   '/apagar-historico': 'Apagar Histórico',
   '/master-hub': 'Asgard',
@@ -494,8 +510,10 @@ const favoriteLabels: Record<string, string> = {
   '/emails': 'Email',
   '/email-plus': 'EmailPlus',
   '/ursa': 'Ursa',
+  '/planilha': 'Planilha',
   '/monkeycode': 'Monkey',
   '/manus': 'Manus',
+  '/drael': 'Drael',
   '/aliexpress': 'AliExpress',
   '/facebook': 'Facebook',
 };

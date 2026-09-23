@@ -135,6 +135,14 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     noteKeywords: ['injeção in-site'],
   },
   {
+    path: '/drael',
+    title: 'Drael Master',
+    desc: 'Perfil, sessão e persona Drael',
+    keys: ['drael_device_profile', 'drael_device_id', 'drael_session_id', 'drael_visitor_id', 'drael_anti_bot_token', 'drael_persona'],
+    cookies: ['DRL_DEVICE_ID', 'DRL_SESSION', 'DRL_VISITOR_ID', 'DRL_ANTI_BOT_TOKEN', 'DRL_LANG'],
+    noteKeywords: ['Drael'],
+  },
+  {
     path: '/claude',
     title: 'Claude AI Master',
     desc: 'Perfil Claude e histórico de dispositivos',
