@@ -10,6 +10,7 @@ import {
   Cloud,
   Code2,
   Cpu,
+  Download,
   ExternalLink,
   Eraser,
   Facebook,
@@ -226,6 +227,14 @@ export const generators: Generator[] = [
     badge: 'AGENT CORE',
   },
   {
+    title: 'Baixar_Videos_YT',
+    desc: 'Mesmas ferramentas do Manus (script, injeção, anti-detecção) + abre Clipto YouTube automaticamente',
+    path: '/baixar-videos-yt',
+    icon: Download,
+    logo: 'youtube.svg',
+    badge: 'CLIPTO AUTO',
+  },
+  {
     title: 'Drael Master',
     desc: 'Injeção de perfil e sessão para drael.sh com as mesmas ferramentas do Manus',
     path: '/drael',
@@ -330,6 +339,14 @@ export const generators: Generator[] = [
     logo: 'cobalt.png',
     badge: 'EXTERNAL SITE',
     externalUrl: 'https://github.com/yt-dlp/yt-dlp',
+  },
+  {
+    title: 'yt-dlp',
+    desc: 'Terminal local: cola o link e baixa video/audio como no PC (yt-dlp + ffmpeg)',
+    path: '/yt-dlp',
+    icon: Download,
+    logo: 'youtube.svg',
+    badge: 'TERMINAL LOCAL',
   },
   {
     title: 'Gmail Generator',
@@ -472,7 +489,7 @@ export const categories: Category[] = [
     description: 'assistentes · agentes · serviços externos',
     icon: Bot,
     tone: 'from-violet-500/15 via-violet-500/5 to-transparent border-violet-500/30 text-violet-200',
-    items: generators.filter((item) => ['/manus', '/drael', '/claude', '/chatgpt', '/copilot'].includes(item.path)),
+    items: generators.filter((item) => ['/manus', '/drael', '/baixar-videos-yt', '/claude', '/chatgpt', '/copilot'].includes(item.path)),
   },
   {
     id: 'email',
@@ -480,7 +497,7 @@ export const categories: Category[] = [
     description: 'email · encaminhamento · caixas de entrada',
     icon: Mail,
     tone: 'from-emerald-400/15 via-emerald-400/5 to-transparent border-emerald-400/30 text-emerald-200',
-    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/planilha', '/cobalt', '/apple-contas', '/painel-icloud', '/coringa'].includes(item.path)),
+    items: generators.filter((item) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/ursa', '/planilha', '/cobalt', '/yt-dlp', '/apple-contas', '/painel-icloud', '/coringa'].includes(item.path)),
   },
   {
     id: 'cloud',

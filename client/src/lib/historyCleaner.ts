@@ -190,6 +190,21 @@ const MANUAL_MENU_HISTORY: MenuHistoryEntry[] = [
     cookies: ['VISITOR_INFO1_LIVE', 'PREF', 'YSC', 'GPSVisitedState', 'YT_DEVICE_ID', 'YT_SESSION'],
   },
   {
+    path: '/yt-dlp',
+    title: 'yt-dlp',
+    desc: 'Downloads locais gerados pelo terminal yt-dlp',
+    keys: ['ytdlp_last_url', 'ytdlp_last_job'],
+    noteKeywords: ['yt-dlp'],
+  },
+  {
+    path: '/baixar-videos-yt',
+    title: 'Baixar_Videos_YT',
+    desc: 'Perfil, sessão e injeção Clipto YouTube (mesmo schema do Manus)',
+    keys: ['bvy_device_profile', 'bvy_device_id', 'bvy_session_id', 'bvy_visitor_id', 'bvy_anti_bot_token', 'bvy_persona'],
+    cookies: ['BVY_DEVICE_ID', 'BVY_SESSION', 'BVY_VISITOR_ID', 'BVY_ANTI_BOT_TOKEN', 'BVY_LANG'],
+    noteKeywords: ['Baixar_Videos_YT'],
+  },
+  {
     path: '/gmail',
     title: 'Gmail Generator',
     desc: 'Perfil Gmail e histórico de dispositivos',

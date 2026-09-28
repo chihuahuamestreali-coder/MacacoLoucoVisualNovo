@@ -117,6 +117,20 @@ export const MODULE_GUIDES: Record<string, ModuleGuide> = {
     whyDifferent: 'Mesmo schema do Manus, apontado para o portal drael.sh.',
     limitations: 'Dados pessoais devem ser tratados com responsabilidade; a interface não valida identidade real nem garante aceitação externa.',
   },
+  baixarVideosYt: {
+    key: 'baixarVideosYt', title: 'Baixar_Videos_YT', family: 'Hardware + persona',
+    mission: 'Combinar um perfil de dispositivo com dados de persona, iguais ao Manus, e abrir o Clipto YouTube.',
+    scope: 'Este módulo replica o Manus: hardware, identidade, script de injeção, anti-detecção e abertura do site.',
+    fields: [
+      { label: 'Hardware', meaning: 'Modelo, MAC, IMEI, resolução e fingerprint do dispositivo.' },
+      { label: 'Persona', meaning: 'Nome, email, telefone, data e outros campos pessoais do perfil.' },
+      { label: 'Status', meaning: 'Indica o estado local do fluxo de preparação ou abertura.' },
+      { label: 'Site', meaning: 'Abre automaticamente https://www.clipto.com/pt/media-tool/youtube-video' },
+    ],
+    recommendedFlow: ['Leia o resumo do perfil.', 'Gere o dispositivo e a persona.', 'Copie o script de injeção.', 'O botão abre o Clipto YouTube automaticamente.'],
+    whyDifferent: 'Mesmo schema do Manus, apontado para o downloader Clipto YouTube.',
+    limitations: 'Dados pessoais devem ser tratados com responsabilidade; a interface não valida identidade real nem garante aceitação externa.',
+  },
   manus: {
     key: 'manus', title: 'Manus AI Master', family: 'Hardware + persona',
     mission: 'Combinar um perfil de dispositivo com dados de persona usados pelo fluxo do Manus.',

@@ -49,12 +49,12 @@ function buildGroups(menuHistory: MenuHistoryEntry[]): MenuGroup[] {
     {
       id: 'assistentes',
       label: 'Assistentes e agentes de IA',
-      entries: menuHistory.filter((m) => ['/manus', '/drael', '/claude', '/chatgpt', '/copilot', '/coringa'].includes(m.path)),
+      entries: menuHistory.filter((m) => ['/manus', '/drael', '/baixar-videos-yt', '/claude', '/chatgpt', '/copilot', '/coringa'].includes(m.path)),
     },
     {
       id: 'email',
       label: 'Email e recuperação',
-      entries: menuHistory.filter((m) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/apple-contas', '/painel-icloud', '/ursa', '/planilha'].includes(m.path)),
+      entries: menuHistory.filter((m) => ['/gmail', '/emails', '/email-plus', '/email-alemao', '/apple-contas', '/painel-icloud', '/ursa', '/planilha', '/cobalt', '/yt-dlp'].includes(m.path)),
     },
     {
       id: 'cloud',

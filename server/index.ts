@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { handleYtdlpApi } from "./ytdlpHandler";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,9 +17,14 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
+  app.use(express.json({ limit: "1mb" }));
   app.use(express.static(staticPath));
 
-  // Handle client-side routing - serve index.html for all routes
+  app.use(async (req, res, next) => {
+    const handled = await handleYtdlpApi(req, res);
+    if (!handled) next();
+  });
+
   app.get("*", (_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
   });

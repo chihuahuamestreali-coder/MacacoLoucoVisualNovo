@@ -31,6 +31,8 @@ import UrsaManager from "@/pages/UrsaManager";
 import DraelManager from "@/pages/DraelManager";
 import PlanilhaManager from "@/pages/PlanilhaManager";
 import CobaltManager from "@/pages/CobaltManager";
+import YtDlpManager from "@/pages/YtDlpManager";
+import BaixarVideosYtManager from "@/pages/BaixarVideosYtManager";
 import VanGoghHub from "@/pages/VanGoghHub";
 import BrazucaHub from "@/pages/BrazucaHub";
 import BazucandoHub from "@/pages/BazucandoHub";
@@ -136,6 +138,8 @@ function AppRouter() {
       <Route path={"/ursa"} component={UrsaManager} />
       <Route path={"/planilha"} component={PlanilhaManager} />
       <Route path={"/cobalt"} component={CobaltManager} />
+      <Route path={"/yt-dlp"} component={YtDlpManager} />
+      <Route path={"/baixar-videos-yt"} component={BaixarVideosYtManager} />
       <Route path={"/apagar-historico"} component={HistoryCleaner} />
       <Route path={"/van-gogh"} component={VanGoghHub} />
       <Route path={"/brazuca"} component={BrazucaHub} />
